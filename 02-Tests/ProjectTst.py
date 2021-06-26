@@ -12,7 +12,10 @@ Test script for "Project" class
 
 import numpy as np
 
-import Project as Prj
+import Project     as Prj
+import WorkPackage as wp
+import Task        as Tsk
+import TaskStaff   as TskStf
 
 ##! Start:
 print("========  Project: tests start  ========")
@@ -100,6 +103,27 @@ try:
 except:
     print("    ----> FAILED to create CSV file.")
     raise exception
+print("    <---- Done.")
+
+
+##! Check costing methods:
+ProjectTest = 6
+print()
+print("ProjectTest:", ProjectTest, " check costing methods.")
+print("    ----> Clean Project instances:")
+nDel = Prj.Project.clean()
+print("    ----> Removed ", nDel, "instances.")
+nDel = wp.WorkPackage.clean()
+nDel = Tsk.Task.clean()
+nDel = TskStf.TaskStaff.cleanTaskStaff()
+TskStf.TaskStaff.doTaskStaffCosting()
+Tsk.Task.doCosting()
+wp.WorkPackage.doCosting()
+print("    ----> Run doCosting:")
+Prj.Project.doCosting()
+print("          Result:")
+for iPrj in Prj.Project.instances:
+    print(iPrj)
 print("    <---- Done.")
 
 

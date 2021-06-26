@@ -12,7 +12,9 @@ Script to generate full LhARA costing data structure
 import os
 
 import Staff       as Stf
+import Project     as Prj
 import WorkPackage as wp
+import Task        as Tsk
 import TaskStaff   as TskStf
 
 ##! Start:
@@ -55,21 +57,51 @@ for Inst in wpInst:
 print("    <---- Done.")
 
 print()
-print("---->  Project definition files Read <----")
-
-print()
-print("---->  Do costing! Complete data structure.  <----")
+print("        ---->  Project definition files Read <----")
 
 ##! TaskStaff
 CDSsection = 3
 print()
 print("Complete LhARA costing data structure: section: ", CDSsection, " cost staff in task staff.")
 nDel = TskStf.TaskStaff.cleanTaskStaff()
-print("    ----> Removed ", nDel, "instances.")
+print("    ----> Cleaning: removed ", nDel, "instances.")
 print("    ----> Run doTaskStaffCosting:")
 TskStf.TaskStaff.doTaskStaffCosting()
 
-    
+##! Task
+CDSsection = 4
+print()
+print("Complete LhARA costing data structure: section: ", CDSsection, " cost tasks.")
+nDel = Tsk.Task.clean()
+print("    ----> Cleaning: removed ", nDel, "instances.")
+print("    ----> Run doCosting:")
+Tsk.Task.doCosting()
+
+##! Workpage
+CDSsection = 5
+print()
+print("Complete LhARA costing data structure: section: ", CDSsection, " cost work packages.")
+nDel = wp.WorkPackage.clean()
+print("    ----> Cleaning: removed ", nDel, "instances.")
+print("    ----> Run doCosting:")
+wp.WorkPackage.doCosting()
+
+##! Project
+CDSsection = 6
+print()
+print("Complete LhARA costing data structure: section: ", CDSsection, " cost project.")
+nDel = Prj.Project.clean()
+print("    ----> Cleaning: removed ", nDel, "instances.")
+print("    ----> Run doCosting:")
+Prj.Project.doCosting()
+
+CDSsection = 7
+print()
+print("Complete LhARA costing data structure: section: ", CDSsection, \
+      " costing done. \n     ----> print Project(s):")
+for iPrj in Prj.Project.instances:
+    print(iPrj)
+
 
 ##! Complete:
 print()

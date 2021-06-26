@@ -171,11 +171,6 @@ class Task:
 
     @classmethod
     def doCosting(cls):
-        """
-        self._EquipmentCostByYear = None
-        self._TotalEquipmentCost  = None
-        """
-
         for iTsk in cls.instances:
             _StaffCostByYear   = np.array([])
             _CGStaffCostByYear = np.array([])

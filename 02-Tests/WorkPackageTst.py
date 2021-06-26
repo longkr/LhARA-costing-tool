@@ -13,6 +13,8 @@ import os
 import numpy as np
 
 import WorkPackage as wp
+import Task        as Tsk
+import TaskStaff   as TskStf
 
 ##! Start:
 print("========  WorkPackage: tests start  ========")
@@ -86,6 +88,24 @@ except:
     raise exception
 print("    <---- Done.")
 
+
+##! Check costing methods:
+WorkpackageTest = 6
+print()
+print("WorkpackageTest:", WorkpackageTest, " check costing methods.")
+print("    ----> Clean Workpackage instances:")
+nDel = wp.WorkPackage.clean()
+print("    ----> Removed ", nDel, "instances.")
+nDel = Tsk.Task.clean()
+nDel = TskStf.TaskStaff.cleanTaskStaff()
+TskStf.TaskStaff.doTaskStaffCosting()
+Tsk.Task.doCosting()
+print("    ----> Run doCosting:")
+wp.WorkPackage.doCosting()
+print("          Result:")
+for iWP in wp.WorkPackage.instances:
+    print(iWP)
+print("    <---- Done.")
 
 ##! Complete:
 print()

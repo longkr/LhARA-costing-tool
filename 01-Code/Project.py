@@ -51,6 +51,8 @@ Created on Wed 19Jun21. Version history:
 import numpy  as np
 import pandas as pnds
 
+import WorkPackage as WP
+
 class Project:
     __Debug   = False
     instances = []
@@ -76,7 +78,7 @@ class Project:
 
     def __str__(self):
         _PrjName = self._ProjectName
-        print(" Workpackage: name:", _PrjName, " ---->")
+        print(" Project: name:", _PrjName, " ---->")
         print("     Staff cost by year, total:", self._StaffCostByYear, self._TotalStaffCost)
         print("     CG staff cost by year, total:", self._CGStaffCostByYear, self._TotalCGStaffCost)
         print("     Equipment cost by year, total", self._EquipmentCostByYear, self._TotalEquipmentCost)
@@ -158,6 +160,50 @@ class Project:
         if Project.__Debug:
             print(" Project; getInstance: number of instances; return instance:", Ninst, "\n ", RtnInst)
         return RtnInst
+
+    @classmethod
+    def clean(cls):
+        OldInst = cls.instances
+        NewInst = []
+        nDel    = 0
+        for iPrj in OldInst:
+            if not isinstance(iPrj._ProjectName, str):
+                del iPrj
+                nDel += 1
+            else:
+                NewInst.append(iPrj)
+        cls.instances = NewInst
+        return nDel
+
+    @classmethod
+    def doCosting(cls):
+        for iPrj in cls.instances:
+            _StaffCostByYear     = np.array([])
+            _CGStaffCostByYear   = np.array([])
+            _EquipmentCostByYear = np.array([])
+            _TrvlCnsmCostByYear  = np.array([])
+            SumInitialised = False
+            for iWP in WP.WorkPackage.instances:
+                for iYr in range(len(iWP._StaffCostByYear)):
+                    if not SumInitialised:
+                        _StaffCostByYear     = np.append(_StaffCostByYear,     [0.])
+                        _CGStaffCostByYear   = np.append(_CGStaffCostByYear,   [0.])
+                        _EquipmentCostByYear = np.append(_EquipmentCostByYear, [0.])
+                        _TrvlCnsmCostByYear  = np.append(_TrvlCnsmCostByYear,  [0.])
+                SumInitialised     = True
+                _StaffCostByYear     += iWP._StaffCostByYear
+                _CGStaffCostByYear   += iWP._CGStaffCostByYear
+                _EquipmentCostByYear += iWP._EquipmentCostByYear
+                _TrvlCnsmCostByYear  += iWP._TrvlCnsmCostByYear
+            iPrj._StaffCostByYear = _StaffCostByYear
+            iPrj.setTotalStaffCost()
+            iPrj._CGStaffCostByYear = _CGStaffCostByYear
+            iPrj.setTotalCGStaffCost()
+            iPrj._EquipmentCostByYear = _EquipmentCostByYear
+            iPrj.setTotalEquipmentCost()
+            iPrj._TrvlCnsmCostByYear = _TrvlCnsmCostByYear
+            iPrj.setTotalTrvlCnsmCost()
+
 
 #--------  Exceptions:
 class DuplicateProjectClassInstance(Exception):

@@ -73,20 +73,18 @@ class WorkPackage:
     instances = []
 
 #--------  "Built-in methods":
-    def __init__(self, filename=None, _PrjInst=None):
+    def __init__(self, filename=None): #, _PrjInst=None):
         if filename == None:
             raise NoFilenameProvided('CSV filename required; execution termimated.')
         elif not os.path.isfile(filename):
             raise NonExistantFile('CSV file' + filename +' does not exist; execution termimated.')
-        
+
         self._filename        = filename
         self._wpParams        = self.getWorkpackage(filename)
         self._WorkpackageName = "Place holder"
         if self.__Debug:
             xDummy = self.printWorkpackage()
 
-        self._Project, self._WorkpackageName, self._WPM, self._FinancialYears = self.parseWorkpackage()
-        
         #.. Defined, but not filled, at init:
         self._StaffCostByYear     = None
         self._CGStaffCostByYear   = None
@@ -94,9 +92,19 @@ class WorkPackage:
         self._TotalCGStaffCost    = None
         self._EquipmentCostByYear = None
         self._TotalEquipmentCost  = None
+        self._TravelByYear        = None
+        self._TotalTravel         = None
+        self._ConsumeByYear       = None
+        self._TotalConsume        = None
         self._TrvlCnsmCostByYear  = None
         self._TotalTrvlCnsmCost   = None
+        self._OtherNonStaffItems  = []
 
+        self._Project, self._WorkpackageName, self._WPM, self._FinancialYears = self.parseWorkpackage()
+
+        self._TrvlCnsmCostByYear  = self._TravelByYear + self._ConsumeByYear
+        self._TotalTrvlCnsmCost   = np.sum(self._TrvlCnsmCostByYear)
+        
         WorkPackage.instances.append(self)
 
         
@@ -308,11 +316,48 @@ class WorkPackage:
             elif str(self._wpParams.iat[i,0]) == "TotalEquip":
                 pass
             elif str(self._wpParams.iat[i,0]) == "Consume":
-                pass
+                if self.__Debug:
+                    print(" WorkPackage; parseWorkpackage: Consumables")
+                CnsCst = np.array([])
+                for iYr in range(len(Yrs)):
+                    Cst = float(self._wpParams.iat[i,2+iYr])
+                    if mt.isnan(Cst):
+                        Cst = 0.
+                    CnsCst = np.append(CnsCst,Cst)
+                self._ConsumeByYear = CnsCst
+                self._TotalConsume  = np.sum(self._ConsumeByYear)
+                if self.__Debug:
+                    print(" WorkPackage; parseWorkpackage: consumables cost by year and total:", self._ConsumeByYear, self._TotalConsume)
             elif str(self._wpParams.iat[i,0]) == "Travel":
-                pass
+                if self.__Debug:
+                    print(" WorkPackage; parseWorkpackage: Travel")
+                TrvCst = np.array([])
+                for iYr in range(len(Yrs)):
+                    Cst = float(self._wpParams.iat[i,2+iYr])
+                    if mt.isnan(Cst):
+                        Cst = 0.
+                    TrvCst = np.append(TrvCst,Cst)
+                self._TravelByYear = TrvCst
+                self._TotalTravel  = np.sum(self._TravelByYear)
+                if self.__Debug:
+                    print(" WorkPackage; parseWorkpackage: travel cost by year and total:", self._TravelByYear, self._TotalTravel)
             elif str(self._wpParams.iat[i,0]) == "OtherNonStaff":
-                pass
+                self._OtherNonStaffItems.append(self._wpParams.iat[i,1])
+                if self.__Debug:
+                    print(" WorkPackage; parseWorkpackage: other non-staff: ", self._wpParams.iat[i,1])
+                CnsCst = np.array([])
+                for iYr in range(len(Yrs)):
+                    Cst = float(self._wpParams.iat[i,2+iYr])
+                    if mt.isnan(Cst):
+                        Cst = 0.
+                    CnsCst = np.append(CnsCst,Cst)
+                if not isinstance(self._ConsumeByYear, np.ndarray):
+                    self._ConsumeByYear = CnsCst
+                else:
+                    self._ConsumeByYear += CnsCst
+                self._TotalConsume  = np.sum(self._ConsumeByYear)
+                if self.__Debug:
+                    print(" WorkPackage; parseWorkpackage: consumables + other non-staff cost by year and total:", self._ConsumeByYear, self._TotalConsume)
             elif str(self._wpParams.iat[i,0]) == "NonStaffEnd":
                 pass
             elif str(self._wpParams.iat[i,0]) == "Flag":
@@ -325,6 +370,48 @@ class WorkPackage:
 
         return PrjInst, WorkpackageName, WPM, Yrs
 
+    @classmethod
+    def clean(cls):
+        OldInst = cls.instances
+        NewInst = []
+        nDel    = 0
+        for iWP in OldInst:
+            print(iWP._WorkpackageName, iWP._TrvlCnsmCostByYear)
+            if iWP._filename == None or not isinstance(iWP._wpParams, pnds.DataFrame) or \
+               not isinstance(iWP._WorkpackageName, str) or not isinstance(iWP._TrvlCnsmCostByYear, np.ndarray):
+                del iWP
+                nDel += 1
+            else:
+                NewInst.append(iWP)
+        cls.instances = NewInst
+        return nDel
+
+    @classmethod
+    def doCosting(cls):
+        for iWp in cls.instances:
+            _StaffCostByYear   = np.array([])
+            _CGStaffCostByYear = np.array([])
+            _EquipmentCostByYear = np.array([])
+            SumInitialised = False
+            for iTsk in Tsk.Task.instances:
+                for iYr in range(len(iTsk._StaffCostByYear)):
+                    if not SumInitialised:
+                        _StaffCostByYear     = np.append(_StaffCostByYear,   [0.])
+                        _CGStaffCostByYear   = np.append(_CGStaffCostByYear, [0.])
+                        _EquipmentCostByYear = np.append(_EquipmentCostByYear,   [0.])
+                SumInitialised = True
+                _StaffCostByYear += iTsk._StaffCostByYear
+                _CGStaffCostByYear += iTsk._CGStaffCostByYear
+                _EquipmentCostByYear += iTsk._EquipmentCostByYear
+                
+            iWp._StaffCostByYear = _StaffCostByYear
+            iWp.setTotalStaffCost()
+            iWp._CGStaffCostByYear = _CGStaffCostByYear
+            iWp.setTotalCGStaffCost()
+            iWp._EquipmentCostByYear = _EquipmentCostByYear
+            iWp.setTotalEquipmentCost()
+
+            
 #--------  Exceptions:
 class NoFilenameProvided(Exception):
     pass
