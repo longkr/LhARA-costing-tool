@@ -1,0 +1,197 @@
+﻿Institute Code,Name or post,Level,Cost per year (£k),Source,Comments
+STFC-Fellow,Joint fellow A,Phys.,65.7,Project,"Draft, ""super-post-doc"""
+STFC-Fellow,Joint fellow B,Phys.,65.7,Project,"Draft, ""super-post-doc"""
+STFC-Fellow,Joint fellow C,Phys.,90,Project,"Draft, ""super-post-doc"""
+STFC-ASTEC,Brooks,BandD,44.808,Project,Vokins
+STFC-ASTEC,Gabor,BandD,44.808,Project,Vokins
+STFC-ASTEC,Dumbell,BandD,44.808,Project,Vokins
+STFC-ASTEC,Florian,BandD,44.808,Project,Vokins
+STFC-ASTEC,Kalinin,BandE,56.616,Project,Shewry
+STFC-ASTEC,Kelliher,BandD,44.808,Project,Vokins
+STFC-ASTEC,Machida,BandF,122.811,Project,Vokins
+STFC-ASTEC,Moss,BandE,56.616,Project,Vokins
+STFC-ASTEC,Pattalwar,BandE,56.616,Project,Shewry
+STFC-ASTEC,Plostinar,BandD,44.808,Project,Vokins
+STFC-ASTEC,Prior,BandG,153.678,Project,Vokins
+STFC-ASTEC,Rogers,BandF,122.811,Project,Vokins
+STFC-ASTEC,Rogers-Capital,BandE,56.616,Project,Vokins
+STFC-ASTEC,Stanley,BandE,56.616,Project,Vokins
+STFC-ASTEC,GraduateEngineer,BandD,44.808,Project,Vokins
+STFC-ASTEC,Engineering support,BandE,56.616,Project,Vokins
+STFC-ASTEC,Student A,Student,25,Project,Vokins
+STFC-ISIS,Bellenger,BandE,56.616,Project,Vokins
+STFC-ISIS,Clarke-Gayther,BandE,56.616,Project,Vokins
+STFC-ISIS,Faircloth,BandF,122.811,Project,Vokins
+STFC-ISIS,Jenkins,BandF,122.811,Project,Vokins
+STFC-ISIS,Jones,BandE,56.616,Project,Vokins
+STFC-ISIS,Lawrie,BandD,44.808,Project,Vokins
+STFC-ISIS,Letchford,BandG,153.678,Project,Vokins
+STFC-ISIS,Ma,BandD,44.808,Project,Vokins
+STFC-ISIS,Quinn,BandE,56.616,Project,Vokins
+STFC-ISIS,Engineering support 1,BandE,56.616,Project,Vokins
+STFC-ISIS,Thomason,BandF,122.811,Project,Vokins
+STFC-ISIS,Anderson,BandE,56.616,Project,Vokins
+STFC-ISIS,Craft,BandC,60.013,Project,Vokins
+STFC-ISIS,Engineering support,BandD,77.966,Project,Vokins
+STFC-ISIS,Technical support,BandD,77.966,Project,Vokins
+STFC-PPD,Beamline Integration Scientist,BandE,56.616,Project,Vokins
+STFC-PPD,Bennett,BandF,122.811,Project,Vokins
+STFC-PPD,Edgecock,BandF,122.811,Project,Vokins
+STFC-PPD,Govans,BandE,98.512,Project,Vokins
+STFC-PPD,Hayes,BandC,60.013,Project,Vokins
+STFC-PPD,PostDoc,BandD,44.808,Project,Guess
+STFC-PPD,Preece,BandE,98.512,Project,Vokins
+STFC-PPD,Ricciardi,BandE,98.512,Project,Vokins
+STFC-PPD,Tucker,BandE,56.616,Project,Vokins
+STFC-PPD,Whyte,BandE,98.512,Project,Vokins
+STFC-PPD,Loader,BandC,60.013,Project,Vokins
+STFC-TD,Hall Manager,BandE,98.512,Project,Vokins
+STFC-TD,Senior and supervisory staff costs,BandD,77.966,Project,
+STFC-TD,Barkley,BandD,44.808,Project,Vokins
+STFC-TD,Bayliss,BandC,34.49,Project,Vokins
+STFC-TD,Boehm,BandF,70.581,Project,
+STFC-TD,Bliss,BandE,98.512,Project,Vokins
+STFC-TD,Bradshaw,BandG,88.321,Project,Vokins
+STFC-TD,Capocci,BandC,34.49,Project,Vokins
+STFC-TD,Caretta,BandE,98.512,Project,Vokins
+STFC-TD,Collomb,BandE,56.616,Project,Vokins
+STFC-TD,Courthold,BandE,56.616,Project,Vokins
+STFC-TD,Davenne,BandE,56.616,Project,Vokins
+STFC-TD,Densham,BandF,122.811,Project,Vokins
+STFC-TD,Fitton,BandE,56.616,Project,Vokins
+STFC-TD,Ford,BandD,44.808,Project,Vokins
+STFC-TD,Francis,BandE,56.616,Project,Vokins
+STFC-TD,Fry,BandC,34.49,Project,
+STFC-TD,Griffiths,BandF,70.581,Project,
+STFC-TD,Grant,BandF,122.811,Project,Vokins
+STFC-TD,Greenall,BandD,44.808,Project,
+STFC-TD,Hayler,BandE,98.512,Project,Vokins
+STFC-TD,Hills,BandE,56.616,Project,Vokins
+STFC-TD,Holtom,BandE,56.616,Project,Vokins
+STFC-TD,Jefferey,BandD,44.808,Project,Vokins
+STFC-TD,Lintern,BandD,44.808,Project,Vokins
+STFC-TD,Loveridge,BandE,56.616,Project,Vokins
+STFC-TD,Macwaters,BandE,98.512,Project,Vokins
+STFC-TD,Martlew,BandF,122.811,Project,Vokins
+STFC-TD,Muir,BandE,56.616,Project,Vokins
+STFC-TD,Mullacrane,BandD,44.808,Project,Vokins
+STFC-TD,Nichols,BandF,122.811,Project,Vokins
+STFC-TD,O'Dell,BandD,44.808,Project,Vokins
+STFC-TD,Palin,BandD,44.808,Project,Vokins
+STFC-TD,Postlethwaite,BandD,44.808,Project,Vokins
+STFC-TD,Pyke,BandE,56.616,Project,Vokins
+STFC-TD,Rooney,BandE,56.616,Project,Vokins
+STFC-TD,Stokes,BandD,44.808,Project,Vokins
+STFC-TD,Tarrant,BandE,56.616,Project,Vokins
+STFC-TD,Warburton,BandD,44.808,Project,Vokins
+STFC-TD,Watson,BandC,34.49,Project,Vokins
+STFC-TD,Weston,BandE,56.616,Project,Vokins
+STFC-TD,White,BandE,56.616,Project,Shewry
+STFC-TD,Wilcox,BandD,44.808,Project,Vokins
+STFC-TD,Operations Manager,BandE,98.512,Project,
+STFC-TD,Cryo Expert Ops team,BandD,77.966,Project,
+STFC-TD,Magnet Expert Ops team,BandD,77.966,Project,
+STFC-TD,Cryo Technician,BandD,44.808,Project,Vokins
+STFC-TD,Electrical Controls Engineering,BandE,56.616,,
+STFC-TD,Electrical Designer,BandE,56.616,Project,Vokins
+STFC-TD,Electrical Engineer,BandE,56.616,Project,Vokins
+STFC-TD,Electrical Technician,BandD,44.808,Project,Vokins
+STFC-TD,Mechanical Engineer,BandD,44.808,Project,Vokins
+STFC-TD,Mechanical Technician,BandD,44.808,Project,Vokins
+STFC-eScience,Wilson,BandE,98.512,Project,Vokins
+Brunel,Kyberd,Academic,100,Project,Kyberd
+Brunel,Nebrensky,Phys.,109.706,Project,Kyberd
+Brunel,Powell,Academic,117.828,RG,Kyberd
+Brunel,Littlefield,Student,100,Project,Kyberd
+Brunel,Smith,Academic,106.829,RG,Kyberd
+Brunel,Student A,Student,27.617,Project,Kyberd
+Brunel,Student B,Student,19.049,Project,Kyberd
+Glasgow,Soler,Academic,17.158,RG,Soler
+Glasgow,Bayes,Phys.,106.771,Project,Long (estimate)
+Glasgow,Student A,Phys.,25.54,Project,Soler
+Huddersfield,Bungau C,Phys.,81.389,Project,Edgecock
+Huddersfield,Bungau A,Phys.,81.389,Project,Edgecock
+Huddersfield,Edgecock,Academic,121.206,Project,Edgecock
+Huddersfield,Ratcliffe (Student),Student,0,Project,Edgecock
+Huddersfield,Student A,Student,0,Project,Edgecock
+Imperial-Physics,Alsari,Engineer,65.3,Project,Barlow
+Imperial-Physics,George,Phys.,60,Project,Barlow
+Imperial-Physics,Barber,Eng.,85.78,RG,Barlow
+Imperial-Physics,Barlow,Admin.,137,RG,Barlow
+Imperial-Physics,Beuselinck,Phys. Prog.,91,RG,Barlow
+Imperial-Physics,Blackmore,Phys.,59.202,Project,Barlow
+Imperial-Physics,Bontoiu,Student,0,,Barlow
+Imperial-Physics,Brambilla,Admin.,0,Project,Barlow
+Imperial-Physics,D.Clarke,Tech.,123.85,RG,Barlow
+Imperial-Physics,Colling,Academic,25.097,RG,Barlow
+Imperial-Physics,Dobbs,Phys.,59.154,Project,Barlow
+Imperial-Physics,Dornan,Academic,0,RG,Barlow
+Imperial-Physics,Fayer,Prog.,0,,Barlow
+Imperial-Physics,Greenwood,Elec. Tech.,0,Project,Barlow
+Imperial-Physics,Ladhams,Tech.,86.553,RG,Barlow
+Imperial-Physics,Jenner,Phys.,96.583,Project,Barlow
+Imperial-Physics,vice Jolly,Phys.,101.374,Project,Barlow
+Imperial-Physics,Kasey,Tech.,17.657,RG,Barlow
+Imperial-Physics,Khaleeq,Tech.,98.878,Project,Barlow
+Imperial-Physics,Kurup,Phys.,64.328,Project,Barlow
+Imperial-Physics,Lagrange,Phys.,64.278,Project,Barlow
+Imperial-Physics,LongCC,Academic,104.404,RG,Barlow
+Imperial-Physics,Long,Academic,104.404,Project,Barlow
+Imperial-Physics,Martyniak,Phys.,64.278,Project,Barlow
+Imperial-Physics,PasternakCC,Academic,77.042,RG,Barlow
+Imperial-Physics,Pasternak,Academic,77.042,Project,Barlow
+Imperial-Physics,Pozimski,Academic,124.053,RG,Barlow
+Imperial-Physics,Savage,Eng.,30,Project,Barlow
+Imperial-Physics,Savidge,Eng.,30,RG,Barlow
+Imperial-Physics,Student A,Student,28.33,Project,Barlow
+Imperial-Physics,Student B,Student,28.33,Project,Barlow
+Imperial-Physics,Uchida,Phys,57.545,Project,Barlow
+Lancaster/Cockcroft,Seviour,Academic,91.95,RG,Draft
+Liverpool,Gamet,Academic,0,RG,Draft
+Oxford,Blackmore,Phys.,70,Project,Cobb
+Oxford,Cobb,Academic,70,Project,Cobb
+Oxford,vice Cobb,Academic,0,RG,Cobb
+Oxford,W.Lau,Eng.,40,RG,Cobb
+Oxford,EEng,Eng.,10,Project,Cobb
+Oxford,MTech,Tech.,10,Project,Cobb
+Oxford,ETech,Tech.,10,Project,Cobb
+Oxford,Carlisle,Student,0,Project,Cobb
+Oxford,Tunnell,Student,0,Project,Cobb
+Oxford,Witte,Eng.,0,Project,Cobb
+RHUL,Alessio,Academic,80,RG,
+RHUL,Boorman,Phys.,80,Project,
+Sheffield,Booth,Academic,0,RG,Draft
+Sheffield,Hodgson,Phys.,107.082,Project,Draft
+Sheffield,Overton,Phys.,89.355,Project,"Student, paid on existing grant"
+Sheffield,Robinson,Phys.,30,RG,Draft
+Sheffield,Skoro,Phys.,0,Project,Draft
+Sheffield,Smith,Phys.,56,Project,Draft
+Sheffield,Wilbur,Phys.,92.092,Project,
+Sheffield,Student A,Student,24.558,Project,
+Strathclyde,Phelps,Academic,105.48,Project,Ronald
+Strathclyde,Ronald,Academic,134.704,Project,Ronald
+Strathclyde,Whyte,Phys.,126.472,Project,Ronald
+Strathclyde,Student A,Phys.,24.472,Project,Ronald
+Strathclyde,Young,Phys.,122.578,Project,Ronald
+UCL,Jolly,Academic,111.707,RG,Lancaster
+Warwick,Back,Phys.,113,RG,Boyd
+Warwick,Boyd,Phys.,120,RG,Boyd
+Warwick,Francini,Phys.,100.296,Project,Boyd
+Warwick,Harrison,Academic,100,RG,Boyd
+Warwick,Taylor,Phys.,70,Project,Boyd
+Warwick,Student A,Student,19.577,Project,Boyd
+US-Inst-1,One,US,100,Project,Nominal!
+US-Inst-1,Two,US,100,Project,Nominal!
+US-Inst-1,Three,US,100,Project,Nominal!
+US-Inst-2,Four,US,100,Project,Nominal!
+US-Inst-2,Five,US,100,Project,Nominal!
+US-Inst-3,Six,US,100,Project,Nominal!
+US-Inst-4,Seven,US,100,Project,Nominal!
+US-Inst-4,Eight,US,100,Project,Nominal!
+US-Inst-4,Nine,US,100,Project,Nominal!
+US-Inst-5,Ten,US,100,Project,Nominal!
+US-Inst-5,Eleven,US,100,Project,Nominal!
+US-Inst-5,Twelve,US,100,Project,Nominal!
+US-Inst-5,Thirteen,US,100,Project,Nominal!
+US-Inst-5,Fifteen,US,100,Project,Nominal!
+US-Inst-5,Fourteen,US,100,Project,Nominal!

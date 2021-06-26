@@ -1,0 +1,726 @@
+========  Equipment: tests start  ========
+
+EquipmentTest: 1  check built-in methods.
+    __init__:
+      ----> instance Eqp1 created.
+    <---- __init__ done.
+    __repr__:
+      ----> Equipment(Name)
+    <---- __repr__ done.
+    __str__:
+ Equipment: 
+     Equipment name: LhARA
+     Cost by financial year: []
+     Total cost: nan
+    <---- __str__ done.
+
+EquipmentTest: 2  check getInstance method.
+      ----> Correctly reported no instance: None
+      ----> Correctly caught multiple instance exception.
+      ----> Correctly found:  Equipment: 
+     Equipment name: Test-1
+     Cost by financial year: []
+     Total cost: nan
+      ----> Correctly found:  Equipment: 
+     Equipment name: LhARA
+     Cost by financial year: []
+     Total cost: nan
+    <---- getInstance done.
+
+EquipmentTest: 3  test get/set methods.
+    ----> Set equipment cost and total
+ Equipment: 
+     Equipment name: LhARA
+     Cost by financial year: [1. 2. 3. 4. 5.]
+     Total cost: 15
+ Equipment: 
+     Equipment name: Test-1
+     Cost by financial year: [1. 2. 3. 4. 5.]
+     Total cost: 15
+ Equipment: 
+     Equipment name: Test-2
+     Cost by financial year: [1. 2. 3. 4. 5.]
+     Total cost: 15
+ Equipment: 
+     Equipment name: Test-2
+     Cost by financial year: [1. 2. 3. 4. 5.]
+     Total cost: 15
+    <---- Done.
+
+EquipmentTest: 4  test creation of pandas dataframe.
+    <---- Done.
+
+EquipmentTest: 5  test creation of csv file.
+    ----> CSV file successfully created.
+    <---- Done.
+
+========  Equipment: tests complete  ========
+========  Project: tests start  ========
+
+ProjectTest: 1  check built-in methods.
+    __init__:
+      ----> instance Prj1 created.
+    <---- __init__ done.
+    __repr__:
+      ----> Project(Name)
+    <---- __repr__ done.
+    __str__:
+ Workpackage: name: LhARA  ---->
+     Staff cost by year, total: None None
+     CG staff cost by year, total: None None
+     Equipment cost by year, total None None
+     Travel and consumable cost by year, total: None None
+     <---- Project done.
+    <---- __str__ done.
+
+ProjectTest: 2  check getInstance method.
+      ----> Correctly reported no instance: None
+      ----> Correctly caught multiple instance exception.
+      ----> Correctly found:  Workpackage: name: Test-1  ---->
+     Staff cost by year, total: None None
+     CG staff cost by year, total: None None
+     Equipment cost by year, total None None
+     Travel and consumable cost by year, total: None None
+     <---- Project done.
+      ----> Correctly found:  Workpackage: name: LhARA  ---->
+     Staff cost by year, total: None None
+     CG staff cost by year, total: None None
+     Equipment cost by year, total None None
+     Travel and consumable cost by year, total: None None
+     <---- Project done.
+    <---- getInstance done.
+
+ProjectTest: 3  check get/set methods.
+ Workpackage: name: LhARA  ---->
+     Staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     CG staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     Equipment cost by year, total [1. 2. 3. 4. 5.] 15.0
+     Travel and consumable cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     <---- Project done.
+
+ProjectTest: 4  test creation of pandas dataframe.
+    <---- Done.
+
+ProjectTest: 5  test creation of csv file.
+    ----> CSV file successfully created.
+    <---- Done.
+
+========  Project: tests complete  ========
+========  Staff: tests start  ========
+
+StaffTest: 1  check built-in methods.
+    __init__:
+      ----> Correctly trapped no name exception.
+ Staff.__init__: staff database file does not exist, create dummy entry for staff name= 62
+      ----> Staff database file name: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-Cstng-tl/12-Staff/StaffDatabase.csv
+      ----> instance Stf1 created.
+    <---- __init__ done.
+    __repr__:
+      ----> Staff(Name)
+    <---- __repr__ done.
+    __str__:
+Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-Cstng-tl/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=nan, source=None, comment=None
+    <---- __str__ done.
+
+StaffTest: 2  check getInstance method.
+      ----> Correctly reported no instance: None
+      ----> Correctly caught multiple instance exception.
+      ----> Correctly found: Staff: Staff=Test-1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+      ----> Correctly found: Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-Cstng-tl/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=nan, source=None, comment=None
+    <---- getInstance done.
+
+StaffTest: 3  test load staff database call.
+    ----> parseStaffDatabase load test
+        ----> OK!
+    <---- Load test done
+
+StaffTest: 3  test get/set methods.
+    ----> Set parameters
+Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-Cstng-tl/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=101, source=None, comment=None
+Staff: Staff=Test-1, filename=None, institute=Institute-Code, grade=Head of House, cost=102, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Test-2, filename=None, institute=Institute-Code, grade=Head of House, cost=103, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Test-2, filename=None, institute=Institute-Code, grade=Head of House, cost=104, source=Project, comment=Default values filled; staff member not in staff database
+    <---- Done.
+
+StaffTest: 4  test creation of pandas dataframe.
+    <---- Done.
+
+StaffTest: 5  test creation of csv file.
+    ----> CSV file successfully created.
+    <---- Done.
+
+StaffTest: 5  test cleaning of staff database.
+     cleanStaffDatabase return code:  4
+     <---- Done.
+
+========  Staff: tests complete  ========
+========  TaskEquip: tests start  ========
+
+TaskEquipTest: 1  check built-in methods.
+    __init__:
+      ----> Strings for i/p: successfully trapped.
+      ----> instance TskEqp1 created.
+    <---- __init__ done.
+    __repr__:
+      ----> TaskEquipment(Name)
+    <---- __repr__ done.
+    __str__:
+ TaskEquipment: LhARA1
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: LhARA1
+     Cost by financial year: []
+     Total cost: nan
+     TaskEquipment summary complete.
+    <---- __str__ done.
+
+TaskEquipTest: 2  check getInstance method.
+      ----> Correctly reported no instance: None
+      ----> Correctly caught multiple instance exception.
+      ----> Correctly found: 
+  TaskEquipment: LhARA1
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: LhARA1
+     Cost by financial year: []
+     Total cost: nan
+     TaskEquipment summary complete.
+      ----> Correctly found:  TaskEquipment: LhARA1
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: LhARA1
+     Cost by financial year: []
+     Total cost: nan
+     TaskEquipment summary complete.
+    <---- getInstance done.
+
+TaskEquipTest: 3  check dump of class contents
+ TaskEquipment Id= 0
+ Task: Task 1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: Quadrupoles
+     Cost by financial year: [127.5  12.    5.    0.    0. ]
+     Total cost: 144.5
+ TaskEquipment Id= 1
+ Task: Task 1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: Quadrupole PSUs
+     Cost by financial year: [60. 12.  5.  0.  0.]
+     Total cost: 77
+ TaskEquipment Id= 2
+ Task: Task 1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: Dipoles
+     Cost by financial year: [133.33  12.     5.     0.     0.  ]
+     Total cost: 150.33
+ TaskEquipment Id= 3
+ Task: Task 1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: Dipole PSUs
+     Cost by financial year: [44.17 12.    5.    0.    0.  ]
+     Total cost: 61.17
+ TaskEquipment Id= 4
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: LhARA1
+     Cost by financial year: []
+     Total cost: nan
+ TaskEquipment Id= 5
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: LhARA1
+     Cost by financial year: []
+     Total cost: nan
+ TaskEquipment Id= 6
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: LhARA1
+     Cost by financial year: []
+     Total cost: nan
+ TaskEquipment Id= 7
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+ Equipment: 
+     Equipment name: LhARA1
+     Cost by financial year: []
+     Total cost: nan
+    <---- Done.
+
+========  TaskEquipment: tests complete  ========
+========  TaskStaff: tests start  ========
+
+TaskStaffTest: 1  check built-in methods.
+    __init__:
+      ----> Strings for i/p: successfully trapped.
+      ----> instance TskStff1 created.
+    <---- __init__ done.
+    __repr__:
+      ----> TaskStaff(Name)
+    <---- __repr__ done.
+    __str__:
+ TaskStaff: ---->
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+    Staff fraction by year and quarter: None
+    Staff fraction by year: None
+    Tofal staff fraction: None
+    Staff cost by year: None
+    Total staff cost: None
+ <---- TaskStaff: complete.
+    <---- __str__ done.
+
+TaskStaffTest: 2  check getInstance method.
+      ----> Correctly reported no instance: None
+      ----> Correctly caught multiple instance exception.
+      ----> Correctly found:  TaskStaff: ---->
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+    Staff fraction by year and quarter: None
+    Staff fraction by year: None
+    Tofal staff fraction: None
+    Staff cost by year: None
+    Total staff cost: None
+ <---- TaskStaff: complete.
+      ----> Correctly found:  TaskStaff: ---->
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+    Staff fraction by year and quarter: None
+    Staff fraction by year: None
+    Tofal staff fraction: None
+    Staff cost by year: None
+    Total staff cost: None
+ <---- TaskStaff: complete.
+    <---- getInstance done.
+
+TaskStaffTest: 3  check get/set methods.
+ TaskStaff: ---->
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+    Staff fraction by year and quarter: [[0.1 0.2 0.3 0.4]
+ [0.1 0.2 0.3 0.4]
+ [0.1 0.2 0.3 0.4]
+ [0.1 0.2 0.3 0.4]
+ [0.1 0.2 0.3 0.4]]
+    Staff fraction by year: [0.25 0.25 0.25 0.25 0.25]
+    Tofal staff fraction: 1.25
+    Staff cost by year: [100. 100. 100. 100. 100.]
+    Total staff cost: 500.0
+ <---- TaskStaff: complete.
+
+TaskStaffTest: 4  check costing methods.
+    ----> Clean TaskStaff instances:
+    ----> Removed  4 instances.
+    ----> Run doTaskStaffCosting:
+          Result:
+ TaskStaff: ---->
+ Task: Task 1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+Staff: Staff=Pasternak, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+    Staff fraction by year and quarter: [[0.1 0.1 0.1 0.1]
+ [0.1 0.1 0.1 0.1]
+ [0.1 0.1 0.1 0.1]
+ [0.1 0.1 0.1 0.1]
+ [0.1 0.1 0.1 0.1]]
+    Staff fraction by year: [0.1 0.1 0.1 0.1 0.1]
+    Tofal staff fraction: 0.5
+    Staff cost by year: [40. 40. 40. 40. 40.]
+    Total staff cost: 200.0
+ <---- TaskStaff: complete.
+ TaskStaff: ---->
+ Task: Task 1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+Staff: Staff=Barber, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+    Staff fraction by year and quarter: [[0.5 0.5 0.  0. ]
+ [0.5 0.5 0.  0. ]
+ [0.  0.  0.  0. ]
+ [0.  0.  0.  0. ]
+ [0.  0.  0.  0. ]]
+    Staff fraction by year: [0.25 0.25 0.   0.   0.  ]
+    Tofal staff fraction: 0.5
+    Staff cost by year: [100. 100.   0.   0.   0.]
+    Total staff cost: 200.0
+ <---- TaskStaff: complete.
+ TaskStaff: ---->
+ Task: Task 1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+Staff: Staff=Borg, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+    Staff fraction by year and quarter: [[0.5 0.5 0.  0. ]
+ [0.5 0.5 0.  0. ]
+ [0.  0.  0.  0. ]
+ [0.  0.  0.  0. ]
+ [0.  0.  0.  0. ]]
+    Staff fraction by year: [0.25 0.25 0.   0.   0.  ]
+    Tofal staff fraction: 0.5
+    Staff cost by year: [100. 100.   0.   0.   0.]
+    Total staff cost: 200.0
+ <---- TaskStaff: complete.
+ TaskStaff: ---->
+ Task: Task 1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+Staff: Staff=Student 1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+    Staff fraction by year and quarter: [[0.5 0.5 0.  0. ]
+ [0.5 0.5 0.  0. ]
+ [0.  0.  0.  0. ]
+ [0.  0.  0.  0. ]
+ [0.  0.  0.  0. ]]
+    Staff fraction by year: [0.25 0.25 0.   0.   0.  ]
+    Tofal staff fraction: 0.5
+    Staff cost by year: [100. 100.   0.   0.   0.]
+    Total staff cost: 200.0
+ <---- TaskStaff: complete.
+ TaskStaff: ---->
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+    Staff fraction by year and quarter: [[0.1 0.2 0.3 0.4]
+ [0.1 0.2 0.3 0.4]
+ [0.1 0.2 0.3 0.4]
+ [0.1 0.2 0.3 0.4]
+ [0.1 0.2 0.3 0.4]]
+    Staff fraction by year: [0.25 0.25 0.25 0.25 0.25]
+    Tofal staff fraction: 1.25
+    Staff cost by year: [100. 100. 100. 100. 100.]
+    Total staff cost: 500.0
+ <---- TaskStaff: complete.
+    <---- Done.
+
+========  TaskStaff: tests complete  ========
+========  Task: tests start  ========
+
+TaskTest: 1  check built-in methods.
+    __init__:
+      ----> instance Tsk1 created.
+    <---- __init__ done.
+    __repr__:
+      ----> Task(Name)
+    <---- __repr__ done.
+    __str__:
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+    <---- __str__ done.
+
+TaskTest: 2  check getInstance method.
+      ----> Correctly reported no instance: None
+      ----> Correctly caught multiple instance exception.
+      ----> Correctly found:  Task: Test-1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+      ----> Correctly found:  Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: None
+     CG staff cost by year: None
+     Total staff cost: None
+     Total CG staff cost: None
+     Equipment cost by year: None
+     Total equipment cost: None
+     <---- Task complete.
+    <---- getInstance done.
+
+TaskTest: 3  check get/set methods.
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: [1. 2. 3. 4. 5.]
+     CG staff cost by year: [1. 2. 3. 4. 5.]
+     Total staff cost: 15.0
+     Total CG staff cost: 15.0
+     Equipment cost by year: [1. 2. 3. 4. 5.]
+     Total equipment cost: 15.0
+     <---- Task complete.
+
+TaskTest: 4  test creation of pandas dataframe.
+    <---- Done.
+
+TaskTest: 5  test creation of csv file.
+    ----> CSV file successfully created.
+    <---- Done.
+
+TaskTest: 6  check costing methods.
+    ----> Clean Task instances:
+    ----> Removed  2 instances.
+    ----> Run doTaskCosting:
+          Result:
+ Task: Task 1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: [340. 340.  40.  40.  40.]
+     CG staff cost by year: [0. 0. 0. 0. 0.]
+     Total staff cost: 800.0
+     Total CG staff cost: None
+     Equipment cost by year: [365.  48.  20.   0.   0.]
+     Total equipment cost: 433.00000000000006
+     <---- Task complete.
+ Task: LhARA
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: []
+     CG staff cost by year: []
+     Total staff cost: 0.0
+     Total CG staff cost: 15.0
+     Equipment cost by year: []
+     Total equipment cost: 0.0
+     <---- Task complete.
+ Task: Test-1
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: []
+     CG staff cost by year: []
+     Total staff cost: 0.0
+     Total CG staff cost: None
+     Equipment cost by year: []
+     Total equipment cost: 0.0
+     <---- Task complete.
+ Task: Test-2
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: []
+     CG staff cost by year: []
+     Total staff cost: 0.0
+     Total CG staff cost: None
+     Equipment cost by year: []
+     Total equipment cost: 0.0
+     <---- Task complete.
+ Task: Test-2
+     ----> Workpackage: IonAcoustic  
+
+     Staff cost by year: []
+     CG staff cost by year: []
+     Total staff cost: 0.0
+     Total CG staff cost: None
+     Equipment cost by year: []
+     Total equipment cost: 0.0
+     <---- Task complete.
+    <---- Done.
+
+========  Task: tests complete  ========
+========  WorkPackage: tests start  ========
+
+WorkPackageTest: 1  check built-in methods.
+    __init__:
+      ----> Correctly caught absense of filename exception.
+      ----> Correctly caught non-existent file exception.
+      ----> instance WP1 created.
+    <---- __init__ done.
+    __repr__:
+      ----> WorkPackage()
+    <---- __repr__ done.
+    __str__:
+ Workpackage: name: LhARA  ---->
+     Project: LhARA  Manager: John Doe  Financial years: ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27']
+     Staff cost by year, total: None None
+     CG staff cost by year, total: None None
+     Equipment cost by year, total None None
+     Travel and consumable cost by year, total: None None
+     <---- WorkPackage done.
+    <---- __str__ done.
+
+WorkPackageTest: 2  check get/set methods.
+    ----> CSV filename:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-Cstng-tl/11-WorkPackages/Dummy4Test.csv
+
+WorkpackageTest: 3  check get/set methods.
+ Workpackage: name: LhARA  ---->
+     Project: LhARA  Manager: John Doe  Financial years: ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27']
+     Staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     CG staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     Equipment cost by year, total [1. 2. 3. 4. 5.] 15.0
+     Travel and consumable cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     <---- WorkPackage done.
+
+WorkpackageTest: 4  test creation of pandas dataframe.
+    <---- Done.
+
+WorkpackageTest: 5  test creation of csv file.
+    ----> CSV file successfully created.
+    <---- Done.
+
+========  WorkPackage: tests complete  ========
