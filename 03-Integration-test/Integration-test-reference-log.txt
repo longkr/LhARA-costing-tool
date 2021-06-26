@@ -143,21 +143,21 @@ StaffTest: 1  check built-in methods.
     __init__:
       ----> Correctly trapped no name exception.
  Staff.__init__: staff database file does not exist, create dummy entry for staff name= 62
-      ----> Staff database file name: /Users/kennethlong/CubMac-LT/CCAP/18-LhARA/00-Admin/01-Costing/01-Cstng-tl/12-Staff/StaffDatabase.csv
+      ----> Staff database file name: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/99-Scratch/LhARA-costing-tool/12-Staff/StaffDatabase.csv
       ----> instance Stf1 created.
     <---- __init__ done.
     __repr__:
       ----> Staff(Name)
     <---- __repr__ done.
     __str__:
-Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-LT/CCAP/18-LhARA/00-Admin/01-Costing/01-Cstng-tl/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=nan, source=None, comment=None
+Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/99-Scratch/LhARA-costing-tool/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=nan, source=None, comment=None
     <---- __str__ done.
 
 StaffTest: 2  check getInstance method.
       ----> Correctly reported no instance: None
       ----> Correctly caught multiple instance exception.
       ----> Correctly found: Staff: Staff=Test-1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
-      ----> Correctly found: Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-LT/CCAP/18-LhARA/00-Admin/01-Costing/01-Cstng-tl/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=nan, source=None, comment=None
+      ----> Correctly found: Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/99-Scratch/LhARA-costing-tool/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=nan, source=None, comment=None
     <---- getInstance done.
 
 StaffTest: 3  test load staff database call.
@@ -167,7 +167,7 @@ StaffTest: 3  test load staff database call.
 
 StaffTest: 3  test get/set methods.
     ----> Set parameters
-Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-LT/CCAP/18-LhARA/00-Admin/01-Costing/01-Cstng-tl/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=101, source=None, comment=None
+Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/99-Scratch/LhARA-costing-tool/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=101, source=None, comment=None
 Staff: Staff=Test-1, filename=None, institute=Institute-Code, grade=Head of House, cost=102, source=Project, comment=Default values filled; staff member not in staff database
 Staff: Staff=Test-2, filename=None, institute=Institute-Code, grade=Head of House, cost=103, source=Project, comment=Default values filled; staff member not in staff database
 Staff: Staff=Test-2, filename=None, institute=Institute-Code, grade=Head of House, cost=104, source=Project, comment=Default values filled; staff member not in staff database
@@ -736,7 +736,7 @@ WorkPackageTest: 1  check built-in methods.
     <---- __str__ done.
 
 WorkPackageTest: 2  check get/set methods.
-    ----> CSV filename:  /Users/kennethlong/CubMac-LT/CCAP/18-LhARA/00-Admin/01-Costing/01-Cstng-tl/11-WorkPackages/Dummy4Test.csv
+    ----> CSV filename:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/99-Scratch/LhARA-costing-tool/11-WorkPackages/Dummy4Test.csv
 
 WorkpackageTest: 3  check get/set methods.
  Workpackage: name: LhARA  ---->
