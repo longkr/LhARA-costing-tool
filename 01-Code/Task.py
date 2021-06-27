@@ -76,7 +76,7 @@ class Task:
 
     def __str__(self):
         print(" Task:", self._TaskName)
-        print("     ----> Workpackage:", self._Workpackage._WorkpackageName, " \n")
+        print("     ----> Workpackage:", self._Workpackage._Name, " \n")
         print("     Staff cost by year:", self._StaffCostByYear)
         print("     CG staff cost by year:", self._CGStaffCostByYear)
         print("     Total staff cost:", self._TotalStaffCost)
@@ -122,7 +122,7 @@ class Task:
                          "Total staff cost (£k)", "Total CG staff cost (£k)", \
                          "Equipment cost by year (£k)", "Total equipment cost (£k)"])
         for inst in Task.instances:
-            TaskData.append([inst._TaskName, inst._Workpackage._WorkpackageName, \
+            TaskData.append([inst._TaskName, inst._Workpackage._Name, \
                              inst._StaffCostByYear, inst._CGStaffCostByYear, inst._TotalStaffCost, inst._TotalCGStaffCost, \
                              inst._EquipmentCostByYear, inst._TotalEquipmentCost])
         TaskDataframe = pd.DataFrame(TaskData)

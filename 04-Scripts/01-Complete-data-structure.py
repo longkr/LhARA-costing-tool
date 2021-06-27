@@ -53,7 +53,7 @@ for wpFile in wpList:
         wpInst.append(wp.WorkPackage(FileName))
 print("         ", len(wpInst), " work packages intialised:")
 for Inst in wpInst:
-    print("           ", Inst._WorkpackageName)
+    print("           ", Inst._Name)
 print("    <---- Done.")
 
 print()

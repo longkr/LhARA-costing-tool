@@ -6,7 +6,8 @@ Test script for "Project" class
 
   Assumes python path includes LhARA code.
 
-  Script starts by testing built in methods.
+  Script starts by testing built in methods.  Then works througth the various
+  methods in the class.
 
 """
 

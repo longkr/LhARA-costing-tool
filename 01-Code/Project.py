@@ -10,20 +10,25 @@ Class Project:
 
   Class attributes:
   -----------------
-  __Debug : Boolean: set for debug print out
-
+  __Debug  : Boolean: set for debug print out
+  instances: List of instances of Project class
       
   Instance attributes:
   --------------------
-   _ProjectName         = Project name
+   _Name                = Project name
    _StaffCostByYear     = Total cost of staff in £k for this workpackage by FY
    _CGStaffCostByYear   = Cost of CG staff in £k for this workpackage by FY
    _TotalStaffCost      = Summed total staff cost over duration of project (£k)
-   _TotalCGStaffCost    = Summed total CG staff cost over duration of project (£k)
-   _EquipmentCostByYear = Total cost of equipment in £k for this workpackage by FY
-   _TotalEquipCost      = Summed total equipment cost over duration of project (£k)
-   _TrvlCnsmCostByYear  = Travel and consumable cost in £k for this workpackage by FY
-   _TotalTrvlCnsmCost   = Summed travel and consumable cost in £k for this workpackage
+   _TotalCGStaffCost    = Summed total CG staff cost over duration of project 
+                          (£k)
+   _EquipmentCostByYear = Total cost of equipment in £k for this workpackage 
+                          by FY
+   _TotalEquipCost      = Summed total equipment cost over duration of project
+                          (£k)
+   _TrvlCnsmCostByYear  = Travel and consumable cost in £k for this workpackage
+                          by FY
+   _TotalTrvlCnsmCost   = Summed travel and consumable cost in £k for this 
+                          workpackage
 
     
   Methods:
@@ -35,15 +40,60 @@ Class Project:
       __str__ : Dump of constants.
 
   I/o methods:
-      xx: 
+      createCSV: Creates CSV file containing Project paramters.
+                 [Classmethod]
+                 Input: Instance of Pandas dataframe class containing 
+                        parameters
+                        String -- path to output file (filename)
 
   Get/set methods:
-      getXX: 
+      getInstance           : Finds instance of class with Project._Name
+                 Input: _Name -- str -- name of Project to be found
+                Return: Instance of class; None if not found or if more than
+                        one instance
+                              [Classmethod]
+      setStaffCostByYear    : Set staff cost by FY:
+                 Input: numpy array containing cost in £k
 
-  
+      setCGStaffCostByYear  : Set CG staff cost by FY:
+                 Input: numpy array containing cost in £k
+
+      setTotalStaffCost     : Set total staff cost -- sums cost per year
+        
+      setTotalCGStaffCost   : Set total staff cost -- sums cost per year
+        
+      setEquipmentCostByYear: Set equipment cost per year:
+                 Input: numpy array containing cost in £k
+
+      setTotalEquipmentCost : Set total equipment cost -- sums cost per year
+
+      setTrvlCnsmCostByYear : Set total travel and consumables cost in £k
+                 Input: numpy array containing cost in £k
+        
+      setTotalTrvlCnsmCost  : Set total equipment cost -- sums cost per year
+
+  Processing methods:
+      createPandasDataframe : Create Pandas data frame containing Project
+                              parameters.
+                              [Classmethod]
+                 Input: None.
+                Return: Instance of Pandas class.
+
+      clean: Deletes inconsistent instances of Project class
+            [Classmethod]
+
+      doCosting: Sums data from Workpackages related to Project instance
+                 and completes Project costing
+                 [Classmethod]
+
+  Exceptions:
+    DuplicateProjectClassInstance: Two or more instances with same name.
+
+
 Created on Wed 19Jun21. Version history:
 ----------------------------------------
  1.0: 19Jun21: First implementation
+
 
 @author: kennethlong
 """
@@ -60,7 +110,7 @@ class Project:
 #--------  "Built-in methods":
     def __init__(self, _ProjectName="None"):
         Project.instances.append(self)
-        self._ProjectName = _ProjectName
+        self._Name = _ProjectName
 
         #.. Defined, but not filled, at init:
         self._StaffCostByYear     = None
@@ -77,12 +127,16 @@ class Project:
         return "Project(Name)"
 
     def __str__(self):
-        _PrjName = self._ProjectName
+        _PrjName = self._Name
         print(" Project: name:", _PrjName, " ---->")
-        print("     Staff cost by year, total:", self._StaffCostByYear, self._TotalStaffCost)
-        print("     CG staff cost by year, total:", self._CGStaffCostByYear, self._TotalCGStaffCost)
-        print("     Equipment cost by year, total", self._EquipmentCostByYear, self._TotalEquipmentCost)
-        print("     Travel and consumable cost by year, total:", self._TrvlCnsmCostByYear, self._TotalTrvlCnsmCost)
+        print("     Staff cost by year, total:", \
+              self._StaffCostByYear, self._TotalStaffCost)
+        print("     CG staff cost by year, total:", \
+              self._CGStaffCostByYear, self._TotalCGStaffCost)
+        print("     Equipment cost by year, total", \
+              self._EquipmentCostByYear, self._TotalEquipmentCost)
+        print("     Travel and consumable cost by year, total:", \
+              self._TrvlCnsmCostByYear, self._TotalTrvlCnsmCost)
         return "     <---- Project done."
 
 #--------  I/o methods:
@@ -117,21 +171,29 @@ class Project:
         self._TotalTrvlCnsmCost = np.sum(self._TrvlCnsmCostByYear)
 
         
-#--------  Print methods:
-
 #--------  Creating the pandas dataframe:
     @classmethod
     def createPandasDataframe(cls):
         ProjectData = []
         ProjectData.append(["Project", \
-                            "Staff cost per year (£k)", "CG staff cost per year (£k)", \
-                            "Total staff cost (£k)", "Total CG staff cost (£k)", \
-                            "Equipment cost by year (£k)", "Total equipment cost (£k)", \
-                            "Travel and consumables by year (£k)", "Total travel and consumables (£k)"])
+                            "Staff cost per year (£k)", \
+                            "CG staff cost per year (£k)", \
+                            "Total staff cost (£k)", \
+                            "Total CG staff cost (£k)", \
+                            "Equipment cost by year (£k)", \
+                            "Total equipment cost (£k)", \
+                            "Travel and consumables by year (£k)", \
+                            "Total travel and consumables (£k)"])
         for inst in Project.instances:
-            ProjectData.append([inst._ProjectName, \
-                                inst._StaffCostByYear, inst._CGStaffCostByYear, inst._TotalStaffCost, inst._TotalCGStaffCost, \
-                                    inst._EquipmentCostByYear, inst._TotalEquipmentCost, inst._EquipmentCostByYear, inst._TotalEquipmentCost])
+            ProjectData.append([inst._Name, \
+                                inst._StaffCostByYear, \
+                                inst._CGStaffCostByYear, \
+                                inst._TotalStaffCost, \
+                                inst._TotalCGStaffCost, \
+                                inst._EquipmentCostByYear, \
+                                inst._TotalEquipmentCost, \
+                                inst._TrvlCnsmCostByYear, \
+                                inst._TotalTrvlCnsmCost])
         ProjectDataframe = pnds.DataFrame(ProjectData)
         if cls.__Debug:
             print(" Project; createPandasDataframe: \n", ProjectDataframe)
@@ -140,14 +202,14 @@ class Project:
     
 #--------  Class methods:
     @classmethod
-    def getInstance(cls, _ProjectName):
+    def getInstance(cls, _Name):
         InstList = []
         if Project.__Debug:
-            print(" Project; getInstance: search for project name:", _ProjectName)
+            print(" Project; getInstance: search for project name:", _Name)
         for inst in cls.instances:
             if Project.__Debug:
-                print(" Project; getInstance: instance:", inst._ProjectName)
-            if inst._ProjectName == _ProjectName:
+                print(" Project; getInstance: instance:", inst._Name)
+            if inst._Name == _Name:
                 InstList.append(inst)
         Ninst = len(InstList)
         if Ninst == 0:
@@ -156,9 +218,10 @@ class Project:
             RtnInst = InstList[0]
         if Ninst >= 2:
             RtnInst = None
-            raise DuplicateProjectClassInstance(Ninst, "instances of ", _ProjectName)
+            raise DuplicateProjectClassInstance(Ninst, "instances of ", _Name)
         if Project.__Debug:
-            print(" Project; getInstance: number of instances; return instance:", Ninst, "\n ", RtnInst)
+            print(" Project; getInstance: number of instances; " \
+                  "return instance:", Ninst, "\n ", RtnInst)
         return RtnInst
 
     @classmethod
@@ -167,7 +230,7 @@ class Project:
         NewInst = []
         nDel    = 0
         for iPrj in OldInst:
-            if not isinstance(iPrj._ProjectName, str):
+            if not isinstance(iPrj._Name, str):
                 del iPrj
                 nDel += 1
             else:
@@ -186,10 +249,14 @@ class Project:
             for iWP in WP.WorkPackage.instances:
                 for iYr in range(len(iWP._StaffCostByYear)):
                     if not SumInitialised:
-                        _StaffCostByYear     = np.append(_StaffCostByYear,     [0.])
-                        _CGStaffCostByYear   = np.append(_CGStaffCostByYear,   [0.])
-                        _EquipmentCostByYear = np.append(_EquipmentCostByYear, [0.])
-                        _TrvlCnsmCostByYear  = np.append(_TrvlCnsmCostByYear,  [0.])
+                        _StaffCostByYear     = \
+                            np.append(_StaffCostByYear,     [0.])
+                        _CGStaffCostByYear   = \
+                            np.append(_CGStaffCostByYear,   [0.])
+                        _EquipmentCostByYear = \
+                            np.append(_EquipmentCostByYear, [0.])
+                        _TrvlCnsmCostByYear  = \
+                            np.append(_TrvlCnsmCostByYear,  [0.])
                 SumInitialised     = True
                 _StaffCostByYear     += iWP._StaffCostByYear
                 _CGStaffCostByYear   += iWP._CGStaffCostByYear
