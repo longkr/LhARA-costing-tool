@@ -11,18 +11,22 @@ Class Task:
   Class attributes:
   -----------------
   __Debug : Boolean: set for debug print out
+  instances: List of instances if the Task class.
 
       
   Instance attributes:
   --------------------
-   _TaskName            = Name of task
-   _Workpackage         = Instance of Workpackage task in which this task is defined
+   _Name                = Name of task
+   _Workpackage         = Instance of Workpackage task in which this task 
+                          is defined
    _StaffCostByYear     = Total cost of staff in £k for this task by FY
    _CGStaffCostByYear   = Cost of CG staff in £k for this task by FY
    _TotalStaffCost      = Summed total staff cost over duration of project (£k)
-   _TotalCGStaffCost    = Summed total CG staff cost over duration of project (£k)
+   _TotalCGStaffCost    = Summed total CG staff cost over duration of project 
+                          (£k)
    _EquipmentCostByYear = Total cost of equipment in £k for this task by FY
-   _TotalEquipCost      = Summed total equipment cost over duration of project (£k)
+   _TotalEquipCost      = Summed total equipment cost over duration of project 
+                          (£k)
     
   Methods:
   --------
@@ -32,11 +36,54 @@ Class Task:
       __repr__: One liner with call.
       __str__ : Dump of constants.
 
+
   I/o methods:
-      xx: 
+      createCSV     : Creates CSV file containing Task paramters.
+                      [Classmethod]
+                      Input: Instance of Pandas dataframe class containing 
+                             parameters
+                             String -- path to output file (filename)
+
 
   Get/set methods:
-      getXX: 
+      getInstance: Finds instance of class with Task._Name
+                 Input: _Name -- str -- name of Project to be found
+                Return: Instance of class; None if not found or if more than
+                        one instance
+                   [Classmethod]
+
+    setStaffCostByYear: Set staff cost per year (£k)
+      Input: numpy array
+        
+    setCGStaffCostByYear: Set staff cost per year (£k)
+      Input: numpy array
+
+    setTotalStaffCost: Set total staff cost (£k)
+        Sums staff cost per year.
+        
+    setTotalCGStaffCost: Set total CG staff cost (£k)
+        Sums CG staff cost per year.
+        
+    setEquipmentCostByYear: Set quipment cost per year (£k)
+      Input: numpy array
+
+    setTotalEquipmentCost: Set total equipment cost (£k)
+        Sums equipment cost per year.
+
+
+  Processing methods:
+      createPandasDataframe : Create Pandas data frame containing Task
+                              parameters.
+                              [Classmethod]
+                 Input: None.
+                Return: Instance of Pandas class.
+
+      clean: Delete incomplete instances of Task
+             [classmethod]
+
+      doCosting: Complete costing of Task.  Sums data from TaskStaff and
+                 TaskEquipment related to Task and completes Task costing.
+                 [Classmethod]
 
   
 Created on Wed 19Jun21. Version history:
@@ -58,9 +105,9 @@ class Task:
     instances = []
 
 #--------  "Built-in methods":
-    def __init__(self, _TaskName="None", _WPInst=None):
+    def __init__(self, _Name="None", _WPInst=None):
         Task.instances.append(self)
-        self._TaskName    = _TaskName
+        self._Name        = _Name
         self._Workpackage = _WPInst
 
         #.. Defined, but not filled, at init:
@@ -75,7 +122,7 @@ class Task:
         return "Task(Name)"
 
     def __str__(self):
-        print(" Task:", self._TaskName)
+        print(" Task:", self._Name)
         print("     ----> Workpackage:", self._Workpackage._Name, " \n")
         print("     Staff cost by year:", self._StaffCostByYear)
         print("     CG staff cost by year:", self._CGStaffCostByYear)
@@ -112,19 +159,25 @@ class Task:
         self._TotalEquipmentCost = np.sum(self._EquipmentCostByYear)
         
 
-#--------  Print methods
-
 #--------  Creating the pandas dataframe:
     @classmethod
     def createPandasDataframe(cls):
         TaskData = []
-        TaskData.append(["Name", "Workpackage", "Staff cost by year (£k)", "CG staff cost per year (£k)", \
-                         "Total staff cost (£k)", "Total CG staff cost (£k)", \
-                         "Equipment cost by year (£k)", "Total equipment cost (£k)"])
+        TaskData.append(["Name", \
+                         "Workpackage", \
+                         "Staff cost by year (£k)", \
+                         "Total staff cost (£k)", \
+                         "CG staff cost per year (£k)", \
+                         "Total CG staff cost (£k)", \
+                         "Equipment cost by year (£k)", \
+                         "Total equipment cost (£k)"])
         for inst in Task.instances:
-            TaskData.append([inst._TaskName, inst._Workpackage._Name, \
-                             inst._StaffCostByYear, inst._CGStaffCostByYear, inst._TotalStaffCost, inst._TotalCGStaffCost, \
-                             inst._EquipmentCostByYear, inst._TotalEquipmentCost])
+            TaskData.append([inst._Name, \
+                             inst._Workpackage._Name, \
+                             inst._StaffCostByYear, inst._TotalStaffCost, \
+                             inst._CGStaffCostByYear, inst._TotalCGStaffCost, \
+                             inst._EquipmentCostByYear, \
+                             inst._TotalEquipmentCost])
         TaskDataframe = pd.DataFrame(TaskData)
         if cls.__Debug:
             print(" Task; createPandasDataframe: \n", TaskDataframe)
@@ -133,14 +186,14 @@ class Task:
 
 #--------  Class methods:
     @classmethod
-    def getInstance(cls, _TaskName):
+    def getInstance(cls, _Name):
         InstList = []
         if Task.__Debug:
-            print(" Task; getInstance: search for Task name:", _TaskName)
+            print(" Task; getInstance: search for Task name:", _Name)
         for inst in cls.instances:
             if Task.__Debug:
-                print(" Task; getInstance: instance:", inst._TaskName)
-            if inst._TaskName == _TaskName:
+                print(" Task; getInstance: instance:", inst._Name)
+            if inst._Name == _Name:
                 InstList.append(inst)
         Ninst = len(InstList)
         if Ninst == 0:
@@ -149,9 +202,10 @@ class Task:
             RtnInst = InstList[0]
         if Ninst >= 2:
             RtnInst = None
-            raise DuplicateTaskClassInstance(Ninst, "instances of ", _TaskName)
+            raise DuplicateTaskClassInstance(Ninst, "instances of ", _Name)
         if Task.__Debug:
-            print(" Task; getInstance: number of instances; return instance:", Ninst, "\n ", RtnInst)
+            print(" Task; getInstance: number of instances; return instance:", \
+                  Ninst, "\n ", RtnInst)
         return RtnInst
 
 
@@ -161,7 +215,8 @@ class Task:
         NewInst = []
         nDel    = 0
         for iTsk in OldInst:
-            if not isinstance(iTsk._TaskName, str) or not isinstance(iTsk._Workpackage, wp.WorkPackage):
+            if not isinstance(iTsk._Name, str) or \
+               not isinstance(iTsk._Workpackage, wp.WorkPackage):
                 del iTsk
                 nDel += 1
             else:
@@ -179,8 +234,10 @@ class Task:
                 if iTskStf._Task == iTsk:
                     for iYr in range(len(iTskStf._StaffCostByYear)):
                         if not SumInitialised:
-                            _StaffCostByYear   = np.append(_StaffCostByYear,   [0.])
-                            _CGStaffCostByYear = np.append(_CGStaffCostByYear, [0.])
+                            _StaffCostByYear   = \
+                                np.append(_StaffCostByYear,   [0.])
+                            _CGStaffCostByYear = \
+                                np.append(_CGStaffCostByYear, [0.])
                     SumInitialised = True
                     _StaffCostByYear += iTskStf._StaffCostByYear
                     if iTskStf._Staff._ProjectOrCG == "CG":
@@ -197,7 +254,8 @@ class Task:
                     iEqp = iTskEqp._Equipment
                     for iYr in range(len(iEqp._EquipmentCost)):
                         if not SumInitialised:
-                            _EquipmentCostByYear   = np.append(_EquipmentCostByYear,   [0.])
+                            _EquipmentCostByYear   = \
+                                np.append(_EquipmentCostByYear,   [0.])
                     SumInitialised = True
                     _EquipmentCostByYear += iEqp._EquipmentCost
             iTsk._EquipmentCostByYear = _EquipmentCostByYear

@@ -5,17 +5,21 @@ Class TaskEquipment:
 ====================
 
   Creates an instance of the TaskEquipment class and provides access methods
-  to complete the attributes.
+  to complete the attributes.  TaskEquipment is a switchyard or pivot table
+  relating tasks and equipment.
 
 
   Class attributes:
   -----------------
   __Debug : Boolean: set for debug print out
+  instances: List of instances if the TaskEquipment class.
 
       
   Instance attributes:
   --------------------
-   _
+     _Task      = Instance of Task class
+     _Equipment = Instance of Equipment class
+
     
   Methods:
   --------
@@ -25,11 +29,26 @@ Class TaskEquipment:
       __repr__: One liner with call.
       __str__ : Dump of constants.
 
-  I/o methods:
-      xx: 
+
+  Print methods:
+     print: Prints attributes of Task and Equipment instances.
+
 
   Get/set methods:
-      getXX: 
+      getInstance: Finds instance of class with specific Task and Equipment
+                   stored in the two instance attributes.
+                 Input: _Task, _Equipment: Task and Project
+                Return: Instance of class; None if not found or if more than
+                        one instance
+                   [Classmethod]
+
+
+  Exceptions:
+     DuplicateTaskEquipmentClassInstance:
+
+     NoTaskOrEquipment:
+
+     NotAnInstanceOfTaskOrEquipment:
 
   
 Created on Wed 19Jun21. Version history:
@@ -61,17 +80,20 @@ class TaskEquipment:
                   "\n     Equipment:", self._Equipment)
 
         if _Task == None or _Equipment == None:
-            raise NoTaskOrEquipment(" TaskEquipment; __init__: Task and/or staff undefined, execution terminated.")
+            raise NoTaskOrEquipment(" TaskEquipment; __init__: ", \
+                    "Task and/or staff undefined, execution terminated.")
         
-        if not isinstance(_Task, Tsk.Task) or not isinstance(_Equipment, Eqp.Equipment):
-            raise NotAnInstanceOfTaskOrEquipment(" TaskEquipment; __init__: Task and/or staff not instance of class, execution terminated.")
-        
+        if not isinstance(_Task, Tsk.Task) or \
+           not isinstance(_Equipment, Eqp.Equipment):
+            raise NotAnInstanceOfTaskOrEquipment(" TaskEquipment; __init__: ", \
+                              "Task and/or staff not instance of class, ", \
+                              "execution terminated.")
 
     def __repr__(self):
         return "TaskEquipment(Name)"
 
     def __str__(self):
-        print(" TaskEquipment:", self._Equipment._EquipmentName)
+        print(" TaskEquipment:", self._Equipment._Name)
         print(self._Task)
         print(self._Equipment)
         return "     TaskEquipment summary complete."
@@ -82,10 +104,13 @@ class TaskEquipment:
     def getInstance(cls, _Task, _Equip):
         InstList = []
         if TaskEquipment.__Debug:
-            print(" TaskEquipment; getInstance: search for TaskEquipment for Task:", _Task, " and Equipment:", _Equip)
+            print(" TaskEquipment; getInstance: search for ",\
+                  "TaskEquipment for Task:", _Task, " and Equipment:", \
+                  _Equip)
         for inst in cls.instances:
             if TaskEquipment.__Debug:
-                print(" TaskEquipment; getInstance: instance:", inst._Task, inst._Equipment)
+                print(" TaskEquipment; getInstance: instance:", \
+                      inst._Task, inst._Equipment)
             if inst._Task == _Task and inst._Equipment == _Equip:
                 InstList.append(inst)
         Ninst = len(InstList)
@@ -95,9 +120,11 @@ class TaskEquipment:
             RtnInst = InstList[0]
         if Ninst >= 2:
             RtnInst = None
-            raise DuplicateTaskEquipmentClassInstance(Ninst, "instances of ", InstList[0])
+            raise DuplicateTaskEquipmentClassInstance(Ninst, \
+                        "instances of ", InstList[0])
         if TaskEquipment.__Debug:
-            print(" TaskEquipment; getInstance: number of instances; return instance:", Ninst, "\n ", RtnInst)
+            print(" TaskEquipment; getInstance: number of instances; ", \
+                  " return instance:", Ninst, "\n ", RtnInst)
         return RtnInst
     
 

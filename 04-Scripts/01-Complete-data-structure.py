@@ -63,10 +63,10 @@ print("        ---->  Project definition files Read <----")
 CDSsection = 3
 print()
 print("Complete LhARA costing data structure: section: ", CDSsection, " cost staff in task staff.")
-nDel = TskStf.TaskStaff.cleanTaskStaff()
+nDel = TskStf.TaskStaff.clean()
 print("    ----> Cleaning: removed ", nDel, "instances.")
-print("    ----> Run doTaskStaffCosting:")
-TskStf.TaskStaff.doTaskStaffCosting()
+print("    ----> Run doCosting:")
+TskStf.TaskStaff.doCosting()
 
 ##! Task
 CDSsection = 4

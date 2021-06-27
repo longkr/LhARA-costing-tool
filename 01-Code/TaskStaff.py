@@ -5,17 +5,26 @@ Class TaskStaff:
 ================
 
   Creates an instance of the TaskStaff class and provides access methods
-  to complete the attributes.
+  to complete the attributes.  TaskStaff is a switchyard or pivot table
+  relating tasks and staff.
 
 
   Class attributes:
   -----------------
   __Debug : Boolean: set for debug print out
+  instances: List of instances if the TaskEquipment class.
 
-      
+
   Instance attributes:
   --------------------
-   _
+     _Task                = Instance of Task class
+     _Staff               = Instance of Staff class
+     _StaffFracByYrNQtr   = Staff fraction by year and quarter
+     _StaffFracByYear     = Staff fraction by year
+     _TotalStaffFrac      = Tofal staff fraction
+     _StaffCostByYear     = Staff cost by year (£k)
+     _TotalStaffCost      = Total staff cost (£k)
+
     
   Methods:
   --------
@@ -25,11 +34,45 @@ Class TaskStaff:
       __repr__: One liner with call.
       __str__ : Dump of constants.
 
-  I/o methods:
-      xx: 
 
   Get/set methods:
-      getXX: 
+      getInstance: Finds instance of class with specific Task and Staff
+                   stored in the two instance attributes.
+                 Input: _Task, _Equipment: Task and Project
+                Return: Instance of class; None if not found or if more than
+                        one instance
+                   [Classmethod]
+
+     setStaffFracByYrNQtr: Set staff fraction by year and quarter
+                Input: numpy array
+        
+     setStaffFracByYear  : Set staff fraction by year
+              Averages staff fraction by year and quarter
+        
+     setTotalStaffFrac   : Set totak stff fraction
+              Sums staff fraction by year
+
+     setStaffCostByYear  : Staff cost by year (£k)
+                Cost per year calculated from staff fraction per year and staff cost
+
+     setTotalStaffCost   :
+              Sums staff cost by year
+
+
+  Processing method:
+      clean: Delete incomplete instances of TaskStaff
+             [classmethod]
+
+      doCosting: Complete costing of TaskStaff.
+                 [Classmethod]
+
+
+  Exceptions:
+     DuplicateTaskStaffClassInstance
+
+     NoTaskOrStaff
+
+     NotAnInstanceOfTaskOrStaff
 
   
 Created on Wed 19Jun21. Version history:
@@ -68,11 +111,12 @@ class TaskStaff:
                   "\n     Staff:", self._Staff)
 
         if _Task == None or _Staff == None:
-            raise NoTaskOrStaff(" TaskStaff; __init__: Task and/or staff undefined, execution terminated.")
+            raise NoTaskOrStaff(" TaskStaff; __init__: ", \
+                                "Task and/or staff undefined, execution terminated.")
         
         if not isinstance(_Task, Tsk.Task) or not isinstance(_Staff, Stff.Staff):
-            raise NotAnInstanceOfTaskOrStaff(" TaskStaff; __init__: Task and/or staff not instance of class, execution terminated.")
-        
+            raise NotAnInstanceOfTaskOrStaff(" TaskStaff; __init__: ", \
+                    "Task and/or staff not instance of class, execution terminated.")
 
     def __repr__(self):
         return "TaskStaff(Name)"
@@ -87,8 +131,7 @@ class TaskStaff:
         print("    Staff cost by year:", self._StaffCostByYear)
         print("    Total staff cost:", self._TotalStaffCost)
         return " <---- TaskStaff: complete."
-
-#--------  I/o methods:
+    
 
 #--------  Get/set methods:
     def setStaffFracByYrNQtr(self, _StaffFracByYrNQtr):
@@ -108,17 +151,17 @@ class TaskStaff:
         self._TotalStaffCost = np.sum(self._StaffCostByYear)
         
 
-#--------  Print methods
-
 #--------  Class methods:
     @classmethod
     def getInstance(cls, _Task, _Staff):
         InstList = []
         if TaskStaff.__Debug:
-            print(" TaskStaff; getInstance: search for Task and Staff:", _Task._TaskName, _Staff._NameOrPost)
+            print(" TaskStaff; getInstance: search for Task and Staff:", \
+                  _Task._Name, _Staff._NameOrPost)
         for inst in cls.instances:
             if TaskStaff.__Debug:
-                print(" TaskStaff; getInstance: instance Task, Staff:", _Task._TaskName, _Staff._NameOrPost)
+                print(" TaskStaff; getInstance: instance Task, Staff:", \
+                      _Task._Name, _Staff._NameOrPost)
             if inst._Task == _Task and inst._Staff == _Staff:
                 InstList.append(inst)
         Ninst = len(InstList)
@@ -128,19 +171,23 @@ class TaskStaff:
             RtnInst = InstList[0]
         if Ninst >= 2:
             RtnInst = None
-            raise DuplicateTaskStaffClassInstance(Ninst, "instances of ", InstList[0])
+            raise DuplicateTaskStaffClassInstance(Ninst, "instances of ", \
+                                                  InstList[0])
         if TaskStaff.__Debug:
-            print(" TaskStaff; getInstance: number of instances; return instance:", Ninst, "\n ", RtnInst)
+            print(" TaskStaff; getInstance: number of instances; return instance:", \
+                  Ninst, "\n ", RtnInst)
         return RtnInst
 
     @classmethod
-    def cleanTaskStaff(cls):
+    def clean(cls):
         OldInst = cls.instances
         NewInst = []
         nDel    = 0
         for iTskStf in OldInst:
-            if not isinstance(iTskStf._Task, Tsk.Task) or not isinstance(iTskStf._Staff, Stff.Staff) or \
-               not isinstance(iTskStf._StaffFracByYrNQtr, np.ndarray) or not isinstance(iTskStf._StaffFracByYear, np.ndarray) or \
+            if not isinstance(iTskStf._Task, Tsk.Task) or \
+               not isinstance(iTskStf._Staff, Stff.Staff) or \
+               not isinstance(iTskStf._StaffFracByYrNQtr, np.ndarray) or \
+               not isinstance(iTskStf._StaffFracByYear, np.ndarray) or \
                iTskStf._TotalStaffFrac == None:
                 del iTskStf
                 nDel += 1
@@ -151,7 +198,7 @@ class TaskStaff:
 
         
     @classmethod
-    def doTaskStaffCosting(cls):
+    def doCosting(cls):
         for iTskStf in cls.instances:
             iTskStf.setStaffCostByYear()
             iTskStf.setTotalStaffCost()

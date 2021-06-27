@@ -52,6 +52,7 @@ Class Project:
                 Return: Instance of class; None if not found or if more than
                         one instance
                               [Classmethod]
+
       setStaffCostByYear    : Set staff cost by FY:
                  Input: numpy array containing cost in £k
 

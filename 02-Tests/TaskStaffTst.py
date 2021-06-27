@@ -107,10 +107,10 @@ TaskStaffTest = 4
 print()
 print("TaskStaffTest:", TaskStaffTest, " check costing methods.")
 print("    ----> Clean TaskStaff instances:")
-nDel = TskStff.TaskStaff.cleanTaskStaff()
+nDel = TskStff.TaskStaff.clean()
 print("    ----> Removed ", nDel, "instances.")
 print("    ----> Run doTaskStaffCosting:")
-TskStff.TaskStaff.doTaskStaffCosting()
+TskStff.TaskStaff.doCosting()
 print("          Result:")
 for iTskStf in TskStff.TaskStaff.instances:
     print(iTskStf)

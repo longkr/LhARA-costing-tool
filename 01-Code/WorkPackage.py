@@ -59,7 +59,7 @@ Class WorkPackage:
                       Returns: PandaS data frame containing workpackage 
                                specification
 
-      createCSV     : Creates CSV file containing Project paramters.
+      createCSV     : Creates CSV file containing work package paramters.
                       [Classmethod]
                       Input: Instance of Pandas dataframe class containing 
                              parameters
@@ -141,6 +141,12 @@ Class WorkPackage:
                     self._EquipmentCostByYear
                     self._TotalEquipmentCost 
                  [Classmethod]
+
+      createPandasDataframe : Create Pandas data frame containing Work package
+                              parameters.
+                              [Classmethod]
+                 Input: None.
+                Return: Instance of Pandas class.
 
 
   Exceptions:
@@ -289,6 +295,7 @@ class WorkPackage:
     def printWorkpackage(self):
         print(self._wpParams)
 
+        
 #--------  Creating the pandas dataframe:
     @classmethod
     def createPandasDataframe(cls):
