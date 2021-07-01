@@ -410,7 +410,7 @@ class WorkPackage:
                         print(" WorkPackage; parseWorkpackage: Staff ", \
                               StaffName, " exists.")
                 else:
-                    StfInst = Stf.Staff(StaffName)
+                    StfInst = Stf.Staff(StaffName, "Workpackage")
                     if self.__Debug:
                         print(" WorkPackage; parseWorkpackage: Staff ", \
                               StaffName, " created.")

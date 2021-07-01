@@ -142,7 +142,7 @@ ProjectTest: 6  check costing methods.
 StaffTest: 1  check built-in methods.
     __init__:
       ----> Correctly trapped no name exception.
- Staff.__init__: staff database file does not exist, create dummy entry for staff name= 62
+ Staff.__init__: staff database file does not exist, create dummy entry for staff name= LhARA2
       ----> Staff database file name: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
       ----> instance Stf1 created.
     <---- __init__ done.
@@ -150,30 +150,109 @@ StaffTest: 1  check built-in methods.
       ----> Staff(Name)
     <---- __repr__ done.
     __str__:
-Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=nan, source=None, comment=None
+Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv, staff code=LhARA, institute=None, grade=None, cost=nan, source=None, comment=None
     <---- __str__ done.
 
 StaffTest: 2  check getInstance method.
+ Staff; getInstance: search for Staff name: Dummy
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: instance: LhARA2
+ Staff; getInstance: instance: LhARA
+ Staff; getInstance: instance: Test-1
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: number of instances; return instance: 0 
+  None
       ----> Correctly reported no instance: None
-      ----> Correctly caught multiple instance exception.
-      ----> Correctly found: Staff: Staff=Test-1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
-      ----> Correctly found: Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=nan, source=None, comment=None
+ Staff; getInstance: search for Staff name: Test-2
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: instance: LhARA2
+ Staff; getInstance: instance: LhARA
+ Staff; getInstance: instance: Test-1
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Test-1
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: instance: LhARA2
+ Staff; getInstance: instance: LhARA
+ Staff; getInstance: instance: Test-1
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: number of instances; return instance: 1 
+  Staff: Staff=Test-1, filename=None, staff code=Test-1, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+      ----> Correctly found: Staff: Staff=Test-1, filename=None, staff code=Test-1, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+ Staff; getInstance: search for Staff name: LhARA
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: instance: LhARA2
+ Staff; getInstance: instance: LhARA
+ Staff; getInstance: instance: Test-1
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: instance: Vatican
+ Staff; getInstance: number of instances; return instance: 1 
+  Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv, staff code=LhARA, institute=None, grade=None, cost=nan, source=None, comment=None
+      ----> Correctly found: Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv, staff code=LhARA, institute=None, grade=None, cost=nan, source=None, comment=None
     <---- getInstance done.
 
 StaffTest: 3  test load staff database call.
     ----> parseStaffDatabase load test
+      Institute Code        Staff code  ...   Source Comments
+0         STFC-ASTEC   ASTEC-MechEng-1  ...  Project      NaN
+1         STFC-ASTEC   STEC-MechTech-1  ...  Project      NaN
+2          STFC-ISIS      ISIS-Staff-1  ...  Project      NaN
+3           STFC-PPD       PPD-Staff-1  ...  Project      NaN
+4           STFC-PPD     PPD-PostDoc-1  ...  Project      NaN
+5            STFC-TD        TD-Staff-1  ...  Project      NaN
+6   Imperial-Physics    ICPhys-Staff-1  ...       RG      NaN
+7   Imperial-Physics  ICPhys-PostDoc-1  ...  Project      NaN
+8   Imperial-Physics    ICPhys-Staff-2  ...  Project      NaN
+9   Imperial-Physics       ICPhys-Ac-1  ...  Project      NaN
+10  Imperial-Physics       ICPhys-Ac-2  ...  Project      NaN
+11  Imperial-Physics       ICPhys-Ac-3  ...       RG      NaN
+12  Imperial-Physics  ICPhys-MechEng-1  ...       RG      NaN
+13  Imperial-Physics  ICPhys-ElecEng-1  ...       RG      NaN
+14  Imperial-Physics       ICPhys-PG-1  ...  Project      NaN
+
+[15 rows x 7 columns]
         ----> OK!
     <---- Load test done
 
 StaffTest: 3  test get/set methods.
     ----> Set parameters
-Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv, institute=None, grade=None, cost=101, source=None, comment=None
-Staff: Staff=Test-1, filename=None, institute=Institute-Code, grade=Head of House, cost=102, source=Project, comment=Default values filled; staff member not in staff database
-Staff: Staff=Test-2, filename=None, institute=Institute-Code, grade=Head of House, cost=103, source=Project, comment=Default values filled; staff member not in staff database
-Staff: Staff=Test-2, filename=None, institute=Institute-Code, grade=Head of House, cost=104, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=LhARA, filename=/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv, staff code=LhARA, institute=None, grade=None, cost=101, source=None, comment=None
+Staff: Staff=Test-1, filename=None, staff code=Test-1, institute=Institute-Code, grade=Head of House, cost=102, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Vatican, filename=None, staff code=Test-2, institute=Institute-Code, grade=Head of House, cost=103, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Vatican, filename=None, staff code=Test-2, institute=Institute-Code, grade=Head of House, cost=104, source=Project, comment=Default values filled; staff member not in staff database
     <---- Done.
 
 StaffTest: 4  test creation of pandas dataframe.
+ Staff; createPandasDataframe: 
+                    0  ...                                                  7
+0         Staff code  ...                                            Comment
+1             LhARA1  ...  Default values filled; staff member not in sta...
+2                 62  ...                                               None
+3              LhARA  ...                                               None
+4             Test-1  ...  Default values filled; staff member not in sta...
+5             Test-2  ...  Default values filled; staff member not in sta...
+6             Test-2  ...  Default values filled; staff member not in sta...
+7    ASTEC-MechEng-1  ...                                                NaN
+8    STEC-MechTech-1  ...                                                NaN
+9       ISIS-Staff-1  ...                                                NaN
+10       PPD-Staff-1  ...                                                NaN
+11     PPD-PostDoc-1  ...                                                NaN
+12        TD-Staff-1  ...                                                NaN
+13    ICPhys-Staff-1  ...                                                NaN
+14  ICPhys-PostDoc-1  ...                                                NaN
+15    ICPhys-Staff-2  ...                                                NaN
+16       ICPhys-Ac-1  ...                                                NaN
+17       ICPhys-Ac-2  ...                                                NaN
+18       ICPhys-Ac-3  ...                                                NaN
+19  ICPhys-MechEng-1  ...                                                NaN
+20  ICPhys-ElecEng-1  ...                                                NaN
+21       ICPhys-PG-1  ...                                                NaN
+
+[22 rows x 8 columns]
     <---- Done.
 
 StaffTest: 5  test creation of csv file.
@@ -181,7 +260,10 @@ StaffTest: 5  test creation of csv file.
     <---- Done.
 
 StaffTest: 5  test cleaning of staff database.
-     cleanStaffDatabase return code:  4
+[Staff(Name)]
+[Staff(Name)]
+ Staff; cleanStaffDatabase: instances marked for deletion:  LhARA2
+     cleanStaffDatabase return code:  1
      <---- Done.
 
 ========  Staff: tests complete  ========
@@ -190,6 +272,24 @@ StaffTest: 5  test cleaning of staff database.
 TaskEquipTest: 1  check built-in methods.
     __init__:
       ----> Strings for i/p: successfully trapped.
+ Staff; getInstance: search for Staff name: Pasternak
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Barber
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Borg
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Student 1
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
       ----> instance TskEqp1 created.
     <---- __init__ done.
     __repr__:
@@ -381,6 +481,24 @@ TaskEquipTest: 3  check dump of class contents
 TaskStaffTest: 1  check built-in methods.
     __init__:
       ----> Strings for i/p: successfully trapped.
+ Staff; getInstance: search for Staff name: Pasternak
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Barber
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Borg
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Student 1
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
       ----> instance TskStff1 created.
     <---- __init__ done.
     __repr__:
@@ -398,7 +516,7 @@ TaskStaffTest: 1  check built-in methods.
      Equipment cost by year: None
      Total equipment cost: None
      <---- Task complete.
-Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Vatican, filename=None, staff code=LhARA1, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
     Staff fraction by year and quarter: None
     Staff fraction by year: None
     Tofal staff fraction: None
@@ -421,7 +539,7 @@ TaskStaffTest: 2  check getInstance method.
      Equipment cost by year: None
      Total equipment cost: None
      <---- Task complete.
-Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Vatican, filename=None, staff code=LhARA1, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
     Staff fraction by year and quarter: None
     Staff fraction by year: None
     Tofal staff fraction: None
@@ -439,7 +557,7 @@ Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of Hous
      Equipment cost by year: None
      Total equipment cost: None
      <---- Task complete.
-Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Vatican, filename=None, staff code=LhARA1, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
     Staff fraction by year and quarter: None
     Staff fraction by year: None
     Tofal staff fraction: None
@@ -460,7 +578,7 @@ TaskStaffTest: 3  check get/set methods.
      Equipment cost by year: None
      Total equipment cost: None
      <---- Task complete.
-Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Vatican, filename=None, staff code=LhARA1, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
     Staff fraction by year and quarter: [[0.1 0.2 0.3 0.4]
  [0.1 0.2 0.3 0.4]
  [0.1 0.2 0.3 0.4]
@@ -488,7 +606,7 @@ TaskStaffTest: 4  check costing methods.
      Equipment cost by year: None
      Total equipment cost: None
      <---- Task complete.
-Staff: Staff=Pasternak, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Workpackage, filename=None, staff code=Pasternak, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
     Staff fraction by year and quarter: [[0.1 0.1 0.1 0.1]
  [0.1 0.1 0.1 0.1]
  [0.1 0.1 0.1 0.1]
@@ -510,7 +628,7 @@ Staff: Staff=Pasternak, filename=None, institute=Institute-Code, grade=Head of H
      Equipment cost by year: None
      Total equipment cost: None
      <---- Task complete.
-Staff: Staff=Barber, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Workpackage, filename=None, staff code=Barber, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
     Staff fraction by year and quarter: [[0.5 0.5 0.  0. ]
  [0.5 0.5 0.  0. ]
  [0.  0.  0.  0. ]
@@ -532,7 +650,7 @@ Staff: Staff=Barber, filename=None, institute=Institute-Code, grade=Head of Hous
      Equipment cost by year: None
      Total equipment cost: None
      <---- Task complete.
-Staff: Staff=Borg, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Workpackage, filename=None, staff code=Borg, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
     Staff fraction by year and quarter: [[0.5 0.5 0.  0. ]
  [0.5 0.5 0.  0. ]
  [0.  0.  0.  0. ]
@@ -554,7 +672,7 @@ Staff: Staff=Borg, filename=None, institute=Institute-Code, grade=Head of House,
      Equipment cost by year: None
      Total equipment cost: None
      <---- Task complete.
-Staff: Staff=Student 1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Workpackage, filename=None, staff code=Student 1, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
     Staff fraction by year and quarter: [[0.5 0.5 0.  0. ]
  [0.5 0.5 0.  0. ]
  [0.  0.  0.  0. ]
@@ -576,7 +694,7 @@ Staff: Staff=Student 1, filename=None, institute=Institute-Code, grade=Head of H
      Equipment cost by year: None
      Total equipment cost: None
      <---- Task complete.
-Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
+Staff: Staff=Vatican, filename=None, staff code=LhARA1, institute=Institute-Code, grade=Head of House, cost=400, source=Project, comment=Default values filled; staff member not in staff database
     Staff fraction by year and quarter: [[0.1 0.2 0.3 0.4]
  [0.1 0.2 0.3 0.4]
  [0.1 0.2 0.3 0.4]
@@ -594,6 +712,24 @@ Staff: Staff=LhARA1, filename=None, institute=Institute-Code, grade=Head of Hous
 
 TaskTest: 1  check built-in methods.
     __init__:
+ Staff; getInstance: search for Staff name: Pasternak
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Barber
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Borg
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Student 1
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
       ----> instance Tsk1 created.
     <---- __init__ done.
     __repr__:
@@ -720,6 +856,24 @@ WorkPackageTest: 1  check built-in methods.
     __init__:
       ----> Correctly caught absense of filename exception.
       ----> Correctly caught non-existent file exception.
+ Staff; getInstance: search for Staff name: Pasternak
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Barber
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Borg
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
+ Staff; getInstance: search for Staff name: Student 1
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: instance: Workpackage
+ Staff; getInstance: number of instances; return instance: 0 
+  None
       ----> instance WP1 created.
     <---- __init__ done.
     __repr__:

@@ -35,7 +35,7 @@ LhARAPATH = os.getenv('LhARAPATH')
 filename  = os.path.join(LhARAPATH, '11-WorkPackages/Dummy4Test.csv')
 WP1 = wp.WorkPackage(filename)
 Tsk1 = Tsk.Task("LhARA", WP1)
-Stf1 = Stff.Staff("LhARA1")
+Stf1 = Stff.Staff("LhARA1", "Vatican")
 try:
     TskStff1 = TskStff.TaskStaff(Tsk1, Stf1)
 except:
@@ -59,7 +59,7 @@ TaskStaffTest = 2
 print()
 print("TaskStaffTest:", TaskStaffTest, " check getInstance method.")
 Tsk2 = Tsk.Task("LhARA", WP1)
-Stf2 = Stff.Staff("LhARA1")
+Stf2 = Stff.Staff("LhARA1", "Vatican")
 TskStf2 = TskStff.TaskStaff(Tsk1, Stf1)
 TskStf3 = TskStff.TaskStaff(Tsk2, Stf1)
 TskStf4 = TskStff.TaskStaff(Tsk1, Stf2)

@@ -16,7 +16,8 @@ Class Staff:
   Instance attributes:
   --------------------
    _filename      = File from which staff information was read
-   _Name          = Name
+   _StaffCode     = Staff code
+   _NameOrPost    = Name or post
    _InstituteCode = Institute code (e.g. Imperial-Physics)
    _Post          = Post name (e.g. post doc)
    _GradeOrLevel  = Grade of level (e.g. Senior Lecturer)
@@ -51,13 +52,14 @@ import os as os
 import pandas as pnds
 
 class Staff:
-    __Debug = False
+    __Debug = True
     instances = []
 
 #--------  "Built-in methods":
-    def __init__(self, _NameOrPost="None", _filename=None, \
-                       _InstituteCode="None", _GradeOrLevel="None", _AnnualCost=float("nan"), _ProjectOrCG="None", _Comments="None"):
+    def __init__(self, _StaffCode=None, _NameOrPost=None, _filename=None, \
+                       _InstituteCode=None, _GradeOrLevel=None, _AnnualCost=float("nan"), _ProjectOrCG=None, _Comments="None"):
 
+        self._StaffCode  = _StaffCode
         self._NameOrPost = _NameOrPost
         self._filename  = _filename
 
@@ -82,8 +84,6 @@ class Staff:
 
         Staff.instances.append(self)
 
-
-
     def __repr__(self):
         return "Staff(Name)"
 
@@ -94,11 +94,10 @@ class Staff:
         _AnnualCost = self._AnnualCost
         if self._AnnualCost == None:
             _AnnualCost = -100.
-        return "Staff: Staff=%s, filename=%s, institute=%s, grade=%s, cost=%g, source=%s, comment=%s"% \
-                (self._NameOrPost, _filename, self._InstituteCode, self._GradeOrLevel, \
+        return "Staff: Staff=%s, filename=%s, staff code=%s, institute=%s, grade=%s, cost=%g, source=%s, comment=%s"% \
+                (self._NameOrPost, _filename, self._StaffCode, self._InstituteCode, self._GradeOrLevel, \
                 self._AnnualCost, self._ProjectOrCG, self._Comments)
 
-    
 #--------  Get/set methods:
     def setAnnualCost(self, _AnnCost=None):
         self._AnnualCost = _AnnCost
@@ -108,16 +107,13 @@ class Staff:
         return len(self.instances)
 
 
-#--------  Print methods
-
-
 #--------  Creating the pandas dataframe:
     @classmethod
     def createPandasDataframe(cls):
         StaffData = []
-        StaffData.append(["Name or post", "Filename", "institute code", "Grade", "Annnual cost", "Funding source", "Comment"])
+        StaffData.append(["Staff code", "Name or post", "Filename", "institute code", "Grade", "Annnual cost", "Funding source", "Comment"])
         for inst in Staff.instances:
-            StaffData.append([inst._NameOrPost, inst._filename, inst._InstituteCode, inst._GradeOrLevel, inst._AnnualCost, inst._ProjectOrCG, inst._Comments])
+            StaffData.append([inst._StaffCode, inst._NameOrPost, inst._filename, inst._InstituteCode, inst._GradeOrLevel, inst._AnnualCost, inst._ProjectOrCG, inst._Comments])
         StaffDataframe = pnds.DataFrame(StaffData)
         if cls.__Debug:
             print(" Staff; createPandasDataframe: \n", StaffDataframe)
@@ -161,13 +157,14 @@ class Staff:
 
         iRow = _StffDtbsParams.index
         for i in iRow:
-            NameOrPost    = _StffDtbsParams.iat[i,0]
-            InstituteCode = _StffDtbsParams.iat[i,1]
-            GradeOrLevel  = _StffDtbsParams.iat[i,2]
-            AnnualCost    = _StffDtbsParams.iat[i,3]
-            ProjectOrCG   = _StffDtbsParams.iat[i,4]
-            Comments      = _StffDtbsParams.iat[i,5]
-            StffDummy     = Staff(NameOrPost, filename, \
+            InstituteCode = _StffDtbsParams.iat[i,0]
+            StaffCode     = _StffDtbsParams.iat[i,1]
+            NameOrPost    = _StffDtbsParams.iat[i,2]
+            GradeOrLevel  = _StffDtbsParams.iat[i,3]
+            AnnualCost    = _StffDtbsParams.iat[i,4]
+            ProjectOrCG   = _StffDtbsParams.iat[i,5]
+            Comments      = _StffDtbsParams.iat[i,6]
+            StffDummy     = Staff(StaffCode, NameOrPost, filename, \
                                   InstituteCode,GradeOrLevel, AnnualCost, ProjectOrCG, Comments)
 
         return len(cls.instances)
@@ -190,6 +187,8 @@ class Staff:
         ErrorCode = 0
         Deletions =[]
         for iStf in cls.instances:
+            if not isinstance(iStf._StaffCode, str):
+                Deletions.append(iStf)
             if not isinstance(iStf._NameOrPost, str):
                 Deletions.append(iStf)
             elif not isinstance(iStf._InstituteCode, str):

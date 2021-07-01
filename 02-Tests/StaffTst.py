@@ -27,12 +27,12 @@ try:
 except:
     print('      ----> Correctly trapped no name exception.')
 try:
-    Stf01 = Stf.Staff("LhARA1")
+    Stf01 = Stf.Staff("LhARA1", "Vatican")
 except:
     print('      ----> Failed to create instance.')
     raise Exception
 try:
-    Stf02 = Stf.Staff(62, "LhARA2")
+    Stf02 = Stf.Staff(62, "LhARA2", "Vatican")
 except:
     print('      ----> Failed to create instance.')
     raise Exception
@@ -40,7 +40,7 @@ LhARAPATH = os.getenv('LhARAPATH')
 filename  = os.path.join(LhARAPATH, '12-Staff/StaffDatabase.csv')
 print("      ----> Staff database file name:", filename)
 try:
-    Stf1 = Stf.Staff("LhARA", filename)
+    Stf1 = Stf.Staff("LhARA", "LhARA", filename)
 except:
     print('      ----> Failed to create instance.')
     raise Exception
@@ -59,9 +59,9 @@ print("    <---- __str__ done.")
 StaffTest = 2
 print()
 print("StaffTest:", StaffTest, " check getInstance method.")
-Stf2 = Stf.Staff("Test-1")
-Stf3 = Stf.Staff("Test-2")
-Stf4 = Stf.Staff("Test-2")
+Stf2 = Stf.Staff("Test-1", "Test-1")
+Stf3 = Stf.Staff("Test-2", "Vatican")
+Stf4 = Stf.Staff("Test-2", "Vatican")
 inst = Stf.Staff.getInstance("Dummy")
 if inst == None:
     print('      ----> Correctly reported no instance:', inst)
