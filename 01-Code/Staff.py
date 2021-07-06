@@ -69,17 +69,24 @@ Class Staff:
 
         getInstance: Finds instance of Staff, addressed by "NameOrPost"/
                   Input: Str: NameOrPost
-                 Return: Instance of Staff class if it exists.  Returns "None" if NameOrPost is
-                         not found or there is more than one instance with the same name or post.
+                 Return: Instance of Staff class if it exists.  Returns "None" 
+                         if NameOrPost is not found or there is more than one 
+                         instance with the same name or post.
                      [Class method]
+
+          getHeader: Return string list containing column headers.
+                     [Class method]
+
+            getData: Return string list containing staff data entries.
+
   
   Print methods:
     printStaffDatabase: Prints pandas dataframe containing the StaffDatabase
                      [Class method]
 
   Processing methods:
-    cleanStaffDatabase: Parse all instances of Staff and remove those with invalid values in tje
-                        attributes.
+    cleanStaffDatabase: Parse all instances of Staff and remove those with 
+                        invalid values in the attributes.
                      [Class method]
 
 
@@ -198,14 +205,9 @@ class Staff:
     @classmethod
     def createPandasDataframe(cls):
         StaffData = []
-        StaffData.append(["Staff code", "Name or post", "Filename", \
-                          "institute code", "Grade", "Annnual cost", \
-                          "Funding source", "Comment"])
+        StaffData.append(cls.getHeader())
         for inst in Staff.instances:
-            StaffData.append([inst._StaffCode, inst._NameOrPost, \
-                              inst._filename, inst._InstituteCode, \
-                              inst._GradeOrLevel, inst._AnnualCost, \
-                              inst._ProjectOrCG, inst._Comments])
+            StaffData.append(inst.getData())
         StaffDataframe = pnds.DataFrame(StaffData)
         if cls.__Debug:
             print(" Staff; createPandasDataframe: \n", StaffDataframe)
@@ -215,7 +217,7 @@ class Staff:
     def createCSV(cls, _StfDataFrame, _filename):
         _StfDataFrame.to_csv(_filename)
 
-    
+
 #--------  Get/set methods:
     def setAnnualCost(self, _AnnCost=float("nan")):
         self._AnnualCost = _AnnCost
@@ -225,14 +227,14 @@ class Staff:
         return len(cls.instances)
 
     @classmethod
-    def getInstance(cls, _NameOrPost):
+    def getInstance(cls, _StaffCode):
         InstList = []
         if Staff.__Debug:
-            print(" Staff; getInstance: search for Staff name:", _NameOrPost)
+            print(" Staff; getInstance: search for Staff name:", _StaffCode)
         for inst in cls.instances:
             if Staff.__Debug:
-                print(" Staff; getInstance: instance:", inst._NameOrPost)
-            if inst._NameOrPost == _NameOrPost:
+                print(" Staff; getInstance: instance:", inst._StaffCode)
+            if inst._StaffCode == _StaffCode:
                 InstList.append(inst)
         Ninst = len(InstList)
         if Ninst == 0:
@@ -242,13 +244,27 @@ class Staff:
         if Ninst >= 2:
             RtnInst = None
             raise DuplicateStaffClassInstance(Ninst, "instances of ", \
-                                              _NameOrPost)
+                                              _StaffCode)
         if Staff.__Debug:
             print(" Staff; getInstance: number of instances; ", \
                   "return instance:", Ninst, "\n ", RtnInst)
         return RtnInst
 
+    @classmethod
+    def getHeader(cls):
+        HeaderList = ["Staff code", "Name or post", "Filename", \
+                      "institute code", "Grade", "Annnual cost", \
+                      "Funding source", "Comment"]
+        return HeaderList
 
+    def getData(self):
+        StaffDataList = [self._StaffCode, self._NameOrPost, \
+                         self._filename, self._InstituteCode, \
+                         self._GradeOrLevel, self._AnnualCost, \
+                         self._ProjectOrCG, self._Comments]
+        return StaffDataList
+
+        
 #--------  Print methods:
     @classmethod
     def printStaffDatabase(cls, _StffDtbsParams):
@@ -266,7 +282,7 @@ class Staff:
             if not isinstance(iStf._NameOrPost, str):
                 Deletions.append(iStf)
             elif not isinstance(iStf._InstituteCode, str):
-                print(Deletions)
+                Deletions.append(iStf)
             elif not isinstance(iStf._GradeOrLevel, str):
                 Deletions.append(iStf)
             elif mth.isnan(iStf._AnnualCost):

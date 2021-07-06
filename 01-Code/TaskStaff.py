@@ -53,7 +53,8 @@ Class TaskStaff:
               Sums staff fraction by year
 
      setStaffCostByYear  : Staff cost by year (£k)
-                Cost per year calculated from staff fraction per year and staff cost
+                Cost per year calculated from staff fraction per year and 
+                staff cost
 
      setTotalStaffCost   :
               Sums staff cost by year
@@ -93,7 +94,17 @@ class TaskStaff:
 
 #--------  "Built-in methods":
     def __init__(self, _Task=None, _Staff=None):
-        TaskStaff.instances.append(self)
+
+        if _Task == None or _Staff == None or \
+           not isinstance(_Task, Tsk.Task) or \
+           not isinstance(_Staff, Stff.Staff):
+            raise NoTaskOrStaff(" TaskStaff; __init__: ", \
+                     "Task and/or staff undefined, execution terminated.")
+        
+        if not isinstance(_Task, Tsk.Task) or \
+           not isinstance(_Staff, Stff.Staff):
+            raise NotAnInstanceOfTaskOrStaff(" TaskStaff; __init__: ", \
+           "Task and/or staff not instance of class, execution terminated.")
 
         self._Task  = _Task
         self._Staff = _Staff
@@ -105,32 +116,23 @@ class TaskStaff:
         self._StaffCostByYear     = None
         self._TotalStaffCost      = None
 
+        TaskStaff.instances.append(self)
         if TaskStaff.__Debug:
             print(" TaskStaff; __init__:"
                   "\n     Task:", self._Task, \
                   "\n     Staff:", self._Staff)
 
-        if _Task == None or _Staff == None:
-            raise NoTaskOrStaff(" TaskStaff; __init__: ", \
-                                "Task and/or staff undefined, execution terminated.")
-        
-        if not isinstance(_Task, Tsk.Task) or not isinstance(_Staff, Stff.Staff):
-            raise NotAnInstanceOfTaskOrStaff(" TaskStaff; __init__: ", \
-                    "Task and/or staff not instance of class, execution terminated.")
-
     def __repr__(self):
         return "TaskStaff(Name)"
 
     def __str__(self):
-        print(" TaskStaff: ---->")
-        print(self._Task)
-        print(self._Staff)
-        print("    Staff fraction by year and quarter:", self._StaffFracByYrNQtr)
-        print("    Staff fraction by year:", self._StaffFracByYear)
-        print("    Tofal staff fraction:", self._TotalStaffFrac)
-        print("    Staff cost by year:", self._StaffCostByYear)
-        print("    Total staff cost:", self._TotalStaffCost)
-        return " <---- TaskStaff: complete."
+        print(" TaskStaff: Task: ", self._Task._Name, \
+              " from WP name: :", self._Task._Workpackage._Name, \
+              "\n    Staff name: ", self._Staff._NameOrPost, \
+              "\n    Fractions: ", self._StaffFracByYrNQtr, \
+                           self._StaffFracByYear, self._TotalStaffFrac, \
+              "\n    Costs: ", self._StaffCostByYear, self._TotalStaffCost)
+        return "     <---- TaskStaff: complete."
     
 
 #--------  Get/set methods:
@@ -145,7 +147,8 @@ class TaskStaff:
 
     def setStaffCostByYear(self):
         AnnualCost = self._Staff._AnnualCost
-        self._StaffCostByYear = AnnualCost * self._StaffFracByYear
+        StfFrcByYr = self._StaffFracByYear
+        self._StaffCostByYear = AnnualCost * StfFrcByYr
 
     def setTotalStaffCost(self):
         self._TotalStaffCost = np.sum(self._StaffCostByYear)
@@ -174,24 +177,34 @@ class TaskStaff:
             raise DuplicateTaskStaffClassInstance(Ninst, "instances of ", \
                                                   InstList[0])
         if TaskStaff.__Debug:
-            print(" TaskStaff; getInstance: number of instances; return instance:", \
+            print(" TaskStaff; getInstance: number of instances; ", \
+                  " return instance:", \
                   Ninst, "\n ", RtnInst)
         return RtnInst
 
     @classmethod
     def clean(cls):
+        if cls.__Debug:
+            print(" TaskStaff: clean ----> start.")
         OldInst = cls.instances
         NewInst = []
         nDel    = 0
         for iTskStf in OldInst:
+            if cls.__Debug:
+                print(iTskStf)
             if not isinstance(iTskStf._Task, Tsk.Task) or \
                not isinstance(iTskStf._Staff, Stff.Staff) or \
                not isinstance(iTskStf._StaffFracByYrNQtr, np.ndarray) or \
                not isinstance(iTskStf._StaffFracByYear, np.ndarray) or \
+               np.isnan(iTskStf._TotalStaffFrac) or \
                iTskStf._TotalStaffFrac == None:
                 del iTskStf
                 nDel += 1
+                if cls.__Debug:
+                    print("    ----> Delete!")
             else:
+                if cls.__Debug:
+                    print("    ----> Keep!")
                 NewInst.append(iTskStf)
         cls.instances = NewInst
         return nDel

@@ -52,21 +52,21 @@ print("TaskTest:", TaskTest, " check getInstance method.")
 Tsk2 = Tsk.Task("Test-1", WP1)
 Tsk3 = Tsk.Task("Test-2", WP1)
 Tsk4 = Tsk.Task("Test-2", WP1)
-inst = Tsk.Task.getInstance("Dummy")
+inst = Tsk.Task.getInstance("Dummy", WP1)
 if inst == None:
     print('      ----> Correctly reported no instance:', inst)
 else:
     raise Exception("Failed to catch absense of instance in getInstance")
 try:
-    inst = Tsk.Task.getInstance("Test-2")
+    inst = Tsk.Task.getInstance("Test-2", WP1)
 except Tsk.DuplicateTaskClassInstance:
     print('      ----> Correctly caught multiple instance exception.')
-inst = Tsk.Task.getInstance("Test-1")
+inst = Tsk.Task.getInstance("Test-1", WP1)
 if inst == Tsk2:
     print('      ----> Correctly found:', inst)
 else:
     raise Exception("Failed to get instance Test-1")
-inst = Tsk.Task.getInstance("LhARA")
+inst = Tsk.Task.getInstance("LhARA", WP1)
 if inst == Tsk1:
     print('      ----> Correctly found:', inst)
 else:

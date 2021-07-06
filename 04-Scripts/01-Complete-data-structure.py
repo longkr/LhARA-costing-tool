@@ -11,11 +11,14 @@ Script to generate full LhARA costing data structure
 
 import os
 
-import Staff       as Stf
-import Project     as Prj
-import WorkPackage as wp
-import Task        as Tsk
-import TaskStaff   as TskStf
+import Staff         as Stf
+import Equipment     as Eqp
+import Project       as Prj
+import WorkPackage   as wp
+import Task          as Tsk
+import TaskStaff     as TskStf
+import TaskEquipment as TskEqp
+import Report        as Rpt
 
 ##! Start:
 print("========  Generate full LhARA costing data structure  ========")
@@ -38,7 +41,7 @@ print("          Now ", Stf.Staff.getNumberOfStaff(), " remain.")
 ##! Read work package definition files:
 CDSsection = 2
 print()
-print("Complete LhARA costing data structure: section: ", CDSsection, " read staff work packages.")
+print("Complete LhARA costing data structure: section: ", CDSsection, " read work packages.")
 LhARAPATH = os.getenv('LhARAPATH')
 DirName  = os.path.join(LhARAPATH, '11-WorkPackages')
 wpList    = os.listdir(DirName)
@@ -59,6 +62,7 @@ print("    <---- Done.")
 print()
 print("        ---->  Project definition files Read <----")
 
+
 ##! TaskStaff
 CDSsection = 3
 print()
@@ -67,6 +71,7 @@ nDel = TskStf.TaskStaff.clean()
 print("    ----> Cleaning: removed ", nDel, "instances.")
 print("    ----> Run doCosting:")
 TskStf.TaskStaff.doCosting()
+
 
 ##! Task
 CDSsection = 4
@@ -77,6 +82,7 @@ print("    ----> Cleaning: removed ", nDel, "instances.")
 print("    ----> Run doCosting:")
 Tsk.Task.doCosting()
 
+    
 ##! Workpage
 CDSsection = 5
 print()
@@ -85,6 +91,7 @@ nDel = wp.WorkPackage.clean()
 print("    ----> Cleaning: removed ", nDel, "instances.")
 print("    ----> Run doCosting:")
 wp.WorkPackage.doCosting()
+
 
 ##! Project
 CDSsection = 6
@@ -95,12 +102,49 @@ print("    ----> Cleaning: removed ", nDel, "instances.")
 print("    ----> Run doCosting:")
 Prj.Project.doCosting()
 
+
 CDSsection = 7
 print()
 print("Complete LhARA costing data structure: section: ", CDSsection, \
       " costing done. \n     ----> print Project(s):")
 for iPrj in Prj.Project.instances:
     print(iPrj)
+    print("    Total projec cost: ", iPrj.getTotalProjectCost())
+
+
+CDSsection = 8
+print()
+print("Complete LhARA costing data structure: section: ", CDSsection, \
+      ".  Now generate reports.")
+try:
+    filepath  = os.path.join(LhARAPATH, '99-Scratch')
+    wpRpt = Rpt.WorkpackageList(filepath, "TestWorkpackageReport.csv")
+except:
+    print("     ----> Failed to work package list report instance!",
+          "  Execution terminated.")
+    raise Exception
+print("    ----> Work package list report instance created.")
+print("          Should contain: ", len(wpInst), " work packages.")
+wpRpt.asCSV()
+print("    <---- CSV work package report generated.")
+for iWP in wp.WorkPackage.instances:
+    if iWP._Name == "LaserSpectrometer":
+        iWP_LasSpct = iWP
+try:
+    filepath  = os.path.join(LhARAPATH, '99-Scratch')
+    wpSumRpt = Rpt.WorkpackageSummary(filepath, \
+                                      "TestWorkpackageSummary.csv", \
+                                      iWP_LasSpct)
+except:
+    print("     ----> Failed to work package list report instance!",
+          "  Execution terminated.")
+    raise Exception
+print("    ----> Work package summary report instance created.")
+print(wpSumRpt)
+DataFrame = wpSumRpt.createPandasDataFrame()
+wpSumRpt.createCSV(DataFrame)
+print("    <---- Work package summary report done.")
+
 
 
 ##! Complete:

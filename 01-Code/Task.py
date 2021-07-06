@@ -107,6 +107,7 @@ class Task:
 #--------  "Built-in methods":
     def __init__(self, _Name="None", _WPInst=None):
         Task.instances.append(self)
+
         self._Name        = _Name
         self._Workpackage = _WPInst
 
@@ -186,14 +187,14 @@ class Task:
 
 #--------  Class methods:
     @classmethod
-    def getInstance(cls, _Name):
+    def getInstance(cls, _Name, _WPInst):
         InstList = []
         if Task.__Debug:
-            print(" Task; getInstance: search for Task name:", _Name)
+            print(" Task; getInstance: search for Task name, WP name:", _Name, _WPInst._Name)
         for inst in cls.instances:
             if Task.__Debug:
-                print(" Task; getInstance: instance:", inst._Name)
-            if inst._Name == _Name:
+                print(" Task; getInstance: instances:", inst._Name, inst._Workpackage._Name)
+            if inst._Name == _Name and inst._Workpackage._Name == _WPInst._Name:
                 InstList.append(inst)
         Ninst = len(InstList)
         if Ninst == 0:
@@ -258,7 +259,7 @@ class Task:
                                 np.append(_EquipmentCostByYear,   [0.])
                     SumInitialised = True
                     _EquipmentCostByYear += iEqp._EquipmentCost
-            iTsk._EquipmentCostByYear = _EquipmentCostByYear
+            iTsk.setEquipmentCostByYear(_EquipmentCostByYear)
             iTsk.setTotalEquipmentCost()
 
     

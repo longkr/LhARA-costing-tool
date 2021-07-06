@@ -27,12 +27,12 @@ try:
 except:
     print('      ----> Correctly trapped no name exception.')
 try:
-    Stf01 = Stf.Staff("LhARA1", "Vatican")
+    Stf01 = Stf.Staff("StffCd", "LhARA1", None, "Vatican")
 except:
     print('      ----> Failed to create instance.')
     raise Exception
 try:
-    Stf02 = Stf.Staff(62, "LhARA2", "Vatican")
+    Stf02 = Stf.Staff(62, "LhARA2", "LhARA1", None, "Vatican")
 except:
     print('      ----> Failed to create instance.')
     raise Exception
@@ -48,7 +48,7 @@ print('      ----> instance Stf1 created.')
 print("    <---- __init__ done.")
 #.. __repr__
 print("    __repr__:")
-print("      ---->", repr(Stf1))
+#print("      ---->", repr(Stf1))
 print("    <---- __repr__ done.")
 #.. __str__
 print("    __str__:")
@@ -108,6 +108,10 @@ print(Stf1)
 print(Stf2)
 print(Stf3)
 print(Stf4)
+print("    ----> header list check:")
+print("      ", Stf.Staff.getHeader())
+print("    ----> staff data print check:")
+print("      ", Stf2.getData())
 print("    <---- Done.")
 
 

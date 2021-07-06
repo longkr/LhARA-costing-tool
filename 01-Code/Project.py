@@ -12,7 +12,7 @@ Class Project:
   -----------------
   __Debug  : Boolean: set for debug print out
   instances: List of instances of Project class
-      
+
   Instance attributes:
   --------------------
    _Name                = Project name
@@ -140,6 +140,7 @@ class Project:
               self._TrvlCnsmCostByYear, self._TotalTrvlCnsmCost)
         return "     <---- Project done."
 
+    
 #--------  I/o methods:
     @classmethod
     def createCSV(cls, _PrjPckgDataFrame, _filename):
@@ -171,6 +172,10 @@ class Project:
     def setTotalTrvlCnsmCost(self):
         self._TotalTrvlCnsmCost = np.sum(self._TrvlCnsmCostByYear)
 
+    def getTotalProjectCost(self):
+        return self._TotalStaffCost + self._TotalCGStaffCost + \
+               self._TotalEquipmentCost + self._TotalTrvlCnsmCost
+        
         
 #--------  Creating the pandas dataframe:
     @classmethod
