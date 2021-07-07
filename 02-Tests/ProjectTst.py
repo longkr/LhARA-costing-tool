@@ -117,8 +117,15 @@ ProjectTest = 6
 print()
 print("ProjectTest:", ProjectTest, " check costing methods.")
 print("    ----> Clean Project instances:")
+print("          ----> Before clean:")
+for iPrj in Prj.Project.instances:
+    print(iPrj)
 nDel = Prj.Project.clean()
-print("    ----> Removed ", nDel, "instances.")
+print("          ----> After clean:")
+print("              ----> Removed ", nDel, "instances. \n",
+      "                    Instances that remain:")
+for iPrj in Prj.Project.instances:
+    print(iPrj)
 nDel = wp.WorkPackage.clean()
 nDel = Tsk.Task.clean()
 nDel = TskStf.TaskStaff.clean()

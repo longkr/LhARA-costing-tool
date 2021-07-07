@@ -244,7 +244,15 @@ class Project:
         NewInst = []
         nDel    = 0
         for iPrj in OldInst:
-            if not isinstance(iPrj._Name, str):
+            if not isinstance(iPrj._Name, str) or \
+               not isinstance(iPrj._StaffCostByYear, np.ndarray) or \
+               not isinstance(iPrj._CGStaffCostByYear, np.ndarray) or \
+               iPrj._TotalStaffCost      == None or \
+               iPrj._TotalCGStaffCost    == None or \
+               not isinstance(iPrj._EquipmentCostByYear, np.ndarray) or \
+               iPrj._TotalEquipmentCost  == None or \
+               not isinstance(iPrj._TrvlCnsmCostByYear,  np.ndarray) or \
+               iPrj._TotalTrvlCnsmCost   == None:
                 del iPrj
                 nDel += 1
             else:
