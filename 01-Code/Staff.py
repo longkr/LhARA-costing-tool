@@ -16,11 +16,10 @@ Class Staff:
       
   Instance attributes:
   --------------------
-   _filename      = File from which staff information was read
    _StaffCode     = Staff code (defined in consulation with institute)
    _NameOrPost    = Name or post
+   _filename      = File from which staff information was read
    _InstituteCode = Institute code (e.g. Imperial-Physics)
-   _Post          = Post name (e.g. post doc)
    _GradeOrLevel  = Grade of level (e.g. Senior Lecturer)
    _AnnualCost    = Total FEC per year
    _ProjectOrCG   = Charged to "Project" or Consolidated Grant ("CG")
@@ -33,7 +32,7 @@ Class Staff:
       __init__: Creates instance and prints some parameters if __Debug is 
                 True.
       __repr__: One liner with call.
-      __str__ : Dump of constants.
+      __str__ : Dump of attributes.
 
   I/o and data-constructor methods:
       parseStaffDatabase: Read staff database CSV file and create Staff
@@ -87,6 +86,7 @@ Class Staff:
   Processing methods:
     cleanStaffDatabase: Parse all instances of Staff and remove those with 
                         invalid values in the attributes.
+                Return: Number of staff entries remaining
                      [Class method]
 
 
@@ -123,27 +123,36 @@ class Staff:
         self._NameOrPost = _NameOrPost
         self._filename  = _filename
 
-        if _NameOrPost == "None" or _NameOrPost == None:
+        if _NameOrPost == "None" or _NameOrPost == None or \
+           _StaffCode  == "None" or _StaffCode  == None:
             raise NoStaffName(" Staff.__init__: no staff name ", \
                               "==> execution terminated")
 
         if _filename != None and not os.path.isfile(_filename):
             print(" Staff.__init__: staff database file does not ", \
-                  "exist, create dummy entry for staff name=", _NameOrPost)
+                  "exist, create new/dummy entry for staff name=", _NameOrPost)
         
-        if _filename == None:
-            self._InstituteCode = "Institute-Code"
-            self._GradeOrLevel  = "Head of House"
-            self._AnnualCost    = 400.
-            self._ProjectOrCG   = "Project"
-            self._Comments      = "Default values filled; " \
-                 + "staff member not in staff database"
-        else:
-            self._InstituteCode = _InstituteCode
-            self._GradeOrLevel  = _GradeOrLevel
-            self._AnnualCost    = _AnnualCost
-            self._ProjectOrCG   = _ProjectOrCG
-            self._Comments      = _Comments
+        if _InstituteCode == None:
+            _InstituteCode = "Institute-Code"
+
+        if _GradeOrLevel == None:
+            _GradeOrLevel = "Head of House"
+
+        if mth.isnan(_AnnualCost):
+            _AnnualCost    = 400.
+
+        if _ProjectOrCG == None:
+            _ProjectOrCG   = "Project"
+
+        if _Comments == "None":
+            _Comments = "Dummy comment: default values filled; " \
+                 + "staff member not read from staff database"
+
+        self._InstituteCode = _InstituteCode
+        self._GradeOrLevel  = _GradeOrLevel
+        self._AnnualCost    = _AnnualCost
+        self._ProjectOrCG   = _ProjectOrCG
+        self._Comments      = _Comments
 
         Staff.instances.append(self)
 
@@ -158,11 +167,11 @@ class Staff:
         if self._AnnualCost == None:
             _AnnualCost = -100.
         print("Staff (name or post):", self._NameOrPost)
-        print("    Filename:", self._filename)
+        print("    Filename:", _filename)
         print("    Staff code:", self._StaffCode, \
               "; Institute code:", self._InstituteCode, \
               "; Grade or level:", self._GradeOrLevel, \
-              "; Annual FEC:", self._AnnualCost, \
+              "; Annual FEC:", _AnnualCost, \
               "; Project or CG:", self._ProjectOrCG)
         return "    Comments: %s"%(self._Comments)
 

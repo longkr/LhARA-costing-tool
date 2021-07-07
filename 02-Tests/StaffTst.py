@@ -25,14 +25,14 @@ print("    __init__:")
 try:
     Stf00 = Stf.Staff()
 except:
-    print('      ----> Correctly trapped no name exception.')
+    print('      ----> Correctly trapped no name/no staff code exception.')
 try:
     Stf01 = Stf.Staff("StffCd", "LhARA1", None, "Vatican")
 except:
     print('      ----> Failed to create instance.')
     raise Exception
 try:
-    Stf02 = Stf.Staff(62, "LhARA2", "LhARA1", None, "Vatican")
+    Stf02 = Stf.Staff(62, "LhARA2", None, "Vatican")
 except:
     print('      ----> Failed to create instance.')
     raise Exception
@@ -89,6 +89,14 @@ print()
 print("StaffTest:", StaffTest, " test load staff database call.")
 print("    ----> parseStaffDatabase load test")
 try:
+    Tst = Stf.Staff.parseStaffDatabase()
+except:
+    print("        ----> Correctly trapped no filename.")
+try:
+    Tst = Stf.Staff.parseStaffDatabase("Dummy")
+except:
+    print("        ----> Correctly trapped file does not exist.")
+try:
     Tst = Stf.Staff.parseStaffDatabase(filename)
     print("        ----> OK!")
 except:
@@ -112,6 +120,7 @@ print("    ----> header list check:")
 print("      ", Stf.Staff.getHeader())
 print("    ----> staff data print check:")
 print("      ", Stf2.getData())
+print("    ----> Check number of staff:", Stf.Staff.getNumberOfStaff())
 print("    <---- Done.")
 
 
@@ -142,6 +151,16 @@ print("StaffTest:", StaffTest, " test cleaning of staff database.")
 iCln = Stf.Staff.cleanStaffDatabase()
 print("     cleanStaffDatabase return code: ", iCln)
 print("     <---- Done.")
+
+
+##! Check printing of staff databaee:
+StaffTest = 6
+print()
+print("StaffTest:", StaffTest, " test printing of staff database.")
+StfDtFrm = Stf.Staff.createPandasDataframe()
+Stf.Staff.printStaffDatabase(StfDtFrm)
+print("     <---- Done.")
+
 
 ##! Complete:
 print()
