@@ -28,6 +28,10 @@ print("ProjectTest:", ProjectTest, " check built-in methods.")
 #.. __init__
 print("    __init__:")
 try:
+    Prj0 = Prj.Project()
+except:
+    print('      ----> Correctly trapped no-name exception')
+try:
     Prj1 = Prj.Project("LhARA")
 except:
     print('      ----> Failed to create instance.')
@@ -42,6 +46,7 @@ print("    <---- __repr__ done.")
 print("    __str__:")
 print(str(Prj1))
 print("    <---- __str__ done.")
+
 
 ##! Check getInstance method:
 ProjectTest = 2

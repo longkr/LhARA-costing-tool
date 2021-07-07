@@ -39,12 +39,14 @@ Class Project:
       __repr__: One liner with call.
       __str__ : Dump of constants.
 
+
   I/o methods:
       createCSV: Creates CSV file containing Project paramters.
                  [Classmethod]
                  Input: Instance of Pandas dataframe class containing 
                         parameters
                         String -- path to output file (filename)
+
 
   Get/set methods:
       getInstance           : Finds instance of class with Project._Name
@@ -73,6 +75,7 @@ Class Project:
         
       setTotalTrvlCnsmCost  : Set total equipment cost -- sums cost per year
 
+
   Processing methods:
       createPandasDataframe : Create Pandas data frame containing Project
                               parameters.
@@ -90,6 +93,8 @@ Class Project:
   Exceptions:
     DuplicateProjectClassInstance: Two or more instances with same name.
 
+   NoProjecNameDefined(Exception): Catches absense of name of Project instance
+                                   at instanciation.
 
 Created on Wed 19Jun21. Version history:
 ----------------------------------------
@@ -110,7 +115,11 @@ class Project:
 
 #--------  "Built-in methods":
     def __init__(self, _ProjectName="None"):
-        Project.instances.append(self)
+
+        if _ProjectName == "None":
+            raise NoProjecNameDefined( \
+                    " No Project name defined.  Execution terminated.")
+        
         self._Name = _ProjectName
 
         #.. Defined, but not filled, at init:
@@ -123,6 +132,7 @@ class Project:
         self._TrvlCnsmCostByYear  = None
         self._TotalTrvlCnsmCost   = None
 
+        Project.instances.append(self)
 
     def __repr__(self):
         return "Project(Name)"
@@ -175,9 +185,32 @@ class Project:
     def getTotalProjectCost(self):
         return self._TotalStaffCost + self._TotalCGStaffCost + \
                self._TotalEquipmentCost + self._TotalTrvlCnsmCost
+
+    @classmethod
+    def getInstance(cls, _Name):
+        InstList = []
+        if Project.__Debug:
+            print(" Project; getInstance: search for project name:", _Name)
+        for inst in cls.instances:
+            if Project.__Debug:
+                print(" Project; getInstance: instance:", inst._Name)
+            if inst._Name == _Name:
+                InstList.append(inst)
+        Ninst = len(InstList)
+        if Ninst == 0:
+            RtnInst = None
+        if Ninst == 1:
+            RtnInst = InstList[0]
+        if Ninst >= 2:
+            RtnInst = None
+            raise DuplicateProjectClassInstance(Ninst, "instances of ", _Name)
+        if Project.__Debug:
+            print(" Project; getInstance: number of instances; " \
+                  "return instance:", Ninst, "\n ", RtnInst)
+        return RtnInst
+
         
-        
-#--------  Creating the pandas dataframe:
+#--------  Processing methods
     @classmethod
     def createPandasDataframe(cls):
         ProjectData = []
@@ -204,31 +237,6 @@ class Project:
         if cls.__Debug:
             print(" Project; createPandasDataframe: \n", ProjectDataframe)
         return ProjectDataframe
-
-    
-#--------  Class methods:
-    @classmethod
-    def getInstance(cls, _Name):
-        InstList = []
-        if Project.__Debug:
-            print(" Project; getInstance: search for project name:", _Name)
-        for inst in cls.instances:
-            if Project.__Debug:
-                print(" Project; getInstance: instance:", inst._Name)
-            if inst._Name == _Name:
-                InstList.append(inst)
-        Ninst = len(InstList)
-        if Ninst == 0:
-            RtnInst = None
-        if Ninst == 1:
-            RtnInst = InstList[0]
-        if Ninst >= 2:
-            RtnInst = None
-            raise DuplicateProjectClassInstance(Ninst, "instances of ", _Name)
-        if Project.__Debug:
-            print(" Project; getInstance: number of instances; " \
-                  "return instance:", Ninst, "\n ", RtnInst)
-        return RtnInst
 
     @classmethod
     def clean(cls):
@@ -282,3 +290,5 @@ class Project:
 class DuplicateProjectClassInstance(Exception):
     pass
 
+class NoProjecNameDefined(Exception):
+    pass

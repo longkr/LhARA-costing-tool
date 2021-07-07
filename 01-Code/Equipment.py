@@ -15,9 +15,11 @@ Class Equipment:
       
   Instance attributes:
   --------------------
-    _Name               = Name of equipment
-    _EquipmentCost      = Equipment cost by year (£k)
-    _TotalEquipmentCost = Sum of totak equipment cost (£k)
+    _Name                = Name of equipment
+    _EquipmentCostByYear = Equipment cost by year (£k)
+    _TotalEquipmentCost  = Sum of totak equipment cost (£k)
+       __init__ fills name only and a defauld "name string" if no name 
+       is given
 
     
   Methods:
@@ -48,6 +50,15 @@ Class Equipment:
      setTotalEquipmentCost: Set total eqipment cost (£k).
                Sums equipment cost.
 
+           getHeader: Returns header for dump of equipment list
+                [Class method]
+
+             getLine: Returns line of equipment list as array of attibutes.
+
+  Print methods:
+           print: Prints dump  of all instances
+                [Class method]
+
   Processing methods:
       createPandasDataframe : Create Pandas data frame containing equiment
                               parameters.
@@ -76,17 +87,20 @@ class Equipment:
 
 #--------  "Built-in methods":
     def __init__(self, _Name="None"):
+        if _Name == "None":
+            _Name = " Equipment instance created with no content."
+        self._Name                = _Name
+        self._EquipmentCostByYear = np.array([])
+        self._TotalEquipmentCost  = float("nan")
+
         Equipment.instances.append(self)
-        self._Name      = _Name
-        self._EquipmentCost      = np.array([])
-        self._TotalEquipmentCost = float("nan")
 
     def __repr__(self):
         return "Equipment(Name)"
 
     def __str__(self):
         print(" Equipment: \n     Equipment name:", self._Name)
-        print("     Cost by financial year:", self._EquipmentCost)
+        print("     Cost by financial year:", self._EquipmentCostByYear)
         return "     Total cost: %g"%(self._TotalEquipmentCost)
 
 
@@ -98,29 +112,23 @@ class Equipment:
         
 #--------  Get/set methods:
     def setEquipmentCost(self, _EqpCost=None):
-        self._EquipmentCost = _EqpCost
+        self._EquipmentCostByYear = _EqpCost
     
     def setTotalEquipmentCost(self):
-        self._TotalEquipmentCost = np.sum(self._EquipmentCost)
+        self._TotalEquipmentCost = np.sum(self._EquipmentCostByYear)
 
-        
-#--------  Creating the pandas dataframe:
     @classmethod
-    def createPandasDataframe(cls):
-        EquipData = []
-        EquipData.append(["Equipment", \
-                          "Cost by financial year (£k)", \
-                          "Total cost (£k)"])
-        for inst in Equipment.instances:
-            EquipData.append([inst._Name, \
-                              inst._EquipmentCost, \
-                              inst._TotalEquipmentCost])
-        EquipDataframe = pd.DataFrame(EquipData)
-        if cls.__Debug:
-            print(" Equipment; createPandasDataframe: \n", EquipDataframe)
-        return EquipDataframe
-    
-#--------  Class methods:
+    def getHeader(cls):
+        _Header = " Name, Cost by year (£k), Total cost (£k)"
+        return _Header
+
+    def getLine(self):
+        _Line = []
+        _Line.append(self._Name)
+        _Line.append(self._EquipmentCostByYear)
+        _Line.append(self._TotalEquipmentCost)
+        return _Line
+
     @classmethod
     def getInstance(cls, _Name):
         InstList = []
@@ -143,6 +151,62 @@ class Equipment:
             print(" Equipment; getInstance: number of instances; " \
                   "return instance:", Ninst, "\n ", RtnInst)
         return RtnInst
+    
+        
+#--------  Creating the pandas dataframe:
+    @classmethod
+    def createPandasDataframe(cls):
+        EquipData = []
+        EquipData.append(["Equipment", \
+                          "Cost by financial year (£k)", \
+                          "Total cost (£k)"])
+        for inst in Equipment.instances:
+            EquipData.append([inst._Name,
+                              inst._EquipmentCostByYear, \
+                              inst._TotalEquipmentCost])
+        EquipDataframe = pd.DataFrame(EquipData)
+        if cls.__Debug:
+            print(" Equipment; createPandasDataframe: \n", EquipDataframe)
+        return EquipDataframe
+    
+#--------  Print methods:
+    @classmethod
+    def print(cls):
+        print(" Equipment list: \n",
+              "===============")
+        print(" ", cls.getHeader())
+        for iEq in cls.instances:
+            print(" ", iEq.getLine())
+
+
+#--------  Processing methods:
+    @classmethod
+    def clean(cls):
+        Deletions =[]
+        for iEqp in cls.instances:
+            if not isinstance(iEqp._Name, str):
+                Deletions.append(iEqp)
+            if iEqp._EquipmentCostByYear == np.array([]):
+                Deletions.append(iEqp)
+            elif np.isnan(iEqp._TotalEquipmentCost):
+                Deletions.append(iEqp)
+        
+        if cls.__Debug:
+            for i in range(len(Deletions)):
+                print(" Equipment; clean: instances marked for ", \
+                      "deletion: ", Deletions[i]._Name)
+
+        OldInstances = cls.instances
+        cls.instances = []
+        for iEqp in OldInstances:
+            try:
+                i = Deletions.index(iEqp)
+                del iEqp
+            except ValueError:
+                cls.instances.append(iEqp)
+
+        return len(Deletions)
+        
 
 #--------  Exceptions:
 class DuplicateEquipmentClassInstance(Exception):

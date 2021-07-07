@@ -17,12 +17,18 @@ import Equipment as Eqp
 ##! Start:
 print("========  Equipment: tests start  ========")
 
+
 ##! Check built-in methods:
 EquipmentTest = 1
 print()
 print("EquipmentTest:", EquipmentTest, " check built-in methods.")
 #.. __init__
 print("    __init__:")
+try:
+    Eqp0 = Eqp.Equipment()
+except:
+    print('      ----> Failed to create instance.')
+    raise Exception
 try:
     Eqp1 = Eqp.Equipment("LhARA")
 except:
@@ -38,6 +44,7 @@ print("    <---- __repr__ done.")
 print("    __str__:")
 print(Eqp1)
 print("    <---- __str__ done.")
+
 
 ##! Check getInstance method:
 EquipmentTest = 2
@@ -87,15 +94,26 @@ print(Eqp3)
 print(Eqp4)
 print("    <---- Done.")
 
-##! Check creation of pandas dataframe:
+
+##! Check getInstance method:
 EquipmentTest = 4
 print()
-print("EquipmentTest:", EquipmentTest, " test creation of pandas dataframe.")
-EqpDtFrm = Eqp.Equipment.createPandasDataframe()
+print("EquipmentTest:", EquipmentTest, " check print method.")
+Eqp.Equipment.print()
 print("    <---- Done.")
+
 
 ##! Check creation of pandas dataframe:
 EquipmentTest = 5
+print()
+print("EquipmentTest:", EquipmentTest, " test creation of pandas dataframe.")
+EqpDtFrm = Eqp.Equipment.createPandasDataframe()
+print(EqpDtFrm)
+print("    <---- Done.")
+
+
+##! Check creation of CSV file:
+EquipmentTest = 6
 print()
 print("EquipmentTest:", EquipmentTest, " test creation of csv file.")
 try:
@@ -104,6 +122,15 @@ try:
 except:
     print("    ----> FAILED to create CSV file.")
     raise exception
+print("    <---- Done.")
+
+
+##! Check cleaning:
+EquipmentTest = 7
+print()
+print("EquipmentTest:", EquipmentTest, " test cleaning of equipment list.")
+nDel = Eqp.Equipment.clean()
+print("    ----> ", nDel, " items of equipment deleted")
 print("    <---- Done.")
 
 

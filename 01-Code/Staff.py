@@ -283,7 +283,6 @@ class Staff:
 #--------  Processing methods
     @classmethod
     def cleanStaffDatabase(cls):
-        ErrorCode = 0
         Deletions =[]
         for iStf in cls.instances:
             if not isinstance(iStf._StaffCode, str):
