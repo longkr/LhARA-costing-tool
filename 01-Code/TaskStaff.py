@@ -136,25 +136,6 @@ class TaskStaff:
     
 
 #--------  Get/set methods:
-    def setStaffFracByYrNQtr(self, _StaffFracByYrNQtr):
-        self._StaffFracByYrNQtr = _StaffFracByYrNQtr
-        
-    def setStaffFracByYear(self):
-        self._StaffFracByYear = np.average(self._StaffFracByYrNQtr, 1)
-        
-    def setTotalStaffFrac(self):
-        self._TotalStaffFrac = np.sum(self._StaffFracByYear)
-
-    def setStaffCostByYear(self):
-        AnnualCost = self._Staff._AnnualCost
-        StfFrcByYr = self._StaffFracByYear
-        self._StaffCostByYear = AnnualCost * StfFrcByYr
-
-    def setTotalStaffCost(self):
-        self._TotalStaffCost = np.sum(self._StaffCostByYear)
-        
-
-#--------  Class methods:
     @classmethod
     def getInstance(cls, _Task, _Staff):
         InstList = []
@@ -182,6 +163,25 @@ class TaskStaff:
                   Ninst, "\n ", RtnInst)
         return RtnInst
 
+    def setStaffFracByYrNQtr(self, _StaffFracByYrNQtr):
+        self._StaffFracByYrNQtr = _StaffFracByYrNQtr
+        
+    def setStaffFracByYear(self):
+        self._StaffFracByYear = np.average(self._StaffFracByYrNQtr, 1)
+        
+    def setTotalStaffFrac(self):
+        self._TotalStaffFrac = np.sum(self._StaffFracByYear)
+
+    def setStaffCostByYear(self):
+        AnnualCost = self._Staff._AnnualCost
+        StfFrcByYr = self._StaffFracByYear
+        self._StaffCostByYear = AnnualCost * StfFrcByYr
+
+    def setTotalStaffCost(self):
+        self._TotalStaffCost = np.sum(self._StaffCostByYear)
+        
+
+#--------  Processing methods:
     @classmethod
     def clean(cls):
         if cls.__Debug:
