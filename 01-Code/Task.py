@@ -106,7 +106,6 @@ class Task:
 
 #--------  "Built-in methods":
     def __init__(self, _Name="None", _WPInst=None):
-        Task.instances.append(self)
 
         self._Name        = _Name
         self._Workpackage = _WPInst
@@ -118,6 +117,8 @@ class Task:
         self._TotalCGStaffCost    = None
         self._EquipmentCostByYear = None
         self._TotalEquipmentCost  = None
+        
+        Task.instances.append(self)
         
     def __repr__(self):
         return "Task(Name)"
@@ -141,6 +142,34 @@ class Task:
 
 
 #--------  Get/set methods:
+    @classmethod
+    def getInstance(cls, _Name, _WPInst):
+        InstList = []
+        if Task.__Debug:
+            print(" Task; getInstance: search for Task name, WP name:", \
+                  _Name, _WPInst._Name)
+        for inst in cls.instances:
+            if Task.__Debug:
+                print(" Task; getInstance: instances:", \
+                      inst._Name, inst._Workpackage._Name)
+            if inst._Name == _Name and \
+               inst._Workpackage._Name == _WPInst._Name:
+                InstList.append(inst)
+        Ninst = len(InstList)
+        if Ninst == 0:
+            RtnInst = None
+        if Ninst == 1:
+            RtnInst = InstList[0]
+        if Ninst >= 2:
+            RtnInst = None
+            raise DuplicateTaskClassInstance(Ninst, "instances of ", _Name)
+
+        if Task.__Debug:
+            print(" Task; getInstance: number of instances; return instance:", \
+                  Ninst, "\n ", RtnInst)
+
+        return RtnInst
+
     def setStaffCostByYear(self, _StaffCostByYear):
         self._StaffCostByYear = _StaffCostByYear
         
@@ -160,7 +189,7 @@ class Task:
         self._TotalEquipmentCost = np.sum(self._EquipmentCostByYear)
         
 
-#--------  Creating the pandas dataframe:
+#--------  Processing methods:
     @classmethod
     def createPandasDataframe(cls):
         TaskData = []
@@ -184,32 +213,6 @@ class Task:
             print(" Task; createPandasDataframe: \n", TaskDataframe)
         return TaskDataframe
     
-
-#--------  Class methods:
-    @classmethod
-    def getInstance(cls, _Name, _WPInst):
-        InstList = []
-        if Task.__Debug:
-            print(" Task; getInstance: search for Task name, WP name:", _Name, _WPInst._Name)
-        for inst in cls.instances:
-            if Task.__Debug:
-                print(" Task; getInstance: instances:", inst._Name, inst._Workpackage._Name)
-            if inst._Name == _Name and inst._Workpackage._Name == _WPInst._Name:
-                InstList.append(inst)
-        Ninst = len(InstList)
-        if Ninst == 0:
-            RtnInst = None
-        if Ninst == 1:
-            RtnInst = InstList[0]
-        if Ninst >= 2:
-            RtnInst = None
-            raise DuplicateTaskClassInstance(Ninst, "instances of ", _Name)
-        if Task.__Debug:
-            print(" Task; getInstance: number of instances; return instance:", \
-                  Ninst, "\n ", RtnInst)
-        return RtnInst
-
-
     @classmethod
     def clean(cls):
         OldInst = cls.instances
@@ -253,12 +256,12 @@ class Task:
             for iTskEqp in TskEqp.TaskEquipment.instances:
                 if iTskEqp._Task == iTsk:
                     iEqp = iTskEqp._Equipment
-                    for iYr in range(len(iEqp._EquipmentCost)):
+                    for iYr in range(len(iEqp._EquipmentCostByYear)):
                         if not SumInitialised:
                             _EquipmentCostByYear   = \
                                 np.append(_EquipmentCostByYear,   [0.])
                     SumInitialised = True
-                    _EquipmentCostByYear += iEqp._EquipmentCost
+                    _EquipmentCostByYear += iEqp._EquipmentCostByYear
             iTsk.setEquipmentCostByYear(_EquipmentCostByYear)
             iTsk.setTotalEquipmentCost()
 
