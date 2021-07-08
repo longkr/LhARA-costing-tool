@@ -93,6 +93,22 @@ EqpDtFrm = TskEqp.TaskEquipment.print()
 print("    <---- Done.")
 
 
+##! Check print methods:
+TaskEquipTest = 4
+print()
+print("TaskEquipTest:", TaskEquipTest, " check cleaning method")
+TskEqp2._Task      = None
+TskEqp3._Equipment = None
+print("    ----> before clean: number of instances:", \
+      TskEqp.TaskEquipment.getNumberOfInstances(), " dump:")
+EqpDtFrm = TskEqp.TaskEquipment.print()
+nDel = TskEqp.TaskEquipment.clean()
+print("    ----> after clean: number of instances:", \
+      TskEqp.TaskEquipment.getNumberOfInstances(), " dump:")
+EqpDtFrm = TskEqp.TaskEquipment.print()
+print("    <---- Done.")
+
+
 ##! Complete:
 print()
 print("========  TaskEquipment: tests complete  ========")

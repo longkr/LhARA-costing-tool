@@ -42,6 +42,19 @@ Class TaskEquipment:
                         one instance
                    [Classmethod]
 
+           getHeader: Returns header for dump of equipment list
+                [Class method]
+
+             getLine: Returns line of equipment list as array of attibutes.
+
+  getNumberOfInstances: Returns number of instances
+                [Class method]
+
+
+  Processing methods:
+              clean: Remove invalid instances of class
+                [Class method]
+
 
   Exceptions:
      DuplicateTaskEquipmentClassInstance:
@@ -70,15 +83,6 @@ class TaskEquipment:
 
 #--------  "Built-in methods":
     def __init__(self, _Task=None, _Equipment=None):
-        TaskEquipment.instances.append(self)
-
-        self._Task  = _Task
-        self._Equipment = _Equipment
-        if TaskEquipment.__Debug:
-            print(" TaskEquipment; __init__:"
-                  "\n     Task:", self._Task, \
-                  "\n     Equipment:", self._Equipment)
-
         if _Task == None or _Equipment == None:
             raise NoTaskOrEquipment(" TaskEquipment; __init__: ", \
                     "Task and/or staff undefined, execution terminated.")
@@ -89,13 +93,29 @@ class TaskEquipment:
                               "Task and/or staff not instance of class, ", \
                               "execution terminated.")
 
+        self._Task  = _Task
+        self._Equipment = _Equipment
+        if TaskEquipment.__Debug:
+            print(" TaskEquipment; __init__:"
+                  "\n     Task:", self._Task, \
+                  "\n     Equipment:", self._Equipment)
+
+        TaskEquipment.instances.append(self)
+
     def __repr__(self):
         return "TaskEquipment(Name)"
 
     def __str__(self):
-        print(" TaskEquipment:", self._Equipment._Name)
-        print(self._Task)
-        print(self._Equipment)
+        if not isinstance(self._Task, Tsk.Task):
+            _TaskName = "Bad task"
+        else:
+            _TaskName = self._Task._Name
+        if not isinstance(self._Equipment, Eqp.Equipment):
+            _EqpName = "Bad equipment"
+        else:
+            _EqpName = self._Equipment._Name
+        print(" TaskEquipment: Task: ", _TaskName, \
+              ", equipment: ", _EqpName)
         return "     TaskEquipment summary complete."
 
 
@@ -127,16 +147,63 @@ class TaskEquipment:
                   " return instance:", Ninst, "\n ", RtnInst)
         return RtnInst
     
+    @classmethod
+    def getHeader(cls):
+        _Header = " Task name, Equipment name"
+        return _Header
+
+    def getLine(self):
+        _Line = []
+        if not isinstance(self._Task, Tsk.Task):
+            _Line.append("Bad task")
+        else:
+            _Line.append(self._Task._Name)
+        if not isinstance(self._Equipment, Eqp.Equipment):
+            _Line.append("Bad equipment")
+        else:
+            _Line.append(self._Equipment._Name)
+        return _Line
+
+    @classmethod
+    def getNumberOfInstances(cls):
+        return len(cls.instances)
+    
 
 #--------  Print methods
     @classmethod
     def print(cls):
-        iTskEqp = 0
-        for inst in TaskEquipment.instances:
-            print(" TaskEquipment Id=", iTskEqp)
-            print(inst._Task)
-            print(inst._Equipment)
-            iTskEqp += 1
+        print(" Task-equipment list: \n",
+              "====================")
+        print(" ", cls.getHeader())
+        for iTskEqp in cls.instances:
+            print(" ", iTskEqp.getLine())
+
+
+#--------  Processing methods:
+    @classmethod
+    def clean(cls):
+        Deletions =[]
+        for iTskEqp in cls.instances:
+            if not isinstance(iTskEqp._Task, Tsk.Task):
+                Deletions.append(iTskEqp)
+            if not isinstance(iTskEqp._Equipment, Eqp.Equipment):
+                Deletions.append(iTskEqp)
+        
+        if cls.__Debug:
+            for i in range(len(Deletions)):
+                print(" Task-equipment; clean: instances marked for ", \
+                      "deletion: ", Deletions[i])
+
+        OldInstances = cls.instances
+        cls.instances = []
+        for iTskEqp in OldInstances:
+            try:
+                i = Deletions.index(iTskEqp)
+                del iTskEqp
+            except ValueError:
+                cls.instances.append(iTskEqp)
+
+        return len(Deletions)
 
 
 #--------  Exceptions:
