@@ -4,6 +4,8 @@
 Class WorkPackage:
 ==================
 
+Note to KL: Travel and Consumable attributes need to be added.
+
   Creates an instance of the work package class and populates the
   attiributes from a csv-format workpackage template that is owned 
   by the workpackage manager.
@@ -54,7 +56,7 @@ Class WorkPackage:
       __str__ : Dump of constants
 
   I/o methods:
-      getWorkpackage: Uses pandas to read csv file that defines the workpackage.
+      getWorkPackage: Uses pandas to read csv file that defines the workpackage.
                       Input  : filename -- valid path to csv file
                       Returns: PandaS data frame containing workpackage 
                                specification
@@ -66,7 +68,7 @@ Class WorkPackage:
                              String -- path to output file (filename)
 
   Print methods:
-      printWorkpackage: Prints pandas data frame defining workpackage
+      printWorkPackage: Prints pandas data frame defining workpackage
 
   Get/set methods:
       getFilename: Returns workpackage specification filename
@@ -109,12 +111,12 @@ Class WorkPackage:
 
 
   Print methods:
-      printWorkpackage: Dumps pandas data frame read from CSV work package
+      printWorkPackage: Dumps pandas data frame read from CSV work package
                         definition file
 
 
   Processing methods:
-      parseWorkpackage: Parses pandas data frame to fill many of the 
+      parseWorkPackage: Parses pandas data frame to fill many of the 
                         work package attributes.  
              Returns:
                self._Project
@@ -127,11 +129,11 @@ Class WorkPackage:
                self._TotalConsume
                self._OtherNonStaffItems
 
-      clean: Delete incomplete instances of Workpackage
+      clean: Delete incomplete instances of WorkPackage
              [classmethod]
 
-      doCosting: Complete costing of Workpackage.  Sums data from Tasks
-                 related to Workpackage instance and completes work package
+      doCosting: Complete costing of WorkPackage.  Sums data from Tasks
+                 related to WorkPackage instance and completes work package
                  costing.
                  Fills:
                     self._StaffCostByYear   
@@ -187,10 +189,10 @@ class WorkPackage:
             raise NonExistantFile('CSV file' + filename +' does not exist; execution termimated.')
 
         self._filename        = filename
-        self._wpParams        = self.getWorkpackage(filename)
+        self._wpParams        = self.getWorkPackage(filename)
         self._Name = "Place holder"
         if self.__Debug:
-            xDummy = self.printWorkpackage()
+            xDummy = self.printWorkPackage()
 
         self._Name                = None
         self._Project             = None
@@ -221,7 +223,7 @@ class WorkPackage:
             self._ConsumeByYear, \
             self._TotalConsume, \
             self._OtherNonStaffItems = \
-            self.parseWorkpackage()
+            self.parseWorkPackage()
 
         self._TrvlCnsmCostByYear  = self._TravelByYear + self._ConsumeByYear
         self._TotalTrvlCnsmCost   = np.sum(self._TrvlCnsmCostByYear)
@@ -233,7 +235,7 @@ class WorkPackage:
 
     def __str__(self):
         _PrjName = self._Project._Name
-        print(" Workpackage: name:", _PrjName, " ---->")
+        print(" WorkPackage: name:", _PrjName, " ---->")
         print("     Project:", self._Project._Name, \
               " Manager:", self._WPM, \
               " Financial years:", self._FinancialYears)
@@ -254,7 +256,7 @@ class WorkPackage:
     
 
 #--------  I/o methods:
-    def getWorkpackage(self, _filename):
+    def getWorkPackage(self, _filename):
         wpParams = pnds.read_csv(_filename)
         return wpParams
 
@@ -284,6 +286,18 @@ class WorkPackage:
 
     def setTotalEquipmentCost(self):
         self._TotalEquipmentCost = np.sum(self._EquipmentCostByYear)
+
+    def setTravelCostByYear(self, _TravelCostByYear):
+        self._TravelCostByYear = _TravelCostByYear
+
+    def setTotalTravelCost(self):
+        self._TotalTravelCost = np.sum(self._TravelCostByYear)
+
+    def setConsumeCostByYear(self, _ConsumeCostByYear):
+        self._ConsumeCostByYear = _ConsumeCostByYear
+
+    def setTotalConsumeCost(self):
+        self._TotalConsumeCost = np.sum(self._ConsumeCostByYear)
 
     def setTrvlCnsmCostByYear(self, _TrvlCnsmCostByYear):
         self._TrvlCnsmCostByYear = _TrvlCnsmCostByYear
@@ -335,55 +349,55 @@ class WorkPackage:
 
 
 #--------  Print methods
-    def printWorkpackage(self):
+    def printWorkPackage(self):
         print(self._wpParams)
 
         
 #--------  Creating the pandas dataframe:
     @classmethod
     def createPandasDataframe(cls):
-        WorkpackageData = []
-        WorkpackageData.append(cls.getHeader())
+        WorkPackageData = []
+        WorkPackageData.append(cls.getHeader())
         for inst in WorkPackage.instances:
-            WorkpackageData.append(inst.getData())
-        WorkpackageDataframe = pnds.DataFrame(WorkpackageData)
+            WorkPackageData.append(inst.getData())
+        WorkPackageDataframe = pnds.DataFrame(WorkPackageData)
         if cls.__Debug:
-            print(" Workpackage; createPandasDataframe: \n", \
-                  WorkpackageDataframe)
-        return WorkpackageDataframe
+            print(" WorkPackage; createPandasDataframe: \n", \
+                  WorkPackageDataframe)
+        return WorkPackageDataframe
 
 
-#--------  Extracting data from the Workpackage pandas dataframe:
-    def parseWorkpackage(self):
+#--------  Extracting data from the WorkPackage pandas dataframe:
+    def parseWorkPackage(self):
         iRow               = self._wpParams.index
         PrjInst            = None
-        WorkpackageName    = "None"
+        WorkPackageName    = "None"
         OtherNonStaffItems = []
         for i in iRow:
             if self.__Debug:
-                print(" WorkPackage: parseWorkpackage: processing flag: ", \
+                print(" WorkPackage: parseWorkPackage: processing flag: ", \
                       self._wpParams.iat[i,0])
             if self._wpParams.iat[i,0] == "Project":
                 ProjectName = self._wpParams.iloc[i,1]
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: ProjectName = ", \
+                    print(" WorkPackage; parseWorkPackage: ProjectName = ", \
                           ProjectName)
                 PrjInst = Prj.Project.getInstance(ProjectName)
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: Project instance: ",\
+                    print(" WorkPackage; parseWorkPackage: Project instance: ",\
                           PrjInst)
                 if isinstance(PrjInst, Prj.Project):
                     if self.__Debug:
-                        print(" WorkPackage; parseWorkpackage: Project ", \
+                        print(" WorkPackage; parseWorkPackage: Project ", \
                               ProjectName, " exists.")
                 else:
                     PrjInst = Prj.Project(ProjectName)
                     if self.__Debug:
-                        print(" WorkPackage; parseWorkpackage: Project ", \
+                        print(" WorkPackage; parseWorkPackage: Project ", \
                               ProjectName, " created.")
                 PrjInst = Prj.Project.getInstance(ProjectName)
             elif self._wpParams.iat[i,0] == "Work package":
-                WorkpackageName = self._wpParams.iloc[i,1]
+                WorkPackageName = self._wpParams.iloc[i,1]
             elif self._wpParams.iat[i,0] == "Manager":
                 WPM = self._wpParams.iloc[i,2]
             elif self._wpParams.iat[i,0] == "Years":
@@ -396,55 +410,55 @@ class WorkPackage:
                         Yrs.append(Yr)
                         nYrs += 1
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: financial years:", \
+                    print(" WorkPackage; parseWorkPackage: financial years:", \
                           Yrs)
             elif self._wpParams.iat[i,0] == "Task":
                 TaskName = self._wpParams.iloc[i,1]
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: Task name = ", \
+                    print(" WorkPackage; parseWorkPackage: Task name = ", \
                           TaskName)
                 TskInst = Tsk.Task.getInstance(TaskName, self)
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: Task instance = ", \
+                    print(" WorkPackage; parseWorkPackage: Task instance = ", \
                           TskInst)
                 if isinstance(TskInst, Tsk.Task):
                     if self.__Debug:
-                        print(" WorkPackage; parseWorkpackage: Task ", \
+                        print(" WorkPackage; parseWorkPackage: Task ", \
                               TaskName, " exists.")
                 else:
                     TskInst = Tsk.Task(TaskName, self)
                     if self.__Debug:
-                        print(" WorkPackage; parseWorkpackage: Task ", \
+                        print(" WorkPackage; parseWorkPackage: Task ", \
                               TaskName, " created.")
             elif self._wpParams.iat[i,0] == "Staff":
                 StaffCode = self._wpParams.iloc[i,1]
                 StfInst = Stf.Staff.getInstance(StaffCode)
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: Staff instance = ", \
+                    print(" WorkPackage; parseWorkPackage: Staff instance = ", \
                           StfInst)
                 if isinstance(StfInst, Stf.Staff):
                     if self.__Debug:
-                        print(" WorkPackage; parseWorkpackage: Staff ", \
+                        print(" WorkPackage; parseWorkPackage: Staff ", \
                               StaffCode, " exists.")
                 else:
-                    NameOrPost = "Created for WP " + WorkpackageName
+                    NameOrPost = "Created for WP " + WorkPackageName
                     StfInst = Stf.Staff(StaffCode, NameOrPost)
                     if self.__Debug:
-                        print(" WorkPackage; parseWorkpackage: Staff ", \
+                        print(" WorkPackage; parseWorkPackage: Staff ", \
                               StaffCode, " created.")
                 TskStfInst = TskStff.TaskStaff.getInstance(TskInst, StfInst)
                 if self.__Debug:
-                    print(" Workpackage; parseWorkpackage: TskStfInst:", \
+                    print(" WorkPackage; parseWorkPackage: TskStfInst:", \
                           TskStfInst)
                 if isinstance(TskStfInst, TskStff.TaskStaff):
                     if self.__Debug:
-                        print(" WorkPackage; parseWorkpackage: TaskStaff ", \
+                        print(" WorkPackage; parseWorkPackage: TaskStaff ", \
                               TskInst._Name, StfInst._NameOrPost, \
                               " exists.")
                 else:
                     TskStfInst = TskStff.TaskStaff(TskInst, StfInst)
                     if self.__Debug:
-                        print(" WorkPackage; parseWorkpackage: TaskStaff ", \
+                        print(" WorkPackage; parseWorkPackage: TaskStaff ", \
                               TskStfInst, " created.")
                 if self.__Debug:
                     print("      ----> fill staff fractions:")
@@ -476,11 +490,11 @@ class WorkPackage:
                 EquipmentName = self._wpParams.iloc[i,1]
                 EqpInst = Eqp.Equipment(EquipmentName)
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: Equipment ", \
+                    print(" WorkPackage; parseWorkPackage: Equipment ", \
                               EquipmentName, " created.")
                 TskEqpInst = TskEqp.TaskEquipment(TskInst, EqpInst)
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: TaskEquipment ", \
+                    print(" WorkPackage; parseWorkPackage: TaskEquipment ", \
                            TskEqpInst, " created.")
                 EqpCst = np.array([])
                 for iYr in range(len(Yrs)):
@@ -491,7 +505,7 @@ class WorkPackage:
                 EqpInst.setEquipmentCost(EqpCst)
                 EqpInst.setTotalEquipmentCost()
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: ", \
+                    print(" WorkPackage; parseWorkPackage: ", \
                           "equipment cost by year:", EqpInst._EquipmentCost, \
                           " Total:", EqpInst._TotalEquipmentCost)
             elif str(self._wpParams.iat[i,0]) == "EndStaff":
@@ -506,7 +520,7 @@ class WorkPackage:
                 pass
             elif str(self._wpParams.iat[i,0]) == "Consume":
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: Consumables")
+                    print(" WorkPackage; parseWorkPackage: Consumables")
                 CnsCst = np.array([])
                 for iYr in range(len(Yrs)):
                     Cst = float(self._wpParams.iat[i,2+iYr])
@@ -516,12 +530,12 @@ class WorkPackage:
                 _ConsumeByYear = CnsCst
                 _TotalConsume  = np.sum(_ConsumeByYear)
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: ", \
+                    print(" WorkPackage; parseWorkPackage: ", \
                           "consumables cost by year and total:", \
                           _ConsumeByYear, _TotalConsume)
             elif str(self._wpParams.iat[i,0]) == "Travel":
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: Travel")
+                    print(" WorkPackage; parseWorkPackage: Travel")
                 TrvCst = np.array([])
                 for iYr in range(len(Yrs)):
                     Cst = float(self._wpParams.iat[i,2+iYr])
@@ -531,13 +545,13 @@ class WorkPackage:
                 _TravelByYear = TrvCst
                 _TotalTravel  = np.sum(_TravelByYear)
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: ", \
+                    print(" WorkPackage; parseWorkPackage: ", \
                           "travel cost by year and total:", \
                           _TravelByYear, _TotalTravel)
             elif str(self._wpParams.iat[i,0]) == "OtherNonStaff":
                 OtherNonStaffItems.append(self._wpParams.iat[i,1])
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: other non-staff: ",\
+                    print(" WorkPackage; parseWorkPackage: other non-staff: ",\
                           self._wpParams.iat[i,1])
                 CnsCst = np.array([])
                 for iYr in range(len(Yrs)):
@@ -551,7 +565,7 @@ class WorkPackage:
                     _ConsumeByYear += CnsCst
                 _TotalConsume  = np.sum(_ConsumeByYear)
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: consumables + ", \
+                    print(" WorkPackage; parseWorkPackage: consumables + ", \
                           "other non-staff cost by year and total:", \
                           _ConsumeByYear, _TotalConsume)
             elif str(self._wpParams.iat[i,0]) == "NonStaffEnd":
@@ -562,10 +576,10 @@ class WorkPackage:
                 pass
             else:
                 if self.__Debug:
-                    print(" WorkPackage; parseWorkpackage: ", \
+                    print(" WorkPackage; parseWorkPackage: ", \
                           "Unprocessed ---->", self._wpParams.iloc[i,0])
 
-        return PrjInst, WorkpackageName, WPM, Yrs, \
+        return PrjInst, WorkPackageName, WPM, Yrs, \
                _TravelByYear, _TotalTravel, \
                _ConsumeByYear, _TotalConsume, \
                OtherNonStaffItems
@@ -595,7 +609,7 @@ class WorkPackage:
             _EquipmentCostByYear = np.array([])
             SumInitialised = False
             for iTsk in Tsk.Task.instances:
-                if iTsk._Workpackage == iWp:
+                if iTsk._WorkPackage == iWp:
                     if not SumInitialised:
                         for iYr in range(len(iTsk._StaffCostByYear)):
                             _StaffCostByYear     = \

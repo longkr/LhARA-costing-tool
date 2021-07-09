@@ -93,7 +93,7 @@ print()
 print("ReportsTest:", ReportsTest, \
       " check work package list derived class methods.")
 LhARAPATH = os.getenv('LhARAPATH')
-wpPath    = os.path.join(LhARAPATH, '11-Workpackages')
+wpPath    = os.path.join(LhARAPATH, '11-WorkPackages')
 wpList    = os.listdir(wpPath)
 print("    ----> list of WP definition files:", wpList)
 wpInst = []
@@ -106,7 +106,7 @@ for wpFile in wpList:
         wpInst.append(wp.WorkPackage(FileName))
 try:
     filepath  = os.path.join(LhARAPATH, '99-Scratch')
-    wpRpt = Rprt.WorkpackageList(filepath, "TestWorkpackageReport.csv")
+    wpRpt = Rprt.WorkPackageList(filepath, "TestWorkPackageReport.csv")
 except:
     print("     ----> Failed to work package list report instance!",
           "  Execution terminated.")
@@ -120,8 +120,8 @@ for iWP in wp.WorkPackage.instances:
         iWP_LasSpct = iWP
 try:
     filepath  = os.path.join(LhARAPATH, '99-Scratch')
-    wpSumRpt = Rprt.WorkpackageSummary(filepath, \
-                                       "TestWorkpackageSummary.csv", \
+    wpSumRpt = Rprt.WorkPackageSummary(filepath, \
+                                       "TestWorkPackageSummary.csv", \
                                        iWP_LasSpct)
 except:
     print("     ----> Failed to work package list report instance!",

@@ -127,7 +127,7 @@ class TaskStaff:
 
     def __str__(self):
         print(" TaskStaff: Task: ", self._Task._Name, \
-              " from WP name: :", self._Task._Workpackage._Name, \
+              " from WP name: :", self._Task._WorkPackage._Name, \
               "\n    Staff name: ", self._Staff._NameOrPost, \
               "\n    Fractions: ", self._StaffFracByYrNQtr, \
                            self._StaffFracByYear, self._TotalStaffFrac, \

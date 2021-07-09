@@ -47,11 +47,35 @@ EquipmentTest: 3  test get/set methods.
      Total cost: 15
     <---- Done.
 
-EquipmentTest: 4  test creation of pandas dataframe.
+EquipmentTest: 4  check print method.
+ Equipment list: 
+ ===============
+   Name, Cost by year (£k), Total cost (£k)
+  [' Equipment instance created with no content.', array([], dtype=float64), nan]
+  ['LhARA', array([1., 2., 3., 4., 5.]), 15.0]
+  ['Test-1', array([1., 2., 3., 4., 5.]), 15.0]
+  ['Test-2', array([1., 2., 3., 4., 5.]), 15.0]
+  ['Test-2', array([1., 2., 3., 4., 5.]), 15.0]
     <---- Done.
 
-EquipmentTest: 5  test creation of csv file.
+EquipmentTest: 5  test creation of pandas dataframe.
+                                              0  ...                2
+0                                     Equipment  ...  Total cost (£k)
+1   Equipment instance created with no content.  ...              NaN
+2                                         LhARA  ...             15.0
+3                                        Test-1  ...             15.0
+4                                        Test-2  ...             15.0
+5                                        Test-2  ...             15.0
+
+[6 rows x 3 columns]
+    <---- Done.
+
+EquipmentTest: 6  test creation of csv file.
     ----> CSV file successfully created.
+    <---- Done.
+
+EquipmentTest: 7  test cleaning of equipment list.
+    ---->  1  items of equipment deleted
     <---- Done.
 
 ========  Equipment: tests complete  ========
@@ -59,6 +83,7 @@ EquipmentTest: 5  test creation of csv file.
 
 ProjectTest: 1  check built-in methods.
     __init__:
+      ----> Correctly trapped no-name exception
       ----> instance Prj1 created.
     <---- __init__ done.
     __repr__:
@@ -107,28 +132,43 @@ ProjectTest: 5  test creation of csv file.
 
 ProjectTest: 6  check costing methods.
     ----> Clean Project instances:
-    ----> Removed  0 instances.
+          ----> Before clean:
+ Project: name: LhARA  ---->
+     Staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     CG staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     Equipment cost by year, total [1. 2. 3. 4. 5.] 15.0
+     Travel and consumable cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     <---- Project done.
+ Project: name: Test-1  ---->
+     Staff cost by year, total: None None
+     CG staff cost by year, total: None None
+     Equipment cost by year, total None None
+     Travel and consumable cost by year, total: None None
+     <---- Project done.
+ Project: name: Test-2  ---->
+     Staff cost by year, total: None None
+     CG staff cost by year, total: None None
+     Equipment cost by year, total None None
+     Travel and consumable cost by year, total: None None
+     <---- Project done.
+ Project: name: Test-2  ---->
+     Staff cost by year, total: None None
+     CG staff cost by year, total: None None
+     Equipment cost by year, total None None
+     Travel and consumable cost by year, total: None None
+     <---- Project done.
+          ----> After clean:
+              ----> Removed  3 instances. 
+                     Instances that remain:
+ Project: name: LhARA  ---->
+     Staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     CG staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     Equipment cost by year, total [1. 2. 3. 4. 5.] 15.0
+     Travel and consumable cost by year, total: [1. 2. 3. 4. 5.] 15.0
+     <---- Project done.
     ----> Run doCosting:
           Result:
  Project: name: LhARA  ---->
-     Staff cost by year, total: [] 0.0
-     CG staff cost by year, total: [] 0.0
-     Equipment cost by year, total [] 0.0
-     Travel and consumable cost by year, total: [] 0.0
-     <---- Project done.
- Project: name: Test-1  ---->
-     Staff cost by year, total: [] 0.0
-     CG staff cost by year, total: [] 0.0
-     Equipment cost by year, total [] 0.0
-     Travel and consumable cost by year, total: [] 0.0
-     <---- Project done.
- Project: name: Test-2  ---->
-     Staff cost by year, total: [] 0.0
-     CG staff cost by year, total: [] 0.0
-     Equipment cost by year, total [] 0.0
-     Travel and consumable cost by year, total: [] 0.0
-     <---- Project done.
- Project: name: Test-2  ---->
      Staff cost by year, total: [] 0.0
      CG staff cost by year, total: [] 0.0
      Equipment cost by year, total [] 0.0
@@ -141,18 +181,17 @@ ProjectTest: 6  check costing methods.
 
 StaffTest: 1  check built-in methods.
     __init__:
-      ----> Correctly trapped no name exception.
- Staff.__init__: staff database file does not  exist, create dummy entry for staff name= LhARA2
-      ----> Staff database file name: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+      ----> Correctly trapped no name/no staff code exception.
+      ----> Staff database file name: /Users/kennethlong/Dropbox/01-Work/CCAP/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
       ----> instance Stf1 created.
     <---- __init__ done.
     __repr__:
     <---- __repr__ done.
     __str__:
 Staff (name or post): LhARA
-    Filename: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
-    Staff code: LhARA ; Institute code: None ; Grade or level: None ; Annual FEC: nan ; Project or CG: None
-    Comments: None
+    Filename: /Users/kennethlong/Dropbox/01-Work/CCAP/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+    Staff code: LhARA ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 400.0 ; Project or CG: Project
+    Comments: Dummy comment: default values filled; staff member not read from staff database
     <---- __str__ done.
 
 StaffTest: 2  check getInstance method.
@@ -161,40 +200,43 @@ StaffTest: 2  check getInstance method.
       ----> Correctly found: Staff (name or post): Test-1
     Filename: None
     Staff code: Test-1 ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 400.0 ; Project or CG: Project
-    Comments: Default values filled; staff member not in staff database
+    Comments: Dummy comment: default values filled; staff member not read from staff database
       ----> Correctly found: Staff (name or post): LhARA
-    Filename: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
-    Staff code: LhARA ; Institute code: None ; Grade or level: None ; Annual FEC: nan ; Project or CG: None
-    Comments: None
+    Filename: /Users/kennethlong/Dropbox/01-Work/CCAP/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+    Staff code: LhARA ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 400.0 ; Project or CG: Project
+    Comments: Dummy comment: default values filled; staff member not read from staff database
     <---- getInstance done.
 
 StaffTest: 3  test load staff database call.
     ----> parseStaffDatabase load test
+        ----> Correctly trapped no filename.
+        ----> Correctly trapped file does not exist.
         ----> OK!
     <---- Load test done
 
 StaffTest: 3  test get/set methods.
     ----> Set parameters
 Staff (name or post): LhARA
-    Filename: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
-    Staff code: LhARA ; Institute code: None ; Grade or level: None ; Annual FEC: 101.0 ; Project or CG: None
-    Comments: None
+    Filename: /Users/kennethlong/Dropbox/01-Work/CCAP/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+    Staff code: LhARA ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 101.0 ; Project or CG: Project
+    Comments: Dummy comment: default values filled; staff member not read from staff database
 Staff (name or post): Test-1
     Filename: None
     Staff code: Test-1 ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 102.0 ; Project or CG: Project
-    Comments: Default values filled; staff member not in staff database
+    Comments: Dummy comment: default values filled; staff member not read from staff database
 Staff (name or post): Vatican
     Filename: None
     Staff code: Test-2 ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 103.0 ; Project or CG: Project
-    Comments: Default values filled; staff member not in staff database
+    Comments: Dummy comment: default values filled; staff member not read from staff database
 Staff (name or post): Vatican
     Filename: None
     Staff code: Test-2 ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 104.0 ; Project or CG: Project
-    Comments: Default values filled; staff member not in staff database
+    Comments: Dummy comment: default values filled; staff member not read from staff database
     ----> header list check:
        ['Staff code', 'Name or post', 'Filename', 'institute code', 'Grade', 'Annnual cost', 'Funding source', 'Comment']
     ----> staff data print check:
-       ['Test-1', 'Test-1', None, 'Institute-Code', 'Head of House', 102.0, 'Project', 'Default values filled; staff member not in staff database']
+       ['Test-1', 'Test-1', None, 'Institute-Code', 'Head of House', 102.0, 'Project', 'Dummy comment: default values filled; staff member not read from staff database']
+    ----> Check number of staff: 23
     <---- Done.
 
 StaffTest: 4  test creation of pandas dataframe.
@@ -205,7 +247,36 @@ StaffTest: 5  test creation of csv file.
     <---- Done.
 
 StaffTest: 5  test cleaning of staff database.
-     cleanStaffDatabase return code:  3
+     cleanStaffDatabase return code:  1
+     <---- Done.
+
+StaffTest: 6  test printing of staff database.
+                       0  ...                                                  7
+0             Staff code  ...                                            Comment
+1                 StffCd  ...  Dummy comment: default values filled; staff me...
+2                  LhARA  ...  Dummy comment: default values filled; staff me...
+3                 Test-1  ...  Dummy comment: default values filled; staff me...
+4                 Test-2  ...  Dummy comment: default values filled; staff me...
+5                 Test-2  ...  Dummy comment: default values filled; staff me...
+6        ASTEC-MechEng-1  ...                                                NaN
+7        STEC-MechTech-1  ...                                                NaN
+8           ISIS-Staff-1  ...                                                NaN
+9            PPD-Staff-1  ...                                                NaN
+10         PPD-PostDoc-1  ...                                                NaN
+11            TD-Staff-1  ...                                                NaN
+12       IC-Phys-Staff-1  ...                                                NaN
+13     IC-Phys-PostDoc-1  ...                                                NaN
+14       IC-Phys-Staff-2  ...                                                NaN
+15         IC- Phys-Ac-1  ...                                                NaN
+16          IC-Phys-Ac-2  ...                                                NaN
+17          IC-Phys-Ac-3  ...                                                NaN
+18     IC-Phys-MechEng-1  ...                                                NaN
+19     IC-Phys-ElecEng-1  ...                                                NaN
+20          IC-Phys-PG-1  ...                                                NaN
+21          IC-Phys-PD-1  ...                                                NaN
+22  Strthclyd-Phys-Stf-1  ...                                                NaN
+
+[23 rows x 8 columns]
      <---- Done.
 
 ========  Staff: tests complete  ========
@@ -220,21 +291,7 @@ TaskEquipTest: 1  check built-in methods.
       ----> TaskEquipment(Name)
     <---- __repr__ done.
     __str__:
- TaskEquipment: LhARA1
- Task: LhARA
-     ----> Workpackage: IonAcoustic  
-
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: LhARA1
-     Cost by financial year: []
-     Total cost: nan
+ TaskEquipment: Task:  LhARA , equipment:  LhARA1
      TaskEquipment summary complete.
     <---- __str__ done.
 
@@ -242,161 +299,49 @@ TaskEquipTest: 2  check getInstance method.
       ----> Correctly reported no instance: None
       ----> Correctly caught multiple instance exception.
       ----> Correctly found: 
-  TaskEquipment: LhARA1
- Task: LhARA
-     ----> Workpackage: IonAcoustic  
-
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: LhARA1
-     Cost by financial year: []
-     Total cost: nan
+  TaskEquipment: Task:  LhARA , equipment:  LhARA1
      TaskEquipment summary complete.
-      ----> Correctly found:  TaskEquipment: LhARA1
- Task: LhARA
-     ----> Workpackage: IonAcoustic  
-
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: LhARA1
-     Cost by financial year: []
-     Total cost: nan
+      ----> Correctly found:  TaskEquipment: Task:  LhARA , equipment:  LhARA1
      TaskEquipment summary complete.
     <---- getInstance done.
 
 TaskEquipTest: 3  check dump of class contents
- TaskEquipment Id= 0
- Task: Task 1
-     ----> Workpackage: IonAcoustic  
+ Task-equipment list: 
+ ====================
+   Task name, Equipment name
+  ['Task 1', 'Quadrupoles']
+  ['Task 1', 'Quadrupole PSUs']
+  ['Task 1', 'Dipoles']
+  ['Task 1', 'Dipole PSUs']
+  ['LhARA', 'LhARA1']
+  ['LhARA', 'LhARA1']
+  ['LhARA', 'LhARA1']
+  ['LhARA', 'LhARA1']
+    <---- Done.
 
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: Quadrupoles
-     Cost by financial year: [127.5  12.    5.    0.    0. ]
-     Total cost: 144.5
- TaskEquipment Id= 1
- Task: Task 1
-     ----> Workpackage: IonAcoustic  
-
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: Quadrupole PSUs
-     Cost by financial year: [60. 12.  5.  0.  0.]
-     Total cost: 77
- TaskEquipment Id= 2
- Task: Task 1
-     ----> Workpackage: IonAcoustic  
-
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: Dipoles
-     Cost by financial year: [133.33  12.     5.     0.     0.  ]
-     Total cost: 150.33
- TaskEquipment Id= 3
- Task: Task 1
-     ----> Workpackage: IonAcoustic  
-
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: Dipole PSUs
-     Cost by financial year: [44.17 12.    5.    0.    0.  ]
-     Total cost: 61.17
- TaskEquipment Id= 4
- Task: LhARA
-     ----> Workpackage: IonAcoustic  
-
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: LhARA1
-     Cost by financial year: []
-     Total cost: nan
- TaskEquipment Id= 5
- Task: LhARA
-     ----> Workpackage: IonAcoustic  
-
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: LhARA1
-     Cost by financial year: []
-     Total cost: nan
- TaskEquipment Id= 6
- Task: LhARA
-     ----> Workpackage: IonAcoustic  
-
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: LhARA1
-     Cost by financial year: []
-     Total cost: nan
- TaskEquipment Id= 7
- Task: LhARA
-     ----> Workpackage: IonAcoustic  
-
-     Staff cost by year: None
-     CG staff cost by year: None
-     Total staff cost: None
-     Total CG staff cost: None
-     Equipment cost by year: None
-     Total equipment cost: None
-     <---- Task complete.
- Equipment: 
-     Equipment name: LhARA1
-     Cost by financial year: []
-     Total cost: nan
+TaskEquipTest: 4  check cleaning method
+    ----> before clean: number of instances: 8  dump:
+ Task-equipment list: 
+ ====================
+   Task name, Equipment name
+  ['Task 1', 'Quadrupoles']
+  ['Task 1', 'Quadrupole PSUs']
+  ['Task 1', 'Dipoles']
+  ['Task 1', 'Dipole PSUs']
+  ['LhARA', 'LhARA1']
+  ['Bad task', 'LhARA1']
+  ['LhARA', 'Bad equipment']
+  ['LhARA', 'LhARA1']
+    ----> after clean: number of instances: 6  dump:
+ Task-equipment list: 
+ ====================
+   Task name, Equipment name
+  ['Task 1', 'Quadrupoles']
+  ['Task 1', 'Quadrupole PSUs']
+  ['Task 1', 'Dipoles']
+  ['Task 1', 'Dipole PSUs']
+  ['LhARA', 'LhARA1']
+  ['LhARA', 'LhARA1']
     <---- Done.
 
 ========  TaskEquipment: tests complete  ========
@@ -508,7 +453,7 @@ TaskTest: 1  check built-in methods.
     <---- __repr__ done.
     __str__:
  Task: LhARA
-     ----> Workpackage: IonAcoustic  
+     ----> WorkPackage: IonAcoustic  
 
      Staff cost by year: None
      CG staff cost by year: None
@@ -523,7 +468,7 @@ TaskTest: 2  check getInstance method.
       ----> Correctly reported no instance: None
       ----> Correctly caught multiple instance exception.
       ----> Correctly found:  Task: Test-1
-     ----> Workpackage: IonAcoustic  
+     ----> WorkPackage: IonAcoustic  
 
      Staff cost by year: None
      CG staff cost by year: None
@@ -533,7 +478,7 @@ TaskTest: 2  check getInstance method.
      Total equipment cost: None
      <---- Task complete.
       ----> Correctly found:  Task: LhARA
-     ----> Workpackage: IonAcoustic  
+     ----> WorkPackage: IonAcoustic  
 
      Staff cost by year: None
      CG staff cost by year: None
@@ -546,7 +491,7 @@ TaskTest: 2  check getInstance method.
 
 TaskTest: 3  check get/set methods.
  Task: LhARA
-     ----> Workpackage: IonAcoustic  
+     ----> WorkPackage: IonAcoustic  
 
      Staff cost by year: [1. 2. 3. 4. 5.]
      CG staff cost by year: [1. 2. 3. 4. 5.]
@@ -569,7 +514,7 @@ TaskTest: 6  check costing methods.
     ----> Run doTaskCosting:
           Result:
  Task: Task 1
-     ----> Workpackage: IonAcoustic  
+     ----> WorkPackage: IonAcoustic  
 
      Staff cost by year: [340. 340.  40.  40.  40.]
      CG staff cost by year: [0. 0. 0. 0. 0.]
@@ -579,7 +524,7 @@ TaskTest: 6  check costing methods.
      Total equipment cost: 433.00000000000006
      <---- Task complete.
  Task: LhARA
-     ----> Workpackage: IonAcoustic  
+     ----> WorkPackage: IonAcoustic  
 
      Staff cost by year: []
      CG staff cost by year: []
@@ -589,7 +534,7 @@ TaskTest: 6  check costing methods.
      Total equipment cost: 0.0
      <---- Task complete.
  Task: Test-1
-     ----> Workpackage: IonAcoustic  
+     ----> WorkPackage: IonAcoustic  
 
      Staff cost by year: []
      CG staff cost by year: []
@@ -599,7 +544,7 @@ TaskTest: 6  check costing methods.
      Total equipment cost: 0.0
      <---- Task complete.
  Task: Test-2
-     ----> Workpackage: IonAcoustic  
+     ----> WorkPackage: IonAcoustic  
 
      Staff cost by year: []
      CG staff cost by year: []
@@ -609,7 +554,7 @@ TaskTest: 6  check costing methods.
      Total equipment cost: 0.0
      <---- Task complete.
  Task: Test-2
-     ----> Workpackage: IonAcoustic  
+     ----> WorkPackage: IonAcoustic  
 
      Staff cost by year: []
      CG staff cost by year: []
@@ -633,7 +578,7 @@ WorkPackageTest: 1  check built-in methods.
       ----> WorkPackage()
     <---- __repr__ done.
     __str__:
- Workpackage: name: LhARA  ---->
+ WorkPackage: name: LhARA  ---->
      Project: LhARA  Manager: John Doe  Financial years: ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27']
      Staff cost by year, total: None None
      CG staff cost by year, total: None None
@@ -646,10 +591,10 @@ WorkPackageTest: 1  check built-in methods.
     <---- __str__ done.
 
 WorkPackageTest: 2  check get/set methods.
-    ----> CSV filename:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/Dummy4Test.csv
+    ----> CSV filename:  /Users/kennethlong/Dropbox/01-Work/CCAP/01-LhARA-costing-tool/11-WorkPackages/Dummy4Test.csv
 
 WorkpackageTest: 3  check get/set methods.
- Workpackage: name: LhARA  ---->
+ WorkPackage: name: LhARA  ---->
      Project: LhARA  Manager: John Doe  Financial years: ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27']
      Staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
      CG staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
@@ -672,7 +617,7 @@ WorkpackageTest: 6  check costing methods.
     ----> Removed  0 instances.
     ----> Run doCosting:
           Result:
- Workpackage: name: LhARA  ---->
+ WorkPackage: name: LhARA  ---->
      Project: LhARA  Manager: John Doe  Financial years: ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27']
      Staff cost by year, total: [340. 340.  40.  40.  40.] 800.0
      CG staff cost by year, total: [0. 0. 0. 0. 0.] 0.0

@@ -5,7 +5,7 @@ Class Report:
 =============
 
   Collection of derived classes to generate reports, usually in the
-  form of a CSV file, based on the Project, Workpackage, and Task classes
+  form of a CSV file, based on the Project, WorkPackage, and Task classes
 
   Class attributes:
   -----------------
@@ -15,6 +15,13 @@ Class Report:
 
   Instance attributes:
   --------------------
+    _Name      : (str) name of report
+    _ReportPath: Path to directory into which report file will be written
+    _FileName  : Report filename
+    _Header    : List of header fields; initialised to [].  
+                 Filled in derived classes.
+    _Lines     : Lines of report; initialised to [].
+                 Filled in derived classes.
 
     
   Methods:
@@ -26,13 +33,27 @@ Class Report:
       __str__ : Dump of constants.
 
 
+  Processing methods:
+      createPandasDataFrame:  Creates pandas data frame from _Header and _Lines.
+
+
   I/o methods:
-
-
-  Get/set methods:
+      createCSV: Creates the report's CSV file.
 
 
   Exceptions:
+        NoReportNameProvided: Report instance call with invalid name
+
+        NoOutputPathProvided: Path to directory for report is not provided
+
+          NoFilenameProvided: No file name provided for report
+
+           OutputPathInvalid: Path to directory for report invalid
+
+   NoWriteAccessToOutputPath: Can not write into report directory
+
+  WorkPackageInstanceInvalid: Instance of w/p for which report requested is 
+                              invalid
 
 
 Created on Wed 19Jun21. Version history:
@@ -47,6 +68,7 @@ import os
 import copy
 from datetime import date
 import pandas as pnds
+import numpy  as np
 
 import Task          as Tsk
 import TaskStaff     as TskStf
@@ -68,6 +90,8 @@ class Report:
         self._Name       = _Name
         self._ReportPath = _ReportPath
         self._FileName   = _FileName
+        self._Header     = []
+        self._Lines      = []
 
         if _Name == None:
             raise NoReportNameProvided( \
@@ -167,13 +191,13 @@ class StaffList(Report):
         
 
 """
-Class WorkpackageList:  ---->  "WorkpackageList" report; derived class  <----
+Class WorkPackageList:  ---->  "WorkPackageList" report; derived class  <----
 ======================
 
-  WorkpackageList derived class creates and formats the workpackage report.
+  WorkPackageList derived class creates and formats the workpackage report.
 
 """
-class WorkpackageList(Report):
+class WorkPackageList(Report):
     def __init__(self, _ReportPath, _FileName):
 
         Report.__init__(self, "Work package report: summary of all workpackages", _ReportPath, _FileName)
@@ -201,14 +225,14 @@ class WorkpackageList(Report):
         
 
 """
-Class WorkpackageSummary:  ---->  "WorkpackageSummary" report  <----
+Class WorkPackageSummary:  ---->  "WorkPackageSummary" report  <----
 =========================
 
-  WorkpackageSummary derived class creates and formats the summary
+  WorkPackageSummary derived class creates and formats the summary
   workpackage report.
 
 """
-class WorkpackageSummary(Report):
+class WorkPackageSummary(Report):
     def __init__(self, _ReportPath, _FileName, _wpInst=None):
 
         if not isinstance(_wpInst, wp.WorkPackage):
@@ -244,7 +268,7 @@ class WorkpackageSummary(Report):
         self._Lines.append(Line)
 
         for iTsk in Tsk.Task.instances:
-            if iTsk._Workpackage == _wpInst:
+            if iTsk._WorkPackage == _wpInst:
                 Lines = self.TaskStaffLines(_wpInst, iTsk)
                 for Line in Lines:
                     self._Lines.append(Line)
@@ -256,7 +280,7 @@ class WorkpackageSummary(Report):
         self._Lines.append(Line)
         
         for iTsk in Tsk.Task.instances:
-            if iTsk._Workpackage == _wpInst:
+            if iTsk._WorkPackage == _wpInst:
                 Lines = self.TaskEquipmentLines(_wpInst, iTsk)
                 for Line in Lines:
                     self._Lines.append(Line)
@@ -282,11 +306,19 @@ class WorkpackageSummary(Report):
         Line.append("Total:")
         for iYr in range(len(_wpInst._FinancialYears)):
             Line.append(None)
-            Line.append(_wpInst._StaffCostByYear[iYr] + \
-                        _wpInst._EquipmentCostByYear[iYr])
+            if isinstance(_wpInst._StaffCostByYear, np.ndarray) and \
+               isinstance(_wpInst._EquipmentCostByYear, np.ndarray):
+                Line.append(_wpInst._StaffCostByYear[iYr] + \
+                            _wpInst._EquipmentCostByYear[iYr])
+            else:
+                Line.append(None)
         Line.append(None)
-        Line.append(_wpInst._TotalStaffCost + \
-                    _wpInst._TotalEquipmentCost)
+        if isinstance(_wpInst._TotalStaffCost, np.ndarray) and \
+           isinstance(_wpInst._TotalEquipmentCost, np.ndarray):
+            Line.append(_wpInst._TotalStaffCost + \
+                        _wpInst._TotalEquipmentCost)
+        else:
+            Line.append(None)
         return Line
 
     def EquipmentTotal(self, _wpInst):
@@ -294,7 +326,10 @@ class WorkpackageSummary(Report):
         Line.append("Equipment total:")
         for iYr in range(len(_wpInst._FinancialYears)):
             Line.append(None)
-            Line.append(_wpInst._EquipmentCostByYear[iYr])
+            if isinstance(_wpInst._EquipmentCostByYear, np.ndarray):
+                Line.append(_wpInst._EquipmentCostByYear[iYr])
+            else:
+                Line.append(None)
         Line.append(None)
         Line.append(_wpInst._TotalEquipmentCost)
         return Line
@@ -340,7 +375,7 @@ class WorkpackageSummary(Report):
                 Line.append(iEqp._Name)
                 for iYr in range(len(_wpInst._FinancialYears)):
                     Line.append(None)
-                    Line.append(iEqp._EquipmentCost[iYr])
+                    Line.append(iEqp._EquipmentCostByYear[iYr])
                 Line.append(None)
                 Line.append(iEqp._TotalEquipmentCost)
                 Lines.append(copy.deepcopy(Line))
@@ -360,7 +395,10 @@ class WorkpackageSummary(Report):
         Line.append("Staff total:")
         for iYr in range(len(_wpInst._FinancialYears)):
             Line.append(None)
-            Line.append(_wpInst._StaffCostByYear[iYr])
+            if isinstance(_wpInst._StaffCostByYear, np.ndarray):
+                Line.append(_wpInst._StaffCostByYear[iYr])
+            else:
+                Line.append(None)
         Line.append(None)
         Line.append(_wpInst._TotalStaffCost)
         return Line
@@ -389,6 +427,7 @@ class WorkpackageSummary(Report):
         for iTskStf in TskStf.TaskStaff.instances:
             Line = []
             if iTskStf._Task == _Tsk:
+                print(iTskStf)
                 iStf = iTskStf._Staff
                 if InstCd != iStf._InstituteCode:
                     InstCd = iStf._InstituteCode
@@ -401,9 +440,15 @@ class WorkpackageSummary(Report):
                 Line.append(iStf._StaffCode)
                 for iYr in range(len(_wpInst._FinancialYears)):
                     Line.append(round(iTskStf._StaffFracByYear[iYr], 2))
-                    Line.append(round(iTskStf._StaffCostByYear[iYr], 2))
+                    if isinstance(iTskStf._StaffCostByYear, np.ndarray):
+                        Line.append(round(iTskStf._StaffCostByYear[iYr], 2))
+                    else:
+                        Line.append(None)
                 Line.append(round(iTskStf._TotalStaffFrac, 2))
-                Line.append(round(iTskStf._TotalStaffCost, 2))
+                if iTskStf._TotalStaffCost != None:
+                    Line.append(round(iTskStf._TotalStaffCost, 2))
+                else:
+                    Line.append(None)
                 Lines.append(copy.deepcopy(Line))
         return Lines
         

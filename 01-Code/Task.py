@@ -17,7 +17,7 @@ Class Task:
   Instance attributes:
   --------------------
    _Name                = Name of task
-   _Workpackage         = Instance of Workpackage task in which this task 
+   _WorkPackage         = Instance of WorkPackage task in which this task 
                           is defined
    _StaffCostByYear     = Total cost of staff in £k for this task by FY
    _CGStaffCostByYear   = Cost of CG staff in £k for this task by FY
@@ -108,7 +108,7 @@ class Task:
     def __init__(self, _Name="None", _WPInst=None):
 
         self._Name        = _Name
-        self._Workpackage = _WPInst
+        self._WorkPackage = _WPInst
 
         #.. Defined, but not filled, at init:
         self._StaffCostByYear     = None
@@ -125,7 +125,7 @@ class Task:
 
     def __str__(self):
         print(" Task:", self._Name)
-        print("     ----> Workpackage:", self._Workpackage._Name, " \n")
+        print("     ----> WorkPackage:", self._WorkPackage._Name, " \n")
         print("     Staff cost by year:", self._StaffCostByYear)
         print("     CG staff cost by year:", self._CGStaffCostByYear)
         print("     Total staff cost:", self._TotalStaffCost)
@@ -151,9 +151,9 @@ class Task:
         for inst in cls.instances:
             if Task.__Debug:
                 print(" Task; getInstance: instances:", \
-                      inst._Name, inst._Workpackage._Name)
+                      inst._Name, inst._WorkPackage._Name)
             if inst._Name == _Name and \
-               inst._Workpackage._Name == _WPInst._Name:
+               inst._WorkPackage._Name == _WPInst._Name:
                 InstList.append(inst)
         Ninst = len(InstList)
         if Ninst == 0:
@@ -194,7 +194,7 @@ class Task:
     def createPandasDataframe(cls):
         TaskData = []
         TaskData.append(["Name", \
-                         "Workpackage", \
+                         "WorkPackage", \
                          "Staff cost by year (£k)", \
                          "Total staff cost (£k)", \
                          "CG staff cost per year (£k)", \
@@ -203,7 +203,7 @@ class Task:
                          "Total equipment cost (£k)"])
         for inst in Task.instances:
             TaskData.append([inst._Name, \
-                             inst._Workpackage._Name, \
+                             inst._WorkPackage._Name, \
                              inst._StaffCostByYear, inst._TotalStaffCost, \
                              inst._CGStaffCostByYear, inst._TotalCGStaffCost, \
                              inst._EquipmentCostByYear, \
@@ -220,7 +220,7 @@ class Task:
         nDel    = 0
         for iTsk in OldInst:
             if not isinstance(iTsk._Name, str) or \
-               not isinstance(iTsk._Workpackage, wp.WorkPackage):
+               not isinstance(iTsk._WorkPackage, wp.WorkPackage):
                 del iTsk
                 nDel += 1
             else:
