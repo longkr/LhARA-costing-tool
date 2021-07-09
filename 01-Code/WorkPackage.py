@@ -4,8 +4,6 @@
 Class WorkPackage:
 ==================
 
-Note to KL: Travel and Consumable attributes need to be added.
-
   Creates an instance of the work package class and populates the
   attiributes from a csv-format workpackage template that is owned 
   by the workpackage manager.
