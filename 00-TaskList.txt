@@ -4,6 +4,7 @@ Jobs to do in LhARA costing tool s/w:
                and elsewhere.
 	     - Need to read control cards and work out how to do integration
 	       script.
-
+	     - For integration test; need to cut length of path in prints so
+	       that the automatic check can work.
 
 

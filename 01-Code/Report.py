@@ -313,8 +313,8 @@ class WorkPackageSummary(Report):
             else:
                 Line.append(None)
         Line.append(None)
-        if isinstance(_wpInst._TotalStaffCost, np.ndarray) and \
-           isinstance(_wpInst._TotalEquipmentCost, np.ndarray):
+        if isinstance(_wpInst._TotalStaffCost, float) and \
+           isinstance(_wpInst._TotalEquipmentCost,float):
             Line.append(_wpInst._TotalStaffCost + \
                         _wpInst._TotalEquipmentCost)
         else:
