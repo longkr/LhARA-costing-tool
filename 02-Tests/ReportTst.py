@@ -61,7 +61,7 @@ print(str(Rprt1))
 print("    <---- __str__ done.")
 
 
-##! Check built-in methods:
+##! Check reports:
 ReportsTest = 2
 print()
 print("ReportsTest:", ReportsTest, " check Overview derived class methods.")

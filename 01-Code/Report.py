@@ -273,6 +273,9 @@ class WorkPackageSummary(Report):
                 for Line in Lines:
                     self._Lines.append(Line)
 
+        Line = self.RiskMitigationStaff(_wpInst)
+        self._Lines.append(Line)
+        
         Line = self.StaffTotal(_wpInst)
         self._Lines.append(Line)
         
@@ -285,6 +288,18 @@ class WorkPackageSummary(Report):
                 for Line in Lines:
                     self._Lines.append(Line)
 
+        Line = self.Inflation(_wpInst)
+        self._Lines.append(Line)
+        
+        Line = self.RiskMitigationEquip(_wpInst)
+        self._Lines.append(Line)
+        
+        Line = self.WorkingMargin(_wpInst)
+        self._Lines.append(Line)
+        
+        Line = self.Contingency(_wpInst)
+        self._Lines.append(Line)
+        
         Line = self.EquipmentTotal(_wpInst)
         self._Lines.append(Line)
         
@@ -319,6 +334,56 @@ class WorkPackageSummary(Report):
                         _wpInst._TotalEquipmentCost)
         else:
             Line.append(None)
+        return Line
+
+    def WorkingMargin(self, _wpInst):
+        Line = []
+        Line.append("Working margin (not yet implemented):")
+        for iYr in range(len(_wpInst._FinancialYears)):
+            Line.append(None)
+            Line.append(0.)
+        Line.append(None)
+        Line.append(0.)
+        return Line
+
+    def Contingency(self, _wpInst):
+        Line = []
+        Line.append("Contingency (not yet implemented):")
+        for iYr in range(len(_wpInst._FinancialYears)):
+            Line.append(None)
+            Line.append(0.)
+        Line.append(None)
+        Line.append(0.)
+        return Line
+
+    def RiskMitigationStaff(self, _wpInst):
+        Line = []
+        Line.append("Cost of risk mitigation, staff (not yet implemented):")
+        for iYr in range(len(_wpInst._FinancialYears)):
+            Line.append(None)
+            Line.append(0.)
+        Line.append(None)
+        Line.append(0.)
+        return Line
+
+    def RiskMitigationEquip(self, _wpInst):
+        Line = []
+        Line.append("Cost of risk mitigation, equipment (not yet implemented):")
+        for iYr in range(len(_wpInst._FinancialYears)):
+            Line.append(None)
+            Line.append(0.)
+        Line.append(None)
+        Line.append(0.)
+        return Line
+
+    def Inflation(self, _wpInst):
+        Line = []
+        Line.append("Inflation (not yet implemented):")
+        for iYr in range(len(_wpInst._FinancialYears)):
+            Line.append(None)
+            Line.append(0.)
+        Line.append(None)
+        Line.append(0.)
         return Line
 
     def EquipmentTotal(self, _wpInst):
