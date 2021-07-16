@@ -14,6 +14,8 @@ cd $LhARAPATH
 02-Tests/TaskStaffTst.py     > 99-Scratch/TaskStaffTst.log
 02-Tests/TaskEquipmentTst.py > 99-Scratch/TaskEquipmentTst.log
 
+02-Tests/ReportTst.py        > 99-Scratch/ReportTst.log
+
 cat 99-Scratch/*Tst.log > 99-Scratch/AllTst-log.txt
 
 DIFF=$(diff 99-Scratch/AllTst-log.txt 03-Integration-test/Integration-test-reference-log.txt)
