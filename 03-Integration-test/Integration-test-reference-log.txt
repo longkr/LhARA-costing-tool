@@ -182,14 +182,14 @@ ProjectTest: 6  check costing methods.
 StaffTest: 1  check built-in methods.
     __init__:
       ----> Correctly trapped no name/no staff code exception.
-      ----> Staff database file name: /Users/kennethlong/Dropbox/01-Work/CCAP/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+      ----> Staff database file name: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
       ----> instance Stf1 created.
     <---- __init__ done.
     __repr__:
     <---- __repr__ done.
     __str__:
 Staff (name or post): LhARA
-    Filename: /Users/kennethlong/Dropbox/01-Work/CCAP/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+    Filename: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
     Staff code: LhARA ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 400.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
     <---- __str__ done.
@@ -202,7 +202,7 @@ StaffTest: 2  check getInstance method.
     Staff code: Test-1 ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 400.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
       ----> Correctly found: Staff (name or post): LhARA
-    Filename: /Users/kennethlong/Dropbox/01-Work/CCAP/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+    Filename: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
     Staff code: LhARA ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 400.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
     <---- getInstance done.
@@ -217,7 +217,7 @@ StaffTest: 3  test load staff database call.
 StaffTest: 3  test get/set methods.
     ----> Set parameters
 Staff (name or post): LhARA
-    Filename: /Users/kennethlong/Dropbox/01-Work/CCAP/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+    Filename: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
     Staff code: LhARA ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 101.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
 Staff (name or post): Test-1
@@ -591,7 +591,7 @@ WorkPackageTest: 1  check built-in methods.
     <---- __str__ done.
 
 WorkPackageTest: 2  check get/set methods.
-    ----> CSV filename:  /Users/kennethlong/Dropbox/01-Work/CCAP/01-LhARA-costing-tool/11-WorkPackages/Dummy4Test.csv
+    ----> CSV filename:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/Dummy4Test.csv
 
 WorkpackageTest: 3  check get/set methods.
  WorkPackage: name: LhARA  ---->
