@@ -35,18 +35,19 @@ Created on Thu 31Dec20;16:42: Version history:
 """
 
 import os
+import copy
 import datetime
 import pandas as pnds
+from datetime import date
 
 class Control(object):
     __instance = None
-    __Debug    = True
+    __Debug    = False
 
 #--------  "Built-in methods":
-    def __new__(cls, _filename):
+    def __new__(cls, _filename=None):
         if _filename == None:
-            raise NoFilenameProvided( \
-                       'CSV filename required; execution termimated.')
+            print(" Control: no filename provided, take defaults.")
         elif not os.path.isfile(_filename):
             raise NonExistantFile('CSV file' + \
                                   _filename + \
@@ -58,25 +59,29 @@ class Control(object):
         cls._filename = _filename
 
         #.. Set defaults:
-        cls._CntrlParams       = cls.getControls(_filename)
-        cls._IssueDate         = None
-        cls._Inflation         = None
-        cls._VAT               = None
-        cls._WorkingMargin     = None
-        cls._Contingency       = None
-        cls._fecChargeFraction = None
+        if _filename != None:
+            cls._CntrlParams   = cls.getControls(_filename)
+        else:
+            cls._CntrlParams   = None
+        cls._IssueDate         = date.today()
+        cls._Inflation         = [1., 1., 1]
+        cls._VAT               = 0.2
+        cls._WorkingMargin     = 0.1
+        cls._Contingency       = [0.2, 0.2, 0.2]
+        cls._fecChargeFraction = [0.8, 0.8]
 
-        cls._cntrlParams = cls.getControls(_filename)
-        if cls.__Debug:
-            print(" Control: control parameters: \n", \
-                  cls._cntrlParams)
+        if _filename != None:
+            cls._cntrlParams = cls.getControls(_filename)
+            if cls.__Debug:
+                print(" Control: control parameters: \n", \
+                      cls._cntrlParams)
 
-        cls._IssueDate, \
-            cls._Inflation, \
-            cls._VAT, \
-            cls._WorkingMargin, \
-            cls._Contingency, \
-            cls._fecChargeFraction = cls.parseControl()
+                cls._IssueDate, \
+                    cls._Inflation, \
+                    cls._VAT, \
+                    cls._WorkingMargin, \
+                    cls._Contingency, \
+                    cls._fecChargeFraction = cls.parseControl()
         
         return cls.__instance
 
@@ -85,12 +90,13 @@ class Control(object):
 
     def __str__(self):
         print(" Control paramters:")
-        print("          Issue date:", self._IssueDate)
-        print("           Inflation:", self._Inflation)
-        print("                 VAT:", self._VAT)
-        print("       WorkingMargin:", self._WorkingMargin)
-        print("         Contingency:", self._Contingency)
-        print(" FEC charge fraction:", self._fecChargeFraction)
+        print("                              Issue date:", self._IssueDate)
+        print(" Inflation(capital, staff, start in year:", self._Inflation)
+        print("                                     VAT:", self._VAT)
+        print("                          Working margin:", self._WorkingMargin)
+        print("                             Contingency:", self._Contingency)
+        print("                     FEC charge fraction:", \
+              self._fecChargeFraction)
         return "     <---- Done."
 
 #--------  I/o methods:
@@ -117,7 +123,7 @@ class Control(object):
                       float(cls._cntrlParams.iat[i,1].strip("%")) / 100. )
                 Inflation.append( \
                       float(cls._cntrlParams.iat[i,2].strip("%")) / 100.)
-                Inflation.append(float(cls._cntrlParams.iat[i,3]))
+                Inflation.append(int(cls._cntrlParams.iat[i,3]))
             elif cls._cntrlParams.iat[i,0].find("VAT") >= 0:
                 VAT = float(cls._cntrlParams.iat[i,1].strip("%")) / 100.
             elif cls._cntrlParams.iat[i,0].find("WorkingMargin") >= 0:
@@ -138,39 +144,66 @@ class Control(object):
                 fEC.append( \
                       float(cls._cntrlParams.iat[i,2].strip("%")) / 100.)
             else:
-                print(cls._cntrlParams.iat[i,0], cls._cntrlParams.iat[i,1], \
+                print("    ----> Control.parseControl: ", \
+                      " unprocessed control field:", \
+                      cls._cntrlParams.iat[i,0], cls._cntrlParams.iat[i,1], \
                       cls._cntrlParams.iat[i,2], cls._cntrlParams.iat[i,2] )
-                print(DateTime)
 
         return DateTime, Inflation, VAT, WorkingMargin, Contingency, fEC
 
-#--------  "Get methods" only; version, reference, and constants
-#.. Methods believed to be self documenting(!)
 
-    def CdVrsn(self):
-        return 1.0
-
-    def PDGref(self):
-        return "P.A. Zyla et al. (Particle Data Group), Prog. Theor. Exp. Phys. 2020, 083C01 (2020)."
-    
-    def mass(self):
-        return 105.6583745
-
-    def lifetime(self):
-        return 2.1969811E-6
-
-    def Michel(self):
-        return [0.75, 0.0, 0.75]
-
-    def SoL(self):
-        return 299792458.
-
-#--------  Utilities:
-    def print(self):
-        print("Control: version:", self.CdVrsn())
-        print("Control: PDG reference:", self.PDGref())
-        print("Control: mass (MeV):", self.mass())
-        print("Control: lifetime (s):", self.lifetime())
-        print("Control: SM Michel parameters [rho, eta, delta]:", self.Michel())
-        print("Control: speed of light (m/s):", self.SoL())
+#--------  "Get methods" only
+    def getIssueDate(self):
+        return self._IssueDate
         
+    def getInflationCapital(self):
+        return self._Inflation[0]
+        
+    def getInflationStaff(self):
+        return self._Inflation[1]
+        
+    def getInflationStrtInYr(self):
+        return self._Inflation[2]
+        
+    def getVAT(self):
+        return self._VAT
+        
+    def getWorkingMargin(self):
+        return self._WorkingMargin
+        
+    def getContingencyMaterial(self):
+        return self._Contingency[0]
+        
+    def getContingencyStaffPrj(self):
+        return self._Contingency[1]
+        
+    def getContingencyStaffCG(self):
+        return self._Contingency[2]
+
+    def getfecChargeFractionPrj(self):
+        return self._fecChargeFraction[0]
+        
+    def getfecChargeFractionCG(self):
+        return self._fecChargeFraction[1]
+        
+    
+#--------  Print methods:
+    def print(self):
+        print(" Control paramters:")
+        print("                                  Issue date:", \
+              self.getIssueDate())
+        print("    Inflation; capital, staff, start in year:", \
+              self.getInflationCapital(), self.getInflationStaff(), \
+              self.getInflationStrtInYr())
+        print("                                         VAT:", \
+              self.getVAT())
+        print("                              Working margin:", \
+              self.getWorkingMargin())
+        print(" Contingency; material, staff (project & CG):", \
+              self.getContingencyMaterial(), \
+              self.getContingencyStaffPrj(), \
+              self.getContingencyStaffCG() )
+        print("             FEC charge fraction; project, CG:", \
+              self.getfecChargeFractionPrj(), \
+              self.getfecChargeFractionCG() )
+        return "     <---- Done."

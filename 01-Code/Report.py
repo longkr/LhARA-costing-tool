@@ -338,12 +338,14 @@ class WorkPackageSummary(Report):
 
     def WorkingMargin(self, _wpInst):
         Line = []
-        Line.append("Working margin (not yet implemented):")
+        Line.append("Working margin:")
         for iYr in range(len(_wpInst._FinancialYears)):
-            Line.append(None)
             Line.append(0.)
-        Line.append(None)
+            if isinstance(_wpInst._WorkingMarginByYear, np.ndarray):
+               Line.append(_wpInst._WorkingMarginByYear[iYr])
         Line.append(0.)
+        if isinstance(_wpInst._WorkingMarginTotal, float):
+           Line.append(_wpInst._WorkingMarginTotal)
         return Line
 
     def Contingency(self, _wpInst):

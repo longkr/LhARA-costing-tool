@@ -12,6 +12,7 @@ import os
 
 import Control as cntrl
 
+
 ##! Start:
 print("========  Control: tests start  ========")
 
@@ -29,6 +30,7 @@ print("    iCntrl singleton test:", \
 if iCntrl != iCntrl1:
     raise Exception("Control is not a singleton class!")
 
+
 ##! Check built-in methods:
 ControlTest = 2
 print()
@@ -38,14 +40,14 @@ print(repr(iCntrl))
 print("    ----> __str__:")
 print(iCntrl)
 
-"""
-##! Check get methods:
+
+##! Check print and get methods in one fell swoop:
 ControlTest = 3
 print()
-print("ControlTest:", ControlTest, " check get methods.")
-print("----> print() method; tests all get methods")
+print("ControlTest:", ControlTest, " check get and print methods.")
+print("    ----> print() method; tests all get methods")
 iCntrl.print()
-"""
+
 
 ##! Complete:
 print()

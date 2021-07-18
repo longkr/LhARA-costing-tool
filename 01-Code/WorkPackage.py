@@ -33,7 +33,7 @@ Class WorkPackage:
                           (£k)
    _EquipmentCostByYear = Total cost of equipment in £k for this workpackage 
                           by FY
-   _TotalEquipCost      = Summed total equipment cost over duration of project 
+   _TotalEquipmentCost  = Summed total equipment cost over duration of project 
                           (£k)
    _TravelByYear        = Cost of travel (£k) per financial year
    _TotalTravel         = Total cost of travel (£k)
@@ -43,6 +43,8 @@ Class WorkPackage:
    _TrvlCnsmCostByYear  = Sum of travel and consumables by financial year (£k)
    _TotalTrvlCnsmCost   = Total of sum of travel and consumables (£k)
    _OtherNonStaffItems  = List of what enters "other non staff items"
+   _WorkingMarginByYear = Working margin (£k) by year
+   _WorkingMarginTotal  = Total workingmargin (£k)
 
     
   Methods:
@@ -107,6 +109,10 @@ Class WorkPackage:
       setTotalTrvlCnsmCost  : Set total travel and consumable cost; 
                               sum cost per year (£k)
 
+      setWorkingMarginByYear: Set working margin by financial year (£k)
+
+      setWorkingMarginTotal : Set total working margin sum cost per year (£k)
+
 
   Print methods:
       printWorkPackage: Dumps pandas data frame read from CSV work package
@@ -140,6 +146,8 @@ Class WorkPackage:
                     self._TotalCGStaffCost  
                     self._EquipmentCostByYear
                     self._TotalEquipmentCost 
+                    self._WorkingMarginByYear
+                    self._WorkingMarginTotal
                  [Classmethod]
 
       createPandasDataframe : Create Pandas data frame containing Work package
@@ -168,12 +176,16 @@ import copy
 import numpy as np
 import pandas as pnds
 
+import Control       as Cntrl
 import Project       as Prj
 import Task          as Tsk
 import Staff         as Stf
 import Equipment     as Eqp
 import TaskStaff     as TskStff
 import TaskEquipment as TskEqp
+
+iCntrl = Cntrl.Control()
+iCntrl.print()
 
 class WorkPackage:
     __Debug    = False
@@ -182,9 +194,11 @@ class WorkPackage:
 #--------  "Built-in methods":
     def __init__(self, filename=None): #, _PrjInst=None):
         if filename == None:
-            raise NoFilenameProvided('CSV filename required; execution termimated.')
+            raise NoFilenameProvided( \
+                'CSV filename required; execution termimated.')
         elif not os.path.isfile(filename):
-            raise NonExistantFile('CSV file' + filename +' does not exist; execution termimated.')
+            raise NonExistantFile( \
+                'CSV file' + filename +' does not exist; execution termimated.')
 
         self._filename        = filename
         self._wpParams        = self.getWorkPackage(filename)
@@ -211,6 +225,8 @@ class WorkPackage:
         self._TotalCGStaffCost    = None
         self._EquipmentCostByYear = None
         self._TotalEquipmentCost  = None
+        self._WorkingMarginByYear = None
+        self._WorkingMarginTotal  = None
 
         self._Project,  \
             self._Name, \
@@ -243,6 +259,8 @@ class WorkPackage:
               self._TotalCGStaffCost)
         print("     Equipment cost by year, total", self._EquipmentCostByYear, \
               self._TotalEquipmentCost)
+        print("     Working margin by year, total", self._WorkingMarginByYear, \
+              self._WorkingMarginTotal)
         print("     Travel cost by year, total", self._TravelByYear,
               self._TotalTravel)
         print("     Consumables cost by year (including other non-staff):",
@@ -303,6 +321,19 @@ class WorkPackage:
     def setTotalTrvlCnsmCost(self):
         self._TotalTrvlCnsmCost = np.sum(self._TrvlCnsmCostByYear)
 
+    def setWorkingMarginByYear(self):
+        self._WorkingMarginByYear = np.array([])
+        for i in range(len(self._FinancialYears)):
+            Cst = self._StaffCostByYear[i] + \
+                  self._EquipmentCostByYear[i]
+            self._WorkingMarginByYear = np.append( \
+                                        self._WorkingMarginByYear, \
+                                        Cst * iCntrl.getWorkingMargin() )
+
+    def setWorkingMarginTotal(self):
+        self._WorkingMarginTotal = np.sum(self._WorkingMarginByYear)
+        
+
     @classmethod
     def getHeader(cls):
         HeaderList = ["Name", "Project", "filename", \
@@ -314,6 +345,8 @@ class WorkPackage:
                               "Total CG staff cost (£k)", \
                               "Equipment cost by year (£k)", \
                               "Total equipment cost (£k)", \
+                              "Working margin by year (£k)", \
+                              "Working magine total (£k)", \
                               "Travel by year (£k)", \
                               "Total travelk (£k)", \
             "Consumables by year (including other non staff items) (£k)", \
@@ -335,6 +368,8 @@ class WorkPackage:
                     self._TotalCGStaffCost, \
                     self._EquipmentCostByYear, \
                     self._TotalEquipmentCost, \
+                    self._WorkingMarginByYear, \
+                    self._WorkingMarginTotal, \
                     self._TravelByYear, \
                     self._TotalTravel, \
                     self._ConsumeByYear, \
@@ -623,7 +658,7 @@ class WorkPackage:
                         _CGStaffCostByYear += iTsk._CGStaffCostByYear
                     if len(_EquipmentCostByYear):
                         _EquipmentCostByYear += iTsk._EquipmentCostByYear
-                
+
             iWp._StaffCostByYear = _StaffCostByYear
             iWp.setTotalStaffCost()
             iWp._CGStaffCostByYear = _CGStaffCostByYear
@@ -631,7 +666,9 @@ class WorkPackage:
             iWp._EquipmentCostByYear = _EquipmentCostByYear
             iWp.setTotalEquipmentCost()
 
-            
+            iWp.setWorkingMarginByYear()
+            iWp.setWorkingMarginTotal()
+              
 #--------  Exceptions:
 class NoFilenameProvided(Exception):
     pass
