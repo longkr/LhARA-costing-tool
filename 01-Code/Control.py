@@ -47,7 +47,8 @@ class Control(object):
 #--------  "Built-in methods":
     def __new__(cls, _filename=None):
         if _filename == None:
-            print(" Control: no filename provided, take defaults.")
+            if  Control.__Debug:
+                print(" Control: no filename provided, take defaults.")
         elif not os.path.isfile(_filename):
             raise NonExistantFile('CSV file' + \
                                   _filename + \
@@ -67,7 +68,7 @@ class Control(object):
         cls._Inflation         = [1., 1., 1]
         cls._VAT               = 0.2
         cls._WorkingMargin     = 0.1
-        cls._Contingency       = [0.2, 0.2, 0.2]
+        cls._Contingency       = [0.2, 0.3, 0.4]
         cls._fecChargeFraction = [0.8, 0.8]
 
         if _filename != None:

@@ -13,11 +13,19 @@ Test script for "Reports" class
 
 import os
 
+import Control     as Cntrl
 import Staff       as Stf
 import WorkPackage as wp
 import Report      as Rprt
 
 ##! Start:
+print("========  Report tests: initialise controls  ========")
+iCntrl = Cntrl.Control()
+print(iCntrl)
+print("========                Initialisation complete  ========")
+
+##! Start:
+print(" ")
 print("========  Reports: tests start  ========")
 
 ##! Check built-in methods:
@@ -146,7 +154,9 @@ print("    <---- CSV work package report generated.")
 print()
 print("ReportsTest:", ReportsTest, \
       " check creation of workpackage summary report.")
-#wpRpt.asCSV()
+DataFrame = wpSumRpt.createPandasDataFrame()
+wpSumRpt.createCSV(DataFrame)
+print(DataFrame)
 print("    <---- CSV work package summary report generated.")
 
 
