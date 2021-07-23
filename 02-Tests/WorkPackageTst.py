@@ -15,6 +15,7 @@ import numpy as np
 import WorkPackage as wp
 import Task        as Tsk
 import TaskStaff   as TskStf
+import Staff       as Stff
 
 ##! Start:
 print("========  WorkPackage: tests start  ========")
@@ -47,10 +48,10 @@ print("    __str__:")
 print(str(WP1))
 print("    <---- __str__ done.")
 
-##! Check get/set methods:
+##! Check get filename:
 WorkPackageTest = 2
 print()
-print("WorkPackageTest:", WorkPackageTest, " check get/set methods.")
+print("WorkPackageTest:", WorkPackageTest, " check getfilename method.")
 print("    ----> CSV filename: ", WP1.getFilename())
 
 ##! Check get/set methods:
@@ -93,6 +94,9 @@ print("    <---- Done.")
 WorkpackageTest = 6
 print()
 print("WorkpackageTest:", WorkpackageTest, " check costing methods.")
+for iStf in Stff.Staff.instances:
+    if iStf._StaffCode == "Barber":
+        iStf._ProjectOrCG = "CG"
 print("    ----> Clean Workpackage instances:")
 nDel = wp.WorkPackage.clean()
 print("    ----> Removed ", nDel, "instances.")

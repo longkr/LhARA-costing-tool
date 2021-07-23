@@ -49,39 +49,40 @@ class Control(object):
         if cls.__instance is None:
             cls.__instance = super(Control, cls).__new__(cls)
         
-            if _filename == None:
+        if _filename == None:
+            if  Control.__Debug:
                 print(" Control: no filename provided, take defaults.")
-            elif not os.path.isfile(_filename):
-                raise NonExistantFile('CSV file' + \
-                                      _filename + \
-                                      ' does not exist; execution termimated.')
+        elif not os.path.isfile(_filename):
+            raise NonExistantFile('CSV file' + \
+                                  _filename + \
+                                  ' does not exist; execution termimated.')
 
-            cls._filename = _filename
+        cls._filename = _filename
 
-            #.. Set defaults:
-            if _filename != None:
-                cls._CntrlParams       = cls.getControls(_filename)
-            else:
-                cls._CntrlParams       = None
-                cls._IssueDate         = date.today()
-                cls._Inflation         = [1., 1., 1]
-                cls._VAT               = 0.2
-                cls._WorkingMargin     = 0.1
-                cls._Contingency       = [0.2, 0.2, 0.2]
-                cls._fecChargeFraction = [0.8, 0.8]
+        #.. Set defaults:
+        if _filename != None:
+            cls._CntrlParams   = cls.getControls(_filename)
+        else:
+            cls._CntrlParams   = None
+        cls._IssueDate         = date.today()
+        cls._Inflation         = [1., 1., 1]
+        cls._VAT               = 0.2
+        cls._WorkingMargin     = 0.1
+        cls._Contingency       = [0.2, 0.3, 0.4]
+        cls._fecChargeFraction = [0.8, 0.8]
 
-            if _filename != None:
-                cls._cntrlParams = cls.getControls(_filename)
-                if cls.__Debug:
-                    print(" Control: control parameters: \n", \
-                          cls._cntrlParams)
+        if _filename != None:
+            cls._cntrlParams = cls.getControls(_filename)
+            if cls.__Debug:
+                print(" Control: control parameters: \n", \
+                      cls._cntrlParams)
 
-                cls._IssueDate, \
-                    cls._Inflation, \
-                    cls._VAT, \
-                    cls._WorkingMargin, \
-                    cls._Contingency, \
-                    cls._fecChargeFraction = cls.parseControl()
+            cls._IssueDate, \
+                cls._Inflation, \
+                cls._VAT, \
+                cls._WorkingMargin, \
+                cls._Contingency, \
+                cls._fecChargeFraction = cls.parseControl()
         
         return cls.__instance
 

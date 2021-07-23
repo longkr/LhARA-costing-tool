@@ -194,7 +194,7 @@ class StaffList(Report):
 Class WorkPackageList:  ---->  "WorkPackageList" report; derived class  <----
 ======================
 
-  WorkPackageList derived class creates and formats the workpackage report.
+  WorkPackageList derived class creates and formats the workpackage list report.
 
 """
 class WorkPackageList(Report):
@@ -290,6 +290,9 @@ class WorkPackageSummary(Report):
                 for Line in Lines:
                     self._Lines.append(Line)
 
+        Line = self.EquipmentTotal(_wpInst)
+        self._Lines.append(Line)
+        
         Line = self.Inflation(_wpInst)
         self._Lines.append(Line)
         
@@ -299,11 +302,9 @@ class WorkPackageSummary(Report):
         Line = self.WorkingMargin(_wpInst)
         self._Lines.append(Line)
         
-        Line = self.Contingency(_wpInst)
-        self._Lines.append(Line)
-        
-        Line = self.EquipmentTotal(_wpInst)
-        self._Lines.append(Line)
+        Lines = self.Contingency(_wpInst)
+        for Line in Lines:
+            self._Lines.append(Line)
         
         Line = self.Consumables(_wpInst)
         self._Lines.append(Line)
@@ -317,23 +318,29 @@ class WorkPackageSummary(Report):
         Line = self.Total(_wpInst)
         self._Lines.append(Line)
                 
-        
+    def __str__(self):
+        print(" Report: Name: ", self._Name)
+        print("     Output directory path: ", self._ReportPath)
+        print("     Report file name: ", self._FileName)
+        print("     Header fields:", self._Header)
+        for i in range(len(self._Lines)):
+            print("     ", self._Lines[i])
+        return "     <---- Report __str__ done."
+
+
+#--------  Processing methods:
     def Total(self, _wpInst):
         Line = []
         Line.append("Total:")
         for iYr in range(len(_wpInst._FinancialYears)):
             Line.append(None)
-            if isinstance(_wpInst._StaffCostByYear, np.ndarray) and \
-               isinstance(_wpInst._EquipmentCostByYear, np.ndarray):
-                Line.append(_wpInst._StaffCostByYear[iYr] + \
-                            _wpInst._EquipmentCostByYear[iYr])
+            if isinstance(_wpInst._TotalCostByYear, np.ndarray):
+                Line.append(_wpInst._TotalCostByYear[iYr])
             else:
                 Line.append(None)
         Line.append(None)
-        if isinstance(_wpInst._TotalStaffCost, float) and \
-           isinstance(_wpInst._TotalEquipmentCost,float):
-            Line.append(_wpInst._TotalStaffCost + \
-                        _wpInst._TotalEquipmentCost)
+        if isinstance(_wpInst._GrandTotal, float):
+            Line.append(_wpInst._GrandTotal)
         else:
             Line.append(None)
         return Line
@@ -342,23 +349,60 @@ class WorkPackageSummary(Report):
         Line = []
         Line.append("Working margin:")
         for iYr in range(len(_wpInst._FinancialYears)):
-            Line.append(0.)
+            Line.append(None)
             if isinstance(_wpInst._WorkingMarginByYear, np.ndarray):
-               Line.append(_wpInst._WorkingMarginByYear[iYr])
-        Line.append(0.)
+                Line.append(_wpInst._WorkingMarginByYear[iYr])
+            else:
+                Line.append(0.)
+    
+        Line.append(None)
         if isinstance(_wpInst._WorkingMarginTotal, float):
-           Line.append(_wpInst._WorkingMarginTotal)
+            Line.append(_wpInst._WorkingMarginTotal)
+        else:
+            Line.append(0.)
+            
         return Line
 
     def Contingency(self, _wpInst):
-        Line = []
-        Line.append("Contingency (not yet implemented):")
+        Line  = []
+        Lines = []
+        
+        Line.append("Contingency, equipment:")
         for iYr in range(len(_wpInst._FinancialYears)):
             Line.append(None)
-            Line.append(0.)
+            if isinstance(_wpInst._ContingencyByYear[0], np.ndarray):
+               Line.append(_wpInst._ContingencyByYear[0][iYr])
+            else:
+               Line.append(0.)
         Line.append(None)
-        Line.append(0.)
-        return Line
+        Line.append(_wpInst._ContingencyTotal[0])
+        Lines.append(Line)
+
+        Line = []
+        Line.append("Contingency, CG staff:")
+        for iYr in range(len(_wpInst._FinancialYears)):
+            Line.append(None)
+            if isinstance(_wpInst._ContingencyByYear[2], np.ndarray):
+               Line.append(_wpInst._ContingencyByYear[2][iYr])
+            else:
+               Line.append(0.)
+        Line.append(None)
+        Line.append(_wpInst._ContingencyTotal[1])
+        Lines.append(Line)
+        
+        Line = []
+        Line.append("Contingency, all staff:")
+        for iYr in range(len(_wpInst._FinancialYears)):
+            Line.append(None)
+            if isinstance(_wpInst._ContingencyByYear[1], np.ndarray):
+               Line.append(_wpInst._ContingencyByYear[1][iYr])
+            else:
+               Line.append(0.)
+        Line.append(None)
+        Line.append(_wpInst._ContingencyTotal[2])
+        Lines.append(Line)
+
+        return Lines
 
     def RiskMitigationStaff(self, _wpInst):
         Line = []
@@ -528,22 +572,23 @@ class WorkPackageSummary(Report):
         Line.append(None)
         return Line
         
-
-    def __str__(self):
-        print(" Report: Name: ", self._Name)
-        print("     Output directory path: ", self._ReportPath)
-        print("     Report file name: ", self._FileName)
-        print("     Header fields:", self._Header)
-        for i in range(len(self._Lines)):
-            print("     ", self._Lines[i])
-        return "     <---- Report __str__ done."
-
     
 #--------  Report:
     def asCSV(self):
-        dataframe = wp.WorkPackage.createPandasDataframe()
+
+        Data = []
+        Data.append(self._Header)
+        for i in range(len(self._Lines)):
+            Data.append(self._Lines[i])
+        print(Data)
+        
+        DataFrame = pnds.DataFrame(Data)
+        print(DataFrame)
+            
         filename = os.path.join(self._ReportPath, self._FileName)
-        wp.WorkPackage.createCSV(dataframe, filename)
+        print(filename)
+
+        DataFrame.to_csv(filename)
         
 
 #--------  Exceptions:

@@ -45,6 +45,12 @@ Class WorkPackage:
    _OtherNonStaffItems  = List of what enters "other non staff items"
    _WorkingMarginByYear = Working margin (£k) by year
    _WorkingMarginTotal  = Total workingmargin (£k)
+   _ContingencyByYear   = Contingency by year, list of np arrays:
+                          Equipment, Staff, CG staff
+   _ContingencyTotal    = Total, equipment, staff, CG staff
+   _TotalCostByYear     = Sum of equipment, staff, trave, consumables, other non-staff,
+                          working margin, and contingency
+   -GrandTotal          = Grand total cost
 
     
   Methods:
@@ -113,6 +119,10 @@ Class WorkPackage:
 
       setWorkingMarginTotal : Set total working margin sum cost per year (£k)
 
+      setContingencyByYear  : Set contingency per year (£k)
+
+      setContingencyTotal   : Sums contingency by year (£k)
+
 
   Print methods:
       printWorkPackage: Dumps pandas data frame read from CSV work package
@@ -148,6 +158,8 @@ Class WorkPackage:
                     self._TotalEquipmentCost 
                     self._WorkingMarginByYear
                     self._WorkingMarginTotal
+                    self._ContingencyByYear
+                    self._ContingencyTotal
                  [Classmethod]
 
       createPandasDataframe : Create Pandas data frame containing Work package
@@ -190,6 +202,9 @@ class WorkPackage:
     __Debug    = False
     instances = []
 
+    if __Debug:
+        iCntrl.print()
+
 #--------  "Built-in methods":
     def __init__(self, filename=None): #, _PrjInst=None):
         if filename == None:
@@ -226,6 +241,10 @@ class WorkPackage:
         self._TotalEquipmentCost  = None
         self._WorkingMarginByYear = None
         self._WorkingMarginTotal  = None
+        self._ContingencyByYear   = [None, None, None]
+        self._ContingencyTotal    = [None, None, None]
+        self._TotalCostByYear     = None
+        self._GrandTotal          = None
 
         self._Project,  \
             self._Name, \
@@ -260,6 +279,12 @@ class WorkPackage:
               self._TotalEquipmentCost)
         print("     Working margin by year, total", self._WorkingMarginByYear, \
               self._WorkingMarginTotal)
+        print("     Contingency, equipment, by year, total", self._ContingencyByYear[0], \
+              self._ContingencyTotal[0])
+        print("     Contingency, staff, by year, total", self._ContingencyByYear[1], \
+              self._ContingencyTotal[1])
+        print("     Contingency, staff CG, by year, total", self._ContingencyByYear[2], \
+              self._ContingencyTotal[2])
         print("     Travel cost by year, total", self._TravelByYear,
               self._TotalTravel)
         print("     Consumables cost by year (including other non-staff):",
@@ -332,7 +357,51 @@ class WorkPackage:
     def setWorkingMarginTotal(self):
         self._WorkingMarginTotal = np.sum(self._WorkingMarginByYear)
         
+    def setWorkingMarginTotal(self):
+        self._WorkingMarginTotal = np.sum(self._WorkingMarginByYear)
+        
+    def setContingencyByYear(self):
+        self._ContingencyByYear = []
+        ContEquip               = np.array([])
+        ContStaff               = np.array([])
+        ContStaffCG             = np.array([])
 
+        for i in range(len(self._FinancialYears)):
+            # Equipment:
+            Cnt = self._EquipmentCostByYear[i] * iCntrl.getContingencyMaterial()
+            ContEquip = np.append(ContEquip, Cnt)
+            # Staff:
+            StfByYr   = self._StaffCostByYear[i]
+            CGStfByYr = self._CGStaffCostByYear[i]
+            Cnt1 =  (StfByYr - CGStfByYr) * iCntrl.getContingencyStaffPrj()
+            Cnt2 =  CGStfByYr * iCntrl.getContingencyStaffCG()
+            Cnt  = Cnt1 + Cnt2
+            ContStaff = np.append(ContStaff, Cnt)
+            # CG staff:
+            ContStaffCG = np.append(ContStaffCG, Cnt2)
+
+        self._ContingencyByYear = [ ContEquip, ContStaff, ContStaffCG ]
+
+    def setContingencyTotal(self):
+        self._ContingencyTotal    = [0., 0., 0.]
+        self._ContingencyTotal[0] = np.sum(self._ContingencyByYear[0])
+        self._ContingencyTotal[1] = np.sum(self._ContingencyByYear[1])
+        self._ContingencyTotal[2] = np.sum(self._ContingencyByYear[2])
+        
+    def setTotalCostByYear(self):
+        self._TotalCostByYear = np.array([])
+        for i in range(len(self._FinancialYears)):
+            Cst = self._StaffCostByYear[i]   + \
+                self._EquipmentCostByYear[i] + \
+                self._TrvlCnsmCostByYear[i]  + \
+                self._WorkingMarginByYear[i] + \
+                self._ContingencyByYear[0][i] + \
+                self._ContingencyByYear[1][i]
+            self._TotalCostByYear = np.append(self._TotalCostByYear, Cst)
+
+    def setGrandTotal(self):
+        self._GrandTotal = np.sum(self._TotalCostByYear)
+        
     @classmethod
     def getHeader(cls):
         HeaderList = ["Name", "Project", "filename", \
@@ -345,7 +414,13 @@ class WorkPackage:
                               "Equipment cost by year (£k)", \
                               "Total equipment cost (£k)", \
                               "Working margin by year (£k)", \
-                              "Working magine total (£k)", \
+                              "Working margin total (£k)", \
+                              "Contingency, equipment, by year (£k)", \
+                              "Contingency equiment total (£k)", \
+                              "Contingency, staff, by year (£k)", \
+                              "Contingency staff total (£k)", \
+                              "Contingency, CG staff, by year (£k)", \
+                              "Contingency CG staff total (£k)", \
                               "Travel by year (£k)", \
                               "Total travelk (£k)", \
             "Consumables by year (including other non staff items) (£k)", \
@@ -369,6 +444,12 @@ class WorkPackage:
                     self._TotalEquipmentCost, \
                     self._WorkingMarginByYear, \
                     self._WorkingMarginTotal, \
+                    self._ContingencyByYear[0], \
+                    self._ContingencyTotal[0], \
+                    self._ContingencyByYear[1], \
+                    self._ContingencyTotal[1], \
+                    self._ContingencyByYear[2], \
+                    self._ContingencyTotal[2], \
                     self._TravelByYear, \
                     self._TotalTravel, \
                     self._ConsumeByYear, \
@@ -538,7 +619,7 @@ class WorkPackage:
                 EqpInst.setTotalEquipmentCost()
                 if self.__Debug:
                     print(" WorkPackage; parseWorkPackage: ", \
-                          "equipment cost by year:", EqpInst._EquipmentCost, \
+                          "equipment cost by year:", EqpInst._EquipmentCostByYear, \
                           " Total:", EqpInst._TotalEquipmentCost)
             elif str(self._wpParams.iat[i,0]) == "EndStaff":
                 pass
@@ -667,6 +748,12 @@ class WorkPackage:
 
             iWp.setWorkingMarginByYear()
             iWp.setWorkingMarginTotal()
+
+            iWp.setContingencyByYear()
+            iWp.setContingencyTotal()
+
+            iWp.setTotalCostByYear()
+            iWp.setGrandTotal()
               
 #--------  Exceptions:
 class NoFilenameProvided(Exception):

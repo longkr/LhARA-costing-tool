@@ -143,6 +143,7 @@ print("    ----> Work package summary report instance created.")
 print(wpSumRpt)
 DataFrame = wpSumRpt.createPandasDataFrame()
 wpSumRpt.createCSV(DataFrame)
+print(DataFrame)
 print("    <---- Work package summary report done.")
 
 
