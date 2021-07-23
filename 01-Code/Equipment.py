@@ -59,7 +59,11 @@ Class Equipment:
            print: Prints dump  of all instances
                 [Class method]
 
+
   Processing methods:
+      clean: Remove (delete) instances of class that are not valid.
+                [Class method]
+
       createPandasDataframe : Create Pandas data frame containing equiment
                               parameters.
                               [Classmethod]
@@ -168,6 +172,7 @@ class Equipment:
         if cls.__Debug:
             print(" Equipment; createPandasDataframe: \n", EquipDataframe)
         return EquipDataframe
+
     
 #--------  Print methods:
     @classmethod
