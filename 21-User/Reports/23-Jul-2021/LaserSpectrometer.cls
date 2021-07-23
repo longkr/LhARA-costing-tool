@@ -19,12 +19,14 @@
 17,Stands,,25.0,,0.0,,0.0,,0.0,,0.0,,25.0
 18,Power supplies,,60.0,,0.0,,0.0,,0.0,,0.0,,60.0
 19,Scintilating and clear fibre,,65.0,,0.0,,0.0,,0.0,,0.0,,65.0
-20,Inflation (not yet implemented):,,0.0,,0.0,,0.0,,0.0,,0.0,,0.0
-21,"Cost of risk mitigation, equipment (not yet implemented):",,0.0,,0.0,,0.0,,0.0,,0.0,,0.0
-22,Working margin:,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-23,Contingency (not yet implemented):,,0.0,,0.0,,0.0,,0.0,,0.0,,0.0
-24,Equipment total:,,650.0,,0.0,,0.0,,0.0,,0.0,,650.0
-25,Consumables,,0.0,,0.0,,0.0,,0.0,,0.0,,0.0
-26,Travel,,0.0,,0.0,,0.0,,0.0,,0.0,,0.0
-27,,,,,,,,,,,,,
-28,Total:,,686.5,,0.0,,0.0,,0.0,,0.0,,686.5
+20,Equipment total:,,650.0,,0.0,,0.0,,0.0,,0.0,,650.0
+21,Inflation (not yet implemented):,,0.0,,0.0,,0.0,,0.0,,0.0,,0.0
+22,"Cost of risk mitigation, equipment (not yet implemented):",,0.0,,0.0,,0.0,,0.0,,0.0,,0.0
+23,Working margin:,,68.65,,0.0,,0.0,,0.0,,0.0,,68.65
+24,"Contingency, equipment:",,130.0,,0.0,,0.0,,0.0,,0.0,,130.0
+25,"Contingency, CG staff:",,0.0,,0.0,,0.0,,0.0,,0.0,,10.95
+26,"Contingency, all staff:",,10.95,,0.0,,0.0,,0.0,,0.0,,0.0
+27,Consumables,,0.0,,0.0,,0.0,,0.0,,0.0,,0.0
+28,Travel,,0.0,,0.0,,0.0,,0.0,,0.0,,0.0
+29,,,,,,,,,,,,,
+30,Total:,,896.1,,0.0,,0.0,,0.0,,0.0,,896.1
