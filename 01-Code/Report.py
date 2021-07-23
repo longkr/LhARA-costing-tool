@@ -200,7 +200,9 @@ Class WorkPackageList:  ---->  "WorkPackageList" report; derived class  <----
 class WorkPackageList(Report):
     def __init__(self, _ReportPath, _FileName):
 
-        Report.__init__(self, "Work package report: summary of all workpackages", _ReportPath, _FileName)
+        Report.__init__(self, \
+                        "Work package report: summary of all workpackages", \
+                        _ReportPath, _FileName)
 
         self._Header = wp.WorkPackage.getHeader()
         self._Lines = []
@@ -430,7 +432,6 @@ class WorkPackageSummary(Report):
             for i in range(2):
                 Line.append(None)
         Lines.append(copy.deepcopy(Line))
-        print(Line)
     #.. Equipment:
         InstEqp = ""
         Line = []
@@ -446,7 +447,6 @@ class WorkPackageSummary(Report):
                 Line.append(None)
                 Line.append(iEqp._TotalEquipmentCost)
                 Lines.append(copy.deepcopy(Line))
-                print(Line)
         return Lines
         
     def EquipmentHeader(self, _wpInst):
@@ -494,7 +494,6 @@ class WorkPackageSummary(Report):
         for iTskStf in TskStf.TaskStaff.instances:
             Line = []
             if iTskStf._Task == _Tsk:
-                print(iTskStf)
                 iStf = iTskStf._Staff
                 if InstCd != iStf._InstituteCode:
                     InstCd = iStf._InstituteCode

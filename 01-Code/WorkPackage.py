@@ -185,7 +185,6 @@ import TaskStaff     as TskStff
 import TaskEquipment as TskEqp
 
 iCntrl = Cntrl.Control()
-iCntrl.print()
 
 class WorkPackage:
     __Debug    = False
