@@ -25,8 +25,7 @@ filename  = os.path.join(LhARAPATH, \
                          '10-Control/LhARA-costing-tool-control.csv')
 iCntrl  = cntrl.Control(filename)
 iCntrl1 = cntrl.Control(filename)
-print("    iCntrl singleton test:", \
-      id(iCntrl), id(iCntrl1), id(iCntrl)-id(iCntrl1))
+print("    iCntrl singleton test -- OK if 0:", id(iCntrl)-id(iCntrl1))
 if iCntrl != iCntrl1:
     raise Exception("Control is not a singleton class!")
 

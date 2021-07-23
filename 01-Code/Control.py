@@ -8,14 +8,25 @@ Class Control:
   tool.  This class is a singleton class so that there is no ambiguity 
   about which values are in use.
 
+
   Class attributes:
   -----------------
   __instance : Set on creation of first (and only) instance.
       
+
   Instance attributes:
   --------------------
-   _
+   __filename  : Filename from which parameters have been read.  If None
+                 then default values are used.
+   _CntrlParams: Pandas data frame instance containing parameters
+   _IssueDate         = date.today(); i.e. date when reports etc. are generated
+   _Inflation         = Equipment, Staff, year to start inflation calculation
+   _VAT               = VAT charge rate
+   _WorkingMargin     = Working margin (fractio)
+   _Contingency       = Contingency (fraction) equipment, project staff, CG staff
+   _fecChargeFraction = fEC charge fraction on staff, project, CG
     
+
   Methods:
   --------
   Built-in methods __new__, __repr__ and __str__.
@@ -24,7 +35,34 @@ Class Control:
       __repr__: One liner with call.
       __str__ : Dump of constants
 
-  Get/set methods:
+
+  Get/set methods:   <-------- believed to be "self documenting"!
+     getIssueDate
+        
+     getInflationCapital
+        
+     getInflationStaff
+        
+     getInflationStrtInYr
+        
+     getVAT
+        
+     getWorkingMargin
+        
+     getContingencyMaterial
+        
+     getContingencyStaffPrj
+        
+     getContingencyStaffCG
+
+     getfecChargeFractionPrj
+        
+     getfecChargeFractionCG
+
+  Print methods:
+     print: Prints control flag settings
+
+
 
   
 Created on Thu 31Dec20;16:42: Version history:
