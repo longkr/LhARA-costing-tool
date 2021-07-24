@@ -167,7 +167,12 @@ class Staff:
         if self._AnnualCost == None:
             _AnnualCost = -100.
         print("Staff (name or post):", self._NameOrPost)
-        print("    Filename:", _filename)
+        if self.__Debug:
+            print("     File name: ", _filename)
+        else:
+            dirname,   basename   = os.path.split(_filename)
+            dirname1,  subdirname = os.path.split(dirname)
+            print("    File name: ", subdirname + "/" + basename)
         print("    Staff code:", self._StaffCode, \
               "; Institute code:", self._InstituteCode, \
               "; Grade or level:", self._GradeOrLevel, \

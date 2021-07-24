@@ -123,7 +123,6 @@ class Report:
             print("     Output directory path: ", self._ReportPath)
         else:
             dirname,  basename   = os.path.split(self._ReportPath)
-            print(basename, dirname)
             print("     Output directory path: ", basename)
         print("     Report file name: ", self._FileName)
         return "     <---- Report __str__ done."
@@ -155,6 +154,8 @@ Class Overview:   -------->  "Overview" report; derived class  <--------
 
 """
 class Overview(Report):
+    __Debug   = False
+
     def __init__(self, _ReportPath, _FileName):
 
         Report.__init__(self, "Overview report", _ReportPath, _FileName)
@@ -169,6 +170,8 @@ Class StaffList:   -------->  "Staff" report; derived class  <--------
 
 """
 class StaffList(Report):
+    __Debug   = False
+
     def __init__(self, _ReportPath, _FileName):
 
         Report.__init__(self, "Staff report: full staff list", _ReportPath, _FileName)
@@ -180,7 +183,11 @@ class StaffList(Report):
 
     def __str__(self):
         print(" Report: Name: ", self._Name)
-        print("     Output directory path: ", self._ReportPath)
+        if self.__Debug:
+            print("     Output directory path: ", self._ReportPath)
+        else:
+            dirname,  basename   = os.path.split(self._ReportPath)
+            print("     Output directory path: ", basename)
         print("     Report file name: ", self._FileName)
         print("     Header fields:", self._Header)
         for i in range(len(self._Lines)):
@@ -203,6 +210,8 @@ Class WorkPackageList:  ---->  "WorkPackageList" report; derived class  <----
 
 """
 class WorkPackageList(Report):
+    __Debug   = False
+
     def __init__(self, _ReportPath, _FileName):
 
         Report.__init__(self, \
@@ -216,7 +225,11 @@ class WorkPackageList(Report):
 
     def __str__(self):
         print(" Report: Name: ", self._Name)
-        print("     Output directory path: ", self._ReportPath)
+        if self.__Debug:
+            print("     Output directory path: ", self._ReportPath)
+        else:
+            dirname,  basename   = os.path.split(self._ReportPath)
+            print("     Output directory path: ", basename)
         print("     Report file name: ", self._FileName)
         print("     Header fields:", self._Header)
         for i in range(len(self._Lines)):
@@ -240,6 +253,8 @@ Class WorkPackageSummary:  ---->  "WorkPackageSummary" report  <----
 
 """
 class WorkPackageSummary(Report):
+    __Debug   = False
+
     def __init__(self, _ReportPath, _FileName, _wpInst=None):
 
         if not isinstance(_wpInst, wp.WorkPackage):
@@ -325,7 +340,11 @@ class WorkPackageSummary(Report):
                 
     def __str__(self):
         print(" Report: Name: ", self._Name)
-        print("     Output directory path: ", self._ReportPath)
+        if self.__Debug:
+            print("     Output directory path: ", self._ReportPath)
+        else:
+            dirname,  basename   = os.path.split(self._ReportPath)
+            print("     Output directory path: ", basename)
         print("     Report file name: ", self._FileName)
         print("     Header fields:", self._Header)
         for i in range(len(self._Lines)):
