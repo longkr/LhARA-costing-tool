@@ -55,6 +55,6 @@ if [ $debug == "true" ]; then
     echo "    which python:" $test
 fi
 
-#-------- Execute LhARA costing tool start  --------  --------  --------  --------  
+#-------- Execute LhARA costing tool start  --------  --------  --------  
 
 python $LhARAPATH/04-Scripts/run-LhARA-costing-tool.py "Debug=$debug"
