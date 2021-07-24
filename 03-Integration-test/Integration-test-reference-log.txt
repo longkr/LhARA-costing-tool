@@ -258,38 +258,38 @@ ReportsTest: 2  check Staff list derived class methods.
      Header fields: ['Staff code', 'Name or post', 'Filename', 'institute code', 'Grade', 'Annnual cost', 'Funding source', 'Comment']
       ['ASTEC-MechEng-1', 'GraduateEngineer', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-ASTEC', 'BandD', 44.808, 'Project', nan]
       ['STEC-MechTech-1', 'Engineering support', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-ASTEC', 'BandE', 56.616, 'Project', nan]
-      ['ISIS-Staff-1', 'Thomason', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-ISIS', 'BandF', 122.811, 'Project', nan]
-      ['PPD-Staff-1', 'Matheson', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-PPD', 'BandE', 56.616, 'Project', nan]
-      ['PPD-PostDoc-1', 'Whyte', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-PPD', 'BandE', 98.512, 'Project', nan]
-      ['TD-Staff-1', 'Boehm', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-TD', 'BandF', 70.581, 'Project', nan]
-      ['IC-Phys-Staff-1', 'Beuselinck', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Phys. Prog.', 91.0, 'CG', nan]
-      ['IC-Phys-PostDoc-1', 'Blackmore', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Phys.', 59.202, 'Project', nan]
-      ['IC-Phys-Staff-2', 'Kurup', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Phys.', 64.328, 'Project', nan]
-      ['IC- Phys-Ac-1', 'Long', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Academic', 104.404, 'Project', nan]
-      ['IC-Phys-Ac-2', 'Pasternak', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Academic', 77.042, 'Project', nan]
-      ['IC-Phys-Ac-3', 'Pozimski', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Academic', 124.053, 'CG', nan]
-      ['IC-Phys-MechEng-1', 'Barber', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'MEng', 100.0, 'CG', nan]
-      ['IC-Phys-ElecEng-1', 'Borg', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'EEng', 100.0, 'CG', nan]
-      ['IC-Phys-PG-1', 'Student 1', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'PG', 25.0, 'Project', nan]
-      ['IC-Phys-PD-1', 'Post doc 1', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Post doc', 100.0, 'Project', nan]
-      ['Strthclyd-Phys-Stf-1', 'Staff ', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Strathcld-Physics', 'Staff', 120.0, 'Project', nan]
+      ['ISIS-Staff-1', 'Drew A', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-ISIS', 'BandF', 122.811, 'Project', nan]
+      ['PPD-Staff-1', 'Drew B', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-PPD', 'BandE', 56.616, 'Project', nan]
+      ['PPD-PostDoc-1', 'Barley-McGrew', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-PPD', 'BandE', 98.512, 'Project', nan]
+      ['TD-Staff-1', 'Cuthbert', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-TD', 'BandF', 70.581, 'Project', nan]
+      ['IC-Phys-Staff-1', 'Dibble', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Phys. Prog.', 91.0, 'CG', nan]
+      ['IC-Phys-PostDoc-1', 'Grub', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Phys.', 59.202, 'Project', nan]
+      ['IC-Phys-Staff-2', 'Blanchett', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Phys.', 64.328, 'Project', nan]
+      ['IC- Phys-Ac-1', 'Monroe', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Academic', 104.404, 'Project', nan]
+      ['IC-Phys-Ac-2', 'Welsch', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Academic', 77.042, 'Project', nan]
+      ['IC-Phys-Ac-3', 'Einstein', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Academic', 124.053, 'CG', nan]
+      ['IC-Phys-MechEng-1', 'Noether', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'MEng', 100.0, 'CG', nan]
+      ['IC-Phys-ElecEng-1', 'Johnson', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'EEng', 100.0, 'CG', nan]
+      ['IC-Phys-PG-1', 'Patel', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'PG', 25.0, 'Project', nan]
+      ['IC-Phys-PD-1', 'Rees-Mogg', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Imperial-Physics', 'Post doc', 100.0, 'Project', nan]
+      ['Strthclyd-Phys-Stf-1', 'Presley', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'Strathcld-Physics', 'Staff', 120.0, 'Project', nan]
      <---- Report __str__ done.
     <---- Staff list report test done.
 
 ReportsTest: 2  check work package list derived class methods.
-    ----> list of WP definition files: ['2021-07-02-LhARA-PM-WP-cost-sheet-d1.csv', 'Dummy4Test.csv', '2021-07-03-LhARA-Spctrmtr-cost-sheet-d1.csv']
-    ----> Reading data from:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/2021-07-02-LhARA-PM-WP-cost-sheet-d1.csv
+    ----> list of WP definition files: ['LhARA-PM-WP-cost-sheet-d1.csv', 'Dummy4Test.csv', 'LhARA-Spctrmtr-cost-sheet-d1.csv']
+    ----> Reading data from:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/LhARA-PM-WP-cost-sheet-d1.csv
     ----> Reading data from:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/Dummy4Test.csv
-    ----> Reading data from:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/2021-07-03-LhARA-Spctrmtr-cost-sheet-d1.csv
+    ----> Reading data from:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/LhARA-Spctrmtr-cost-sheet-d1.csv
     ----> Work package list report instance created.
           Should contain:  3  work packages.
  Report: Name:  Work package report: summary of all workpackages
      Output directory path:  99-Scratch
      Report file name:  TestWorkPackageReport.csv
      Header fields: ['Name', 'Project', 'filename', 'Work package manager', 'Number of financial years', 'Staff cost per year (£k)', 'CG staff cost per year (£k)', 'Total staff cost (£k)', 'Total CG staff cost (£k)', 'Equipment cost by year (£k)', 'Total equipment cost (£k)', 'Working margin by year (£k)', 'Working margin total (£k)', 'Contingency, equipment, by year (£k)', 'Contingency equiment total (£k)', 'Contingency, staff, by year (£k)', 'Contingency staff total (£k)', 'Contingency, CG staff, by year (£k)', 'Contingency CG staff total (£k)', 'Travel by year (£k)', 'Total travelk (£k)', 'Consumables by year (including other non staff items) (£k)', 'Total consumables (£k)', 'Travel and consumables by year (£k)', 'Total travel and consumables (£k)', 'Other non staff items']
-      ['Management', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/2021-07-02-LhARA-PM-WP-cost-sheet-d1.csv', 'XXXX XXXX', ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27'], None, None, None, None, None, None, None, None, None, None, None, None, None, None, array([8., 9., 8., 9., 8.]), 42.0, array([24., 27., 24., 27., 24.]), 126.0, array([32., 36., 32., 36., 32.]), 168.0, ['PPI, engagement, and outreach', 'Review-committee expenses']]
+      ['Management', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/LhARA-PM-WP-cost-sheet-d1.csv', 'XXXX XXXX', ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27'], None, None, None, None, None, None, None, None, None, None, None, None, None, None, array([8., 9., 8., 9., 8.]), 42.0, array([24., 27., 24., 27., 24.]), 126.0, array([32., 36., 32., 36., 32.]), 168.0, ['PPI, engagement, and outreach', 'Review-committee expenses']]
       ['IonAcoustic', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/Dummy4Test.csv', 'John Doe', ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27'], None, None, None, None, None, None, None, None, None, None, None, None, None, None, array([2., 3., 4., 5., 5.]), 19.0, array([3., 4., 5., 6., 6.]), 24.0, array([ 5.,  7.,  9., 11., 11.]), 43.0, ['Review-committee expenses']]
-      ['LaserSpectrometer', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/2021-07-03-LhARA-Spctrmtr-cost-sheet-d1.csv', 'John Doe', ['2021/22', '2022/23', '2023/24', '2024/25', '2025/26'], None, None, None, None, None, None, None, None, None, None, None, None, None, None, array([0., 0., 0., 0., 0.]), 0.0, array([0., 0., 0., 0., 0.]), 0.0, array([0., 0., 0., 0., 0.]), 0.0, ['Review-committee expenses']]
+      ['LaserSpectrometer', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/LhARA-Spctrmtr-cost-sheet-d1.csv', 'John Doe', ['2021/22', '2022/23', '2023/24', '2024/25', '2025/26'], None, None, None, None, None, None, None, None, None, None, None, None, None, None, array([0., 0., 0., 0., 0.]), 0.0, array([0., 0., 0., 0., 0.]), 0.0, array([0., 0., 0., 0., 0.]), 0.0, ['Review-committee expenses']]
      <---- Report __str__ done.
     <---- Work package list report test done.
     ----> Work package summary report instance created.
@@ -825,12 +825,12 @@ WorkpackageTest: 6  check costing methods.
  WorkPackage: name: LhARA  ---->
      Project: LhARA  Manager: John Doe  Financial years: ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27']
      Staff cost by year, total: [340. 340.  40.  40.  40.] 800.0
-     CG staff cost by year, total: [100. 100.   0.   0.   0.] 200.0
+     CG staff cost by year, total: [0. 0. 0. 0. 0.] 0.0
      Equipment cost by year, total [365.  48.  20.   0.   0.] 433.00000000000006
      Working margin by year, total [70.5 38.8  6.   4.   4. ] 123.30000000000001
      Contingency, equipment, by year, total [73.   9.6  4.   0.   0. ] 86.60000000000002
-     Contingency, staff, by year, total [112. 112.  12.  12.  12.] 260.0
-     Contingency, staff CG, by year, total [40. 40.  0.  0.  0.] 80.0
+     Contingency, staff, by year, total [102. 102.  12.  12.  12.] 240.0
+     Contingency, staff CG, by year, total [0. 0. 0. 0. 0.] 0.0
      Travel cost by year, total [2. 3. 4. 5. 5.] 19.0
      Consumables cost by year (including other non-staff): [3. 4. 5. 6. 6.] 24.0
      Other non-staff categories: ['Review-committee expenses']

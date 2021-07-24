@@ -133,7 +133,9 @@ class LhARACostingTool(object):
 
         BaseREPORTPATH = os.getenv('REPORTPATH')
         RptDt = date.today()
-        if os.path.isdir(BaseREPORTPATH):
+        if BaseREPORTPATH == None or not os.path.isdir(BaseREPORTPATH):
+            print("     ----> REPORTPATH not set, no reports generated.")
+        else:
             REPORTPATH = os.path.join(BaseREPORTPATH, \
                                       RptDt.strftime("%d-%b-%Y"))
             if not os.path.isdir(REPORTPATH):
@@ -155,14 +157,13 @@ class LhARACostingTool(object):
             for iWP in wp.WorkPackage.instances:
                 filepath = REPORTPATH
                 filename = iWP._Name + ".cls"
-            if cls._Debug:
-                print("                 ----> ", iWP._Name)
-            wpSumRpt = Rpt.WorkPackageSummary(filepath, \
-                                              filename, \
-                                              iWP)
-            DataFrame = wpSumRpt.createPandasDataFrame()
-            wpSumRpt.createCSV(DataFrame)
+                if cls._Debug:
+                    print("                 ----> ", iWP._Name)
+                wpSumRpt = Rpt.WorkPackageSummary(filepath, \
+                                                  filename, \
+                                                  iWP)
+                DataFrame = wpSumRpt.createPandasDataFrame()
+                wpSumRpt.createCSV(DataFrame)
             if cls._Debug:
                 print("                  <---- done")
-        else:
-            print("     ----> REPORTPATH not set, no reports generated.")
+   
