@@ -47,14 +47,6 @@ if [ $debug == "true" ]; then
 fi
 export REPORTPATH
 
-#..  Set virtual environment
-source /Users/kennethlong/venv/bin/activate
-if [ $debug == "true" ]; then
-    echo "Virtual environment set:"
-    test=$(which python)
-    echo "    which python:" $test
-fi
-
 #-------- Execute LhARA costing tool start  --------  --------  --------  
 
-python $LhARAPATH/04-Scripts/run-LhARA-costing-tool.py "Debug=$debug"
+python3 $LhARAPATH/04-Scripts/run-LhARA-costing-tool.py "Debug=$debug"

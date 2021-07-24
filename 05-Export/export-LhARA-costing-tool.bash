@@ -50,4 +50,3 @@ fi
 sed "s+$search+$replace+g" $filename > temp
 mv temp $filename
 chmod +x $filename
-
