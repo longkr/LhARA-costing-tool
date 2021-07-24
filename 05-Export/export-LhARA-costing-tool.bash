@@ -4,6 +4,11 @@ set -u
 
 #-------- Initialisation  --------  --------  --------  --------  --------
 
+#.. Need PandaS:
+python3 -m venv --system-site-packages venv
+source venv/bin/activate
+python -m pip install pandas 
+
 #.. Parse arguments:
 debug="false"
 while getopts "d" opt; do
