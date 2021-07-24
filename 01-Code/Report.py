@@ -119,7 +119,12 @@ class Report:
 
     def __str__(self):
         print(" Report: Name: ", self._Name)
-        print("     Output directory path: ", self._ReportPath)
+        if self.__Debug:
+            print("     Output directory path: ", self._ReportPath)
+        else:
+            dirname,  basename   = os.path.split(self._ReportPath)
+            print(basename, dirname)
+            print("     Output directory path: ", basename)
         print("     Report file name: ", self._FileName)
         return "     <---- Report __str__ done."
     

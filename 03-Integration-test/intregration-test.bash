@@ -6,15 +6,16 @@
 #..  Assumes "startup.bash" has been run.
 
 cd $LhARAPATH
-02-Tests/WorkPackageTst.py   > 99-Scratch/WorkPackageTst.log
-02-Tests/TaskTst.py          > 99-Scratch/TaskTst.log
-02-Tests/StaffTst.py         > 99-Scratch/StaffTst.log
-02-Tests/ProjectTst.py       > 99-Scratch/ProjectTst.log
-02-Tests/EquipmentTst.py     > 99-Scratch/EquipmentTst.log
-02-Tests/TaskStaffTst.py     > 99-Scratch/TaskStaffTst.log
-02-Tests/TaskEquipmentTst.py > 99-Scratch/TaskEquipmentTst.log
+02-Tests/WorkPackageTst.py      > 99-Scratch/WorkPackageTst.log
+02-Tests/TaskTst.py             > 99-Scratch/TaskTst.log
+02-Tests/StaffTst.py            > 99-Scratch/StaffTst.log
+02-Tests/ProjectTst.py          > 99-Scratch/ProjectTst.log
+02-Tests/EquipmentTst.py        > 99-Scratch/EquipmentTst.log
+02-Tests/TaskStaffTst.py        > 99-Scratch/TaskStaffTst.log
+02-Tests/TaskEquipmentTst.py    > 99-Scratch/TaskEquipmentTst.log
+02-Tests/LhARACostingToolTst.py > 99-Scratch/LhARACostingToolTst.log
 
-02-Tests/ReportTst.py        > 99-Scratch/ReportTst.log
+02-Tests/ReportTst.py           > 99-Scratch/ReportTst.log
 
 cat 99-Scratch/*Tst.log > 99-Scratch/AllTst-log.txt
 

@@ -14,7 +14,7 @@ Class LhARACostingTool:
       
   Instance attributes:
   --------------------
-    _Debug : Debug flag
+    _Debug: Debug flag
 
     
   Methods:
@@ -26,7 +26,10 @@ Class LhARACostingTool:
       __str__ : Dump of constants
 
 
-  Get/set methods:
+  Methods:
+    Execute: Execute Costing, class method.
+             Assumes staff, work package and associated data has been read.
+             Works through costing and generates reports.
 
   
 Created on Thu 23Dec20: Version history:
@@ -128,29 +131,30 @@ class LhARACostingTool(object):
                Make reports
         """
 
-        REPORTPATH = os.getenv('REPORTPATH')
+        BaseREPORTPATH = os.getenv('REPORTPATH')
         RptDt = date.today()
-        REPORTPATH = os.path.join(REPORTPATH, \
-                                  RptDt.strftime("%d-%b-%Y"))
-        if not os.path.isdir(REPORTPATH):
-            os.mkdir(REPORTPATH)
-        if cls._Debug:
-            print("          Report path: \n",
-                  "                      ", REPORTPATH)
+        if isinstance(BaseREPORTPATH, os.PathLike):
+            REPORTPATH = os.path.join(BaseREPORTPATH, \
+                                      RptDt.strftime("%d-%b-%Y"))
+            if not os.path.isdir(REPORTPATH):
+                os.mkdir(REPORTPATH)
+            if cls._Debug:
+                print("          Report path: \n",
+                      "                      ", REPORTPATH)
 
-        if cls._Debug:
-            print("          Report: list work packages")
-        wpRpt = Rpt.WorkPackageList(REPORTPATH, \
-                                    "WorkPackageReportList.csv")
-        wpRpt.asCSV()
-        if cls._Debug:
-            print("                  <---- done")
-
-        if cls._Debug:
-            print("          Report: work package summaries")
-        for iWP in wp.WorkPackage.instances:
-            filepath = REPORTPATH
-            filename = iWP._Name + ".cls"
+            if cls._Debug:
+                print("          Report: list work packages")
+            wpRpt = Rpt.WorkPackageList(REPORTPATH, \
+                                        "WorkPackageReportList.csv")
+            wpRpt.asCSV()
+            if cls._Debug:
+                print("                  <---- done")
+                            
+            if cls._Debug:
+                print("          Report: work package summaries")
+            for iWP in wp.WorkPackage.instances:
+                filepath = REPORTPATH
+                filename = iWP._Name + ".cls"
             if cls._Debug:
                 print("                 ----> ", iWP._Name)
             wpSumRpt = Rpt.WorkPackageSummary(filepath, \
@@ -158,6 +162,7 @@ class LhARACostingTool(object):
                                               iWP)
             DataFrame = wpSumRpt.createPandasDataFrame()
             wpSumRpt.createCSV(DataFrame)
-        if cls._Debug:
-            print("                  <---- done")
-            
+            if cls._Debug:
+                print("                  <---- done")
+        else:
+            print("     ----> REPORTPATH not set, no reports generated.")
