@@ -79,14 +79,41 @@ EquipmentTest: 7  test cleaning of equipment list.
     <---- Done.
 
 ========  Equipment: tests complete  ========
- Control: no filename provided, take defaults.
- Control paramters:
-                                  Issue date: 2021-07-18
-    Inflation; capital, staff, start in year: 1.0 1.0 1
-                                         VAT: 0.2
-                              Working margin: 0.1
- Contingency; material, staff (project & CG): 0.2 0.2 0.2
-             FEC charge fraction; project, CG: 0.8 0.8
+========  LhARACostingTool: tests start  ========
+
+LhARACostingToolTest: 1  check if class is a singleton.
+ LhARACostingTool: instance created.
+    iLCT singleton test -- OK if 0: 0
+
+LhARACostingToolTest: 2  check built-in methods.
+    ----> __repr__:
+ LhARACostingTool(DebugFlag)
+    ----> __str__:
+ LhARA costing tool:
+     Debug flag: True
+     <---- Done.
+
+LhARACostingToolTest: 3  check Execute method.
+    ----> Execution starts.
+          TaskStaff: clean
+                    0  instances deleted
+                     Run doCosting
+                    <---- done
+          Task: clean
+               0  instances deleted
+                Run doCosting
+               <---- done
+          WorkPackage: clean
+                      0  instances deleted
+                       Run doCosting
+                      <---- done
+          Project: clean
+                  0  instances deleted
+                   Run doCosting
+                  <---- done
+     ----> REPORTPATH not set, no reports generated.
+
+========  LhARACostingTool: tests complete  ========
 ========  Project: tests start  ========
 
 ProjectTest: 1  check built-in methods.
@@ -185,14 +212,17 @@ ProjectTest: 6  check costing methods.
     <---- Done.
 
 ========  Project: tests complete  ========
- Control: no filename provided, take defaults.
+========  Report tests: initialise controls  ========
  Control paramters:
-                                  Issue date: 2021-07-18
-    Inflation; capital, staff, start in year: 1.0 1.0 1
-                                         VAT: 0.2
-                              Working margin: 0.1
- Contingency; material, staff (project & CG): 0.2 0.2 0.2
-             FEC charge fraction; project, CG: 0.8 0.8
+                              Issue date: 2021-07-24
+ Inflation(capital, staff, start in year: [1.0, 1.0, 1]
+                                     VAT: 0.2
+                          Working margin: 0.1
+                             Contingency: [0.2, 0.3, 0.4]
+                     FEC charge fraction: [0.8, 0.8]
+     <---- Done.
+========                Initialisation complete  ========
+ 
 ========  Reports: tests start  ========
 
 ReportsTest: 1  check built in base-class methods.
@@ -207,7 +237,7 @@ ReportsTest: 1  check built in base-class methods.
     <---- __repr__ done.
     __str__:
  Report: Name:  Test report
-     Output directory path:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool
+     Output directory path:  01-LhARA-costing-tool
      Report file name:  TestReport.csv
      <---- Report __str__ done.
     <---- __str__ done.
@@ -215,7 +245,7 @@ ReportsTest: 1  check built in base-class methods.
 ReportsTest: 2  check Overview derived class methods.
     ----> Overview report instance created.
  Report: Name:  Overview report
-     Output directory path:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool
+     Output directory path:  01-LhARA-costing-tool
      Report file name:  TestReport.csv
      <---- Report __str__ done.
     <---- Overview report test done.
@@ -223,7 +253,7 @@ ReportsTest: 2  check Overview derived class methods.
 ReportsTest: 2  check Staff list derived class methods.
     ----> Staff list report instance created.
  Report: Name:  Staff report: full staff list
-     Output directory path:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/99-Scratch
+     Output directory path:  99-Scratch
      Report file name:  TestStaffReport.csv
      Header fields: ['Staff code', 'Name or post', 'Filename', 'institute code', 'Grade', 'Annnual cost', 'Funding source', 'Comment']
       ['ASTEC-MechEng-1', 'GraduateEngineer', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv', 'STFC-ASTEC', 'BandD', 44.808, 'Project', nan]
@@ -254,52 +284,19 @@ ReportsTest: 2  check work package list derived class methods.
     ----> Work package list report instance created.
           Should contain:  3  work packages.
  Report: Name:  Work package report: summary of all workpackages
-     Output directory path:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/99-Scratch
+     Output directory path:  99-Scratch
      Report file name:  TestWorkPackageReport.csv
-     Header fields: ['Name', 'Project', 'filename', 'Work package manager', 'Number of financial years', 'Staff cost per year (£k)', 'CG staff cost per year (£k)', 'Total staff cost (£k)', 'Total CG staff cost (£k)', 'Equipment cost by year (£k)', 'Total equipment cost (£k)', 'Working margin by year (£k)', 'Working magine total (£k)', 'Travel by year (£k)', 'Total travelk (£k)', 'Consumables by year (including other non staff items) (£k)', 'Total consumables (£k)', 'Travel and consumables by year (£k)', 'Total travel and consumables (£k)', 'Other non staff items']
-      ['Management', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/2021-07-02-LhARA-PM-WP-cost-sheet-d1.csv', 'XXXX XXXX', ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27'], None, None, None, None, None, None, None, None, array([8., 9., 8., 9., 8.]), 42.0, array([24., 27., 24., 27., 24.]), 126.0, array([32., 36., 32., 36., 32.]), 168.0, ['PPI, engagement, and outreach', 'Review-committee expenses']]
-      ['IonAcoustic', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/Dummy4Test.csv', 'John Doe', ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27'], None, None, None, None, None, None, None, None, array([2., 3., 4., 5., 5.]), 19.0, array([3., 4., 5., 6., 6.]), 24.0, array([ 5.,  7.,  9., 11., 11.]), 43.0, ['Review-committee expenses']]
-      ['LaserSpectrometer', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/2021-07-03-LhARA-Spctrmtr-cost-sheet-d1.csv', 'John Doe', ['2021/22', '2022/23', '2023/24', '2024/25', '2025/26'], None, None, None, None, None, None, None, None, array([0., 0., 0., 0., 0.]), 0.0, array([0., 0., 0., 0., 0.]), 0.0, array([0., 0., 0., 0., 0.]), 0.0, ['Review-committee expenses']]
+     Header fields: ['Name', 'Project', 'filename', 'Work package manager', 'Number of financial years', 'Staff cost per year (£k)', 'CG staff cost per year (£k)', 'Total staff cost (£k)', 'Total CG staff cost (£k)', 'Equipment cost by year (£k)', 'Total equipment cost (£k)', 'Working margin by year (£k)', 'Working margin total (£k)', 'Contingency, equipment, by year (£k)', 'Contingency equiment total (£k)', 'Contingency, staff, by year (£k)', 'Contingency staff total (£k)', 'Contingency, CG staff, by year (£k)', 'Contingency CG staff total (£k)', 'Travel by year (£k)', 'Total travelk (£k)', 'Consumables by year (including other non staff items) (£k)', 'Total consumables (£k)', 'Travel and consumables by year (£k)', 'Total travel and consumables (£k)', 'Other non staff items']
+      ['Management', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/2021-07-02-LhARA-PM-WP-cost-sheet-d1.csv', 'XXXX XXXX', ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27'], None, None, None, None, None, None, None, None, None, None, None, None, None, None, array([8., 9., 8., 9., 8.]), 42.0, array([24., 27., 24., 27., 24.]), 126.0, array([32., 36., 32., 36., 32.]), 168.0, ['PPI, engagement, and outreach', 'Review-committee expenses']]
+      ['IonAcoustic', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/Dummy4Test.csv', 'John Doe', ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27'], None, None, None, None, None, None, None, None, None, None, None, None, None, None, array([2., 3., 4., 5., 5.]), 19.0, array([3., 4., 5., 6., 6.]), 24.0, array([ 5.,  7.,  9., 11., 11.]), 43.0, ['Review-committee expenses']]
+      ['LaserSpectrometer', 'LhARA', '/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/2021-07-03-LhARA-Spctrmtr-cost-sheet-d1.csv', 'John Doe', ['2021/22', '2022/23', '2023/24', '2024/25', '2025/26'], None, None, None, None, None, None, None, None, None, None, None, None, None, None, array([0., 0., 0., 0., 0.]), 0.0, array([0., 0., 0., 0., 0.]), 0.0, array([0., 0., 0., 0., 0.]), 0.0, ['Review-committee expenses']]
      <---- Report __str__ done.
     <---- Work package list report test done.
- TaskStaff: Task:  Final design and procurement  from WP name: : LaserSpectrometer 
-    Staff name:  Student 1 
-    Fractions:  [[0.  0.2 0.2 0. ]
- [0.  0.  0.  0. ]
- [0.  0.  0.  0. ]
- [0.  0.  0.  0. ]
- [0.  0.  0.  0. ]] [0.1 0.  0.  0.  0. ] 0.1 
-    Costs:  None None
-     <---- TaskStaff: complete.
- TaskStaff: Task:  Final design and procurement  from WP name: : LaserSpectrometer 
-    Staff name:  Post doc 1 
-    Fractions:  [[0. 0. 0. 1.]
- [0. 0. 0. 0.]
- [0. 0. 0. 0.]
- [0. 0. 0. 0.]
- [0. 0. 0. 0.]] [0.25 0.   0.   0.   0.  ] 0.25 
-    Costs:  None None
-     <---- TaskStaff: complete.
- TaskStaff: Task:  Final design and procurement  from WP name: : LaserSpectrometer 
-    Staff name:  Staff  
-    Fractions:  [[0.  0.1 0.1 0.1]
- [0.  0.  0.  0. ]
- [0.  0.  0.  0. ]
- [0.  0.  0.  0. ]
- [0.  0.  0.  0. ]] [0.075 0.    0.    0.    0.   ] 0.07500000000000001 
-    Costs:  None None
-     <---- TaskStaff: complete.
-['Final design and procurement', None, None, None, None, None, None, None, None, None, None, None, None]
-['Solenoids', None, 400.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 400.0]
-['Dipole', None, 100.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 100.0]
-['Stands', None, 25.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 25.0]
-['Power supplies', None, 60.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 60.0]
-['Scintilating and clear fibre', None, 65.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 65.0]
     ----> Work package summary report instance created.
  Report: Name:  Work package summary
-     Output directory path:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/99-Scratch
+     Output directory path:  99-Scratch
      Report file name:  TestWorkPackageSummary.csv
-     Header fields: ['LhARA', None, None, None, None, None, None, None, None, None, None, 'Report date:', '18-Jul-2021']
+     Header fields: ['LhARA', None, None, None, None, None, None, None, None, None, None, 'Report date:', '24-Jul-2021']
       ['LaserSpectrometer', None, None, None, None, None, None, None, None, None, None, None, None]
       [None, None, None, None, None, None, None, None, None, None, None, None, None]
       [None, '2021/22', None, '2022/23', None, '2023/24', None, '2024/25', None, '2025/26', None, 'Total', None]
@@ -319,11 +316,13 @@ ReportsTest: 2  check work package list derived class methods.
       ['Stands', None, 25.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 25.0]
       ['Power supplies', None, 60.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 60.0]
       ['Scintilating and clear fibre', None, 65.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 65.0]
+      ['Equipment total:', None, None, None, None, None, None, None, None, None, None, None, None]
       ['Inflation (not yet implemented):', None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0]
       ['Cost of risk mitigation, equipment (not yet implemented):', None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0]
-      ['Working margin:', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-      ['Contingency (not yet implemented):', None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0]
-      ['Equipment total:', None, None, None, None, None, None, None, None, None, None, None, None]
+      ['Working margin:', None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0]
+      ['Contingency, equipment:', None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, None]
+      ['Contingency, CG staff:', None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, None]
+      ['Contingency, all staff:', None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, None]
       ['Consumables', None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0]
       ['Travel', None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0, None, 0.0]
       [None, None, None, None, None, None, None, None, None, None, None, None, None]
@@ -338,6 +337,40 @@ ReportsTest: 3  check creation of workpackage list report.
     <---- CSV work package report generated.
 
 ReportsTest: 3  check creation of workpackage summary report.
+                                                   0   ...           12
+0                                               LhARA  ...  24-Jul-2021
+1                                   LaserSpectrometer  ...         None
+2                                                None  ...         None
+3                                                None  ...         None
+4                                               Staff  ...           £k
+5                        Final design and procurement  ...         None
+6                                    Imperial-Physics  ...         None
+7                                        IC-Phys-PG-1  ...         None
+8                                        IC-Phys-PD-1  ...         None
+9                                   Strathcld-Physics  ...         None
+10                               Strthclyd-Phys-Stf-1  ...         None
+11  Cost of risk mitigation, staff (not yet implem...  ...          0.0
+12                                       Staff total:  ...         None
+13                                          Non-staff  ...           £k
+14                       Final design and procurement  ...         None
+15                                          Solenoids  ...        400.0
+16                                             Dipole  ...        100.0
+17                                             Stands  ...         25.0
+18                                     Power supplies  ...         60.0
+19                       Scintilating and clear fibre  ...         65.0
+20                                   Equipment total:  ...         None
+21                   Inflation (not yet implemented):  ...          0.0
+22  Cost of risk mitigation, equipment (not yet im...  ...          0.0
+23                                    Working margin:  ...          0.0
+24                            Contingency, equipment:  ...         None
+25                             Contingency, CG staff:  ...         None
+26                            Contingency, all staff:  ...         None
+27                                        Consumables  ...          0.0
+28                                             Travel  ...          0.0
+29                                               None  ...         None
+30                                             Total:  ...         None
+
+[31 rows x 13 columns]
     <---- CSV work package summary report generated.
 
 ========  Reports: tests complete  ========
@@ -353,7 +386,7 @@ StaffTest: 1  check built-in methods.
     <---- __repr__ done.
     __str__:
 Staff (name or post): LhARA
-    Filename: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+    File name:  12-Staff/StaffDatabase.csv
     Staff code: LhARA ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 400.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
     <---- __str__ done.
@@ -362,11 +395,11 @@ StaffTest: 2  check getInstance method.
       ----> Correctly reported no instance: None
       ----> Correctly caught multiple instance exception.
       ----> Correctly found: Staff (name or post): Test-1
-    Filename: None
+    File name:  /None
     Staff code: Test-1 ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 400.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
       ----> Correctly found: Staff (name or post): LhARA
-    Filename: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+    File name:  12-Staff/StaffDatabase.csv
     Staff code: LhARA ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 400.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
     <---- getInstance done.
@@ -381,19 +414,19 @@ StaffTest: 3  test load staff database call.
 StaffTest: 3  test get/set methods.
     ----> Set parameters
 Staff (name or post): LhARA
-    Filename: /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/12-Staff/StaffDatabase.csv
+    File name:  12-Staff/StaffDatabase.csv
     Staff code: LhARA ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 101.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
 Staff (name or post): Test-1
-    Filename: None
+    File name:  /None
     Staff code: Test-1 ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 102.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
 Staff (name or post): Vatican
-    Filename: None
+    File name:  /None
     Staff code: Test-2 ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 103.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
 Staff (name or post): Vatican
-    Filename: None
+    File name:  /None
     Staff code: Test-2 ; Institute code: Institute-Code ; Grade or level: Head of House ; Annual FEC: 104.0 ; Project or CG: Project
     Comments: Dummy comment: default values filled; staff member not read from staff database
     ----> header list check:
@@ -444,14 +477,6 @@ StaffTest: 6  test printing of staff database.
      <---- Done.
 
 ========  Staff: tests complete  ========
- Control: no filename provided, take defaults.
- Control paramters:
-                                  Issue date: 2021-07-18
-    Inflation; capital, staff, start in year: 1.0 1.0 1
-                                         VAT: 0.2
-                              Working margin: 0.1
- Contingency; material, staff (project & CG): 0.2 0.2 0.2
-             FEC charge fraction; project, CG: 0.8 0.8
 ========  TaskEquip: tests start  ========
 
 TaskEquipTest: 1  check built-in methods.
@@ -517,14 +542,6 @@ TaskEquipTest: 4  check cleaning method
     <---- Done.
 
 ========  TaskEquipment: tests complete  ========
- Control: no filename provided, take defaults.
- Control paramters:
-                                  Issue date: 2021-07-18
-    Inflation; capital, staff, start in year: 1.0 1.0 1
-                                         VAT: 0.2
-                              Working margin: 0.1
- Contingency; material, staff (project & CG): 0.2 0.2 0.2
-             FEC charge fraction; project, CG: 0.8 0.8
 ========  TaskStaff: tests start  ========
 
 TaskStaffTest: 1  check built-in methods.
@@ -622,14 +639,6 @@ TaskStaffTest: 4  check costing methods.
     <---- Done.
 
 ========  TaskStaff: tests complete  ========
- Control: no filename provided, take defaults.
- Control paramters:
-                                  Issue date: 2021-07-18
-    Inflation; capital, staff, start in year: 1.0 1.0 1
-                                         VAT: 0.2
-                              Working margin: 0.1
- Contingency; material, staff (project & CG): 0.2 0.2 0.2
-             FEC charge fraction; project, CG: 0.8 0.8
 ========  Task: tests start  ========
 
 TaskTest: 1  check built-in methods.
@@ -754,14 +763,6 @@ TaskTest: 6  check costing methods.
     <---- Done.
 
 ========  Task: tests complete  ========
- Control: no filename provided, take defaults.
- Control paramters:
-                                  Issue date: 2021-07-18
-    Inflation; capital, staff, start in year: 1.0 1.0 1
-                                         VAT: 0.2
-                              Working margin: 0.1
- Contingency; material, staff (project & CG): 0.2 0.2 0.2
-             FEC charge fraction; project, CG: 0.8 0.8
 ========  WorkPackage: tests start  ========
 
 WorkPackageTest: 1  check built-in methods.
@@ -780,6 +781,9 @@ WorkPackageTest: 1  check built-in methods.
      CG staff cost by year, total: None None
      Equipment cost by year, total None None
      Working margin by year, total None None
+     Contingency, equipment, by year, total None None
+     Contingency, staff, by year, total None None
+     Contingency, staff CG, by year, total None None
      Travel cost by year, total [2. 3. 4. 5. 5.] 19.0
      Consumables cost by year (including other non-staff): [3. 4. 5. 6. 6.] 24.0
      Other non-staff categories: ['Review-committee expenses']
@@ -787,7 +791,7 @@ WorkPackageTest: 1  check built-in methods.
      <---- WorkPackage done.
     <---- __str__ done.
 
-WorkPackageTest: 2  check get/set methods.
+WorkPackageTest: 2  check getfilename method.
     ----> CSV filename:  /Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool/11-WorkPackages/Dummy4Test.csv
 
 WorkpackageTest: 3  check get/set methods.
@@ -797,6 +801,9 @@ WorkpackageTest: 3  check get/set methods.
      CG staff cost by year, total: [1. 2. 3. 4. 5.] 15.0
      Equipment cost by year, total [1. 2. 3. 4. 5.] 15.0
      Working margin by year, total None None
+     Contingency, equipment, by year, total None None
+     Contingency, staff, by year, total None None
+     Contingency, staff CG, by year, total None None
      Travel cost by year, total [2. 3. 4. 5. 5.] 19.0
      Consumables cost by year (including other non-staff): [3. 4. 5. 6. 6.] 24.0
      Other non-staff categories: ['Review-committee expenses']
@@ -818,9 +825,12 @@ WorkpackageTest: 6  check costing methods.
  WorkPackage: name: LhARA  ---->
      Project: LhARA  Manager: John Doe  Financial years: ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27']
      Staff cost by year, total: [340. 340.  40.  40.  40.] 800.0
-     CG staff cost by year, total: [0. 0. 0. 0. 0.] 0.0
+     CG staff cost by year, total: [100. 100.   0.   0.   0.] 200.0
      Equipment cost by year, total [365.  48.  20.   0.   0.] 433.00000000000006
      Working margin by year, total [70.5 38.8  6.   4.   4. ] 123.30000000000001
+     Contingency, equipment, by year, total [73.   9.6  4.   0.   0. ] 86.60000000000002
+     Contingency, staff, by year, total [112. 112.  12.  12.  12.] 260.0
+     Contingency, staff CG, by year, total [40. 40.  0.  0.  0.] 80.0
      Travel cost by year, total [2. 3. 4. 5. 5.] 19.0
      Consumables cost by year (including other non-staff): [3. 4. 5. 6. 6.] 24.0
      Other non-staff categories: ['Review-committee expenses']

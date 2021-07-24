@@ -133,7 +133,7 @@ class LhARACostingTool(object):
 
         BaseREPORTPATH = os.getenv('REPORTPATH')
         RptDt = date.today()
-        if isinstance(BaseREPORTPATH, os.PathLike):
+        if os.path.isdir(BaseREPORTPATH):
             REPORTPATH = os.path.join(BaseREPORTPATH, \
                                       RptDt.strftime("%d-%b-%Y"))
             if not os.path.isdir(REPORTPATH):
