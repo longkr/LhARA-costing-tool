@@ -1,0 +1,154 @@
+\section*{\color{RedViolet} Introduction}
+This document summarises the steps needed to set-up and run the LhARA
+costing tool (LCT).
+Instructions for the set up of a user copy of the application are
+presented first.
+The user set up instructions assume that the python software has been
+installed elsewhere on the cluster and that python 3 has been
+installed.
+
+\vskip 0.5cm
+\noindent{\color{DarkYellow} \rule[0mm]{\textwidth}{0.43pt}}
+
+\section*{\color{RedViolet} Setting up a user application}
+The first step is to create a directory from which the user wishes to
+run the costing tool; in the following the path to the user's
+directory will be labelled {\tt UserDir}.
+The following instructions are to be executed from within this
+directory.
+
+To create a user application requires that the LCT has been
+installed.
+Assume that the path to the LCT top directory on the users system is:
+\begin{center}
+  {\tt <LhARA\_path>}
+\end{center}
+Then, to install the files needed to run the tool on sample test data
+the user needs to execute the command:
+\begin{center}
+  {\tt <LhARA\_path>/05-Export/export-LhARA-costing-tool.bash}
+\end{center}
+This script with copy the directories and costing tool script into the
+user's current directory.
+As a concrete example, the LCT has been installed at:
+\begin{center}
+  {\tt /home/hep/longkr/CCAP/LhARA/01-Costing-tool/LhARA-costing-tool}
+\end{center}
+on the Imperial HEP Group's linux cluster.
+The command to install the user application on this cluster is
+therefore:
+\begin{center}
+  {\tt\tiny /home/hep/longkr/CCAP/LhARA/01-Costing-tool/LhARA-costing-tool/05-Export/export-LhARA-costing-tool.bash}
+\end{center}
+
+\subsection*{\color{DarkGreen} What is installed}
+The following directories and files are installed when the ``export''
+script is executed:
+\begin{description}
+  \item {\tt Control/} \\
+    The {\tt Control/} directory contains one file:
+    {\tt LhARA-costing-tool-control.csv}.
+    This ``comma separated values'' (csv) file contains parameters
+    that control the execution of the code.
+    The file can be edited using EXCEL and must be saved back into the
+    {\tt Control/} directory in csv format.
+  \item {\tt Reports/} \\
+    On installation this directory will be empty.
+    When the costing tool is run, reports will be placed in this
+    directory.
+    The tool will create a director with the name corresponding to the
+    date the tool is run in the format ``{\tt yyyy-mm-dd}''.
+  \item {\tt StaffDatabase/} \\
+    This directory will contain one file: {\tt StaffDatabase.csv}.
+    At input a dummy list of staff will be contained in the csv file.
+    The file must be updated in consultation with the LhARA project
+    team.
+    The information contained in the file is confidential and only the
+    file containing dummy entries will be circulated with the costing
+    tool distribution.
+  \item {\tt WorkPackages} \\
+    The {\tt WorkPackages} directory contains the csv files that
+    specify the tasks, staff, and equipment required to deliver the
+    programme defined for the particular work package.
+    The csv files will be derived from EXCEL files maintained by the
+    work package managers.
+  \item {\tt run-LhARA-costing-tool.bash} \\
+    Executing this script will perform the costing of the work
+    packages contained in the {\tt WorkPackages} directory, using the
+    staff information contained in the {\tt StaffDatabase/} directory
+    and with the control flags defined in the {\tt Control}
+    directory.
+    The script is run with the command:
+    \begin{center}
+      {\tt ./run-LhARA-costing-tool.bash}
+    \end{center}
+    The command must be run from {\tt UserDir}.
+\end{description}
+
+\vskip 0.5cm
+\noindent{\color{DarkYellow} \rule[0mm]{\textwidth}{0.43pt}}
+
+\section*{\color{RedViolet} For those who wish to install the code}
+
+\subsection*{\color{DarkGreen} Getting the code}
+LCT is maintained using the GitHub version-control system.
+The latest release can be downloaded from:
+\begin{center}
+  {\tt https://github.com/longkr/LhARA-costing-tool.git}
+\end{center}
+
+\subsection*{\color{DarkGreen} Dependencies and required packages}
+LCT requires the following packages:
+\begin{itemize}
+  \item Python modules: \verb+pandas+.
+\end{itemize}
+It may be convenient to run LCT in a ``virtual environment''.
+To set this up, after updating your python installation to python~3,
+and installing root, execute the following commands:
+\begin{enumerate}
+  \item \verb+python3 -m venv --system-site-packages venv+
+    \begin{itemize}
+      \item This creates the director \verb+venv+ that contains files
+        related to the virtual environment.
+    \end{itemize}
+  \item \verb+source venv/bin/activate+
+  \item \verb+python -m pip install pandas+
+\end{enumerate}
+To exit from the virtual environment, execute the command
+\verb+deactivate+. \\
+\noindent
+The command \verb+source venv/bin/activate+ places you back
+into the virtual environment.
+
+\subsection*{\color{DarkGreen} Unpacking the code, directories, and running the tests}
+After downloading the package from GitHub, or cloning the repository,
+you will find a ``\verb+README.md+'' file which provides some orientation
+and instructions to run the code.
+In particular, a \verb+bash+ script ``\verb+startup.bash+'' is
+provided which:
+\begin{itemize}
+  \item Sets the ``\verb+LhARAPATH+'' environment variable so that the
+    files that hold constants etc. required by the code can be
+    located; and
+  \item Adds ``\verb+01-Code+'' (see below) to the PYTHONPATH.
+    The scripts in "02-Tests" (see below) may then be run with the
+    command "python 02-Tests/\textless\,filename\,\textgreater.py".
+\end{itemize}
+Below the top directory, the directory structure in which the code is
+presented is:
+\begin{description}
+  \item\verb+01-Code+: contains the python implementation as a
+    series of modules.
+    Each module contains a single class or a related set of methods.
+  \item\verb+02-Tests+: contains self-contained test scripts that
+    run the various methods and simulation packages defined in the
+    code directory.
+\end{description}
+The instruction in the \verb+README.md+ file should be followed to set
+up and run the code.
+  
+\subsection*{\color{DarkGreen} Making a contribution}
+LCT is archived in the git repository \verb+longkr/LhARA-costing-tool+.
+To clone the code using
+\verb+git clone+ you will need your own account on GitHub and
+permission to clone the code. 

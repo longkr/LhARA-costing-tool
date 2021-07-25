@@ -1,10 +1,7 @@
 Jobs to do in LhARA costing tool s/w:
 -------------------------------------
- 2021-07-09: - Travel and Consumable attributes need to be added to WP class
-               and elsewhere.
-	     - Need to read control cards and work out how to do integration
-	       script.
-	     - For integration test; need to cut length of path in prints so
-	       that the automatic check can work.
+ 2021-07-26: - Need to agree handling of VAT with PM team, then implement.
+             - Need to complete documentation
+	     
 
 
