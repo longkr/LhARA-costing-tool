@@ -4,7 +4,3 @@ Jobs to do in LhARA costing tool s/w:
              - Need to complete documentation
 
 
-Modified with Alex
-	     
-
-
