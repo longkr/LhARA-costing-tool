@@ -156,7 +156,7 @@ class LhARACostingTool(object):
                 print("          Report: work package summaries")
             for iWP in wp.WorkPackage.instances:
                 filepath = REPORTPATH
-                filename = iWP._Name + ".cls"
+                filename = iWP._Name + ".csv"
                 if cls._Debug:
                     print("                 ----> ", iWP._Name)
                 wpSumRpt = Rpt.WorkPackageSummary(filepath, \
