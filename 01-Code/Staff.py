@@ -139,7 +139,7 @@ class Staff:
             _GradeOrLevel = "Head of House"
 
         if mth.isnan(_AnnualCost):
-            _AnnualCost    = 400.
+            _AnnualCost    = 999.
 
         if _ProjectOrCG == None:
             _ProjectOrCG   = "Project"

@@ -25,23 +25,24 @@ if Debug:
 ##! --------  Identify necessary files:
 HOMEPATH     = os.getenv('HOMEPATH')
 ControlFile  = os.path.join(HOMEPATH, \
-                            'Control/LhARA-costing-tool-control.csv')
+                            '10-Control/LhARA-costing-tool-control.csv')
 if Debug:
     print("    Control file: \n", \
           "            ----> ", ControlFile)
 StaffDatabaseFile = os.path.join(HOMEPATH, \
-                                 'StaffDatabase/StaffDatabase.csv')
+                                 '12-Staff/StaffDatabase.csv')
 if Debug:
     print("    Staff database file: \n", \
           "            ----> ", StaffDatabaseFile)
 wpDirectory = os.path.join(HOMEPATH, \
-                           'WorkPackages')
+                           '11-WorkPackages')
 if Debug:
     print("    Directory containing work package definitions: \n", \
           "            ----> ", wpDirectory)
 
-
+    
 ##! --------  Create costing control instance:
+
 import Control as cntrl
 iCntrl  = cntrl.Control(ControlFile)
 if Debug:
@@ -65,14 +66,15 @@ if Debug:
 
     
 ##! --------  Create work package instances:
-wpList    = os.listdir(wpDirectory)
+wpList    = sorted(os.listdir(wpDirectory))
 if Debug:
     print("    Read work package definitions from: \n", \
           "              ---->", wpList)
 wpInst = []
 for wpFile in wpList:
     if wpFile.find('.csv') <= 0:
-        raise ValueError("Bad file name", wpFile)
+        if Debug:
+            print("Bad file name", wpFile, " skipping this file.")
     else:
         FileName = os.path.join(wpDirectory, wpFile)
         if Debug:
@@ -83,7 +85,7 @@ if Debug:
     for Inst in wpInst:
         print("                       ", Inst._Name)
     
-    
+
 ##! --------  Create LhARA costing tool instance:
 iLCT = LCT.LhARACostingTool(Debug)
 if Debug:

@@ -22,6 +22,7 @@ Class Task:
    _StaffCostByYear     = Total cost of staff in £k for this task by FY
    _CGStaffCostByYear   = Cost of CG staff in £k for this task by FY
    _TotalStaffCost      = Summed total staff cost over duration of project (£k)
+   _TotalStaffFrac      = Summed total FTE over duration of project (£k)
    _TotalCGStaffCost    = Summed total CG staff cost over duration of project 
                           (£k)
    _EquipmentCostByYear = Total cost of equipment in £k for this task by FY
@@ -55,11 +56,17 @@ Class Task:
     setStaffCostByYear: Set staff cost per year (£k)
       Input: numpy array
         
+    setStaffFracByYear: Set staff frac per year (£k)
+      Input: numpy array
+        
     setCGStaffCostByYear: Set staff cost per year (£k)
       Input: numpy array
 
     setTotalStaffCost: Set total staff cost (£k)
         Sums staff cost per year.
+        
+    setTotalStaffFrac: Set total staff frac
+        Sums staff FTE per year.
         
     setTotalCGStaffCost: Set total CG staff cost (£k)
         Sums CG staff cost per year.
@@ -111,9 +118,11 @@ class Task:
         self._WorkPackage = _WPInst
 
         #.. Defined, but not filled, at init:
+        self._StaffFracByYear     = None
         self._StaffCostByYear     = None
         self._CGStaffCostByYear   = None
         self._TotalStaffCost      = None
+        self._TotalStaffFrac      = None
         self._TotalCGStaffCost    = None
         self._EquipmentCostByYear = None
         self._TotalEquipmentCost  = None
@@ -126,8 +135,10 @@ class Task:
     def __str__(self):
         print(" Task:", self._Name)
         print("     ----> WorkPackage:", self._WorkPackage._Name, " \n")
+        print("     Staff frac by year:", self._StaffFracByYear)
         print("     Staff cost by year:", self._StaffCostByYear)
         print("     CG staff cost by year:", self._CGStaffCostByYear)
+        print("     Total staff frac:", self._TotalStaffFrac)
         print("     Total staff cost:", self._TotalStaffCost)
         print("     Total CG staff cost:", self._TotalCGStaffCost)
         print("     Equipment cost by year:", self._EquipmentCostByYear)
@@ -173,11 +184,17 @@ class Task:
     def setStaffCostByYear(self, _StaffCostByYear):
         self._StaffCostByYear = _StaffCostByYear
         
+    def setStaffFracByYear(self, _StaffFracByYear):
+        self._StaffFracByYear = _StaffFracByYear
+        
     def setCGStaffCostByYear(self, _CGStaffCostByYear):
         self._CGStaffCostByYear = _CGStaffCostByYear
 
     def setTotalStaffCost(self):
         self._TotalStaffCost = np.sum(self._StaffCostByYear)
+        
+    def setTotalStaffFrac(self):
+        self._TotalStaffFrac = np.sum(self._StaffFracByYear)
         
     def setTotalCGStaffCost(self):
         self._TotalCGStaffCost = np.sum(self._CGStaffCostByYear)
@@ -204,6 +221,7 @@ class Task:
         for inst in Task.instances:
             TaskData.append([inst._Name, \
                              inst._WorkPackage._Name, \
+                             inst._StaffFracByYear, inst._TotalStaffFrac, \
                              inst._StaffCostByYear, inst._TotalStaffCost, \
                              inst._CGStaffCostByYear, inst._TotalCGStaffCost, \
                              inst._EquipmentCostByYear, \
@@ -231,6 +249,7 @@ class Task:
     @classmethod
     def doCosting(cls):
         for iTsk in cls.instances:
+            _StaffFracByYear   = np.array([])
             _StaffCostByYear   = np.array([])
             _CGStaffCostByYear = np.array([])
             SumInitialised = False
@@ -238,15 +257,20 @@ class Task:
                 if iTskStf._Task == iTsk:
                     for iYr in range(len(iTskStf._StaffCostByYear)):
                         if not SumInitialised:
+                            _StaffFracByYear   = \
+                                np.append(_StaffFracByYear,   [0.])
                             _StaffCostByYear   = \
                                 np.append(_StaffCostByYear,   [0.])
                             _CGStaffCostByYear = \
                                 np.append(_CGStaffCostByYear, [0.])
                     SumInitialised = True
+                    _StaffFracByYear += iTskStf._StaffFracByYear
                     _StaffCostByYear += iTskStf._StaffCostByYear
                     if iTskStf._Staff._ProjectOrCG == "CG":
                         _CGStaffCostByYear += iTskStf._StaffCostByYear
+            iTsk._StaffFracByYear = _StaffFracByYear
             iTsk._StaffCostByYear = _StaffCostByYear
+            iTsk.setTotalStaffFrac()
             iTsk.setTotalStaffCost()
             iTsk._CGStaffCostByYear = _CGStaffCostByYear
 

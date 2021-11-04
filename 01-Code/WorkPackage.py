@@ -26,9 +26,11 @@ Class WorkPackage:
    _WPM                 = Work package manager(s)
    _Project             = Instance of Project class to which this work package 
                           belongs
+   _StaffFracByYear     = Total staff FTE for this workpackage by FY
    _StaffCostByYear     = Total cost of staff in £k for this workpackage by FY
    _CGStaffCostByYear   = Cost of CG staff in £k for this workpackage by FY
    _TotalStaffCost      = Summed total staff cost over duration of project (£k)
+   _TotalStaffFrac      = Summed total FTE over duration of project (£k)
    _TotalCGStaffCost    = Summed total CG staff cost over duration of project 
                           (£k)
    _EquipmentCostByYear = Total cost of equipment in £k for this workpackage 
@@ -150,9 +152,11 @@ Class WorkPackage:
                  related to WorkPackage instance and completes work package
                  costing.
                  Fills:
+                    self._StaffFracByYear   
                     self._StaffCostByYear   
                     self._CGStaffCostByYear 
                     self._TotalStaffCost    
+                    self._TotalStaffFrac    
                     self._TotalCGStaffCost  
                     self._EquipmentCostByYear
                     self._TotalEquipmentCost 
@@ -208,11 +212,9 @@ class WorkPackage:
 #--------  "Built-in methods":
     def __init__(self, filename=None): #, _PrjInst=None):
         if filename == None:
-            raise NoFilenameProvided( \
-                'CSV filename required; execution termimated.')
+            raise NoFilenameProvided('CSV filename required; execution termimated.')
         elif not os.path.isfile(filename):
-            raise NonExistantFile( \
-                'CSV file' + filename +' does not exist; execution termimated.')
+            raise NonExistantFile('CSV file' + filename +' does not exist; execution termimated.')
 
         self._filename        = filename
         self._wpParams        = self.getWorkPackage(filename)
@@ -233,9 +235,11 @@ class WorkPackage:
         self._OtherNonStaffItems  = []
 
         #.. Defined, but not filled, at init:
+        self._StaffFracByYear     = None
         self._StaffCostByYear     = None
         self._CGStaffCostByYear   = None
         self._TotalStaffCost      = None
+        self._TotalStaffFrac      = None
         self._TotalCGStaffCost    = None
         self._EquipmentCostByYear = None
         self._TotalEquipmentCost  = None
@@ -271,6 +275,8 @@ class WorkPackage:
         print("     Project:", self._Project._Name, \
               " Manager:", self._WPM, \
               " Financial years:", self._FinancialYears)
+        print("     Staff FTE by year, total:", self._StaffFracByYear, \
+              self._TotalStaffFrac)
         print("     Staff cost by year, total:", self._StaffCostByYear, \
               self._TotalStaffCost)
         print("     CG staff cost by year, total:", self._CGStaffCostByYear, \
@@ -312,11 +318,17 @@ class WorkPackage:
     def setStaffCostByYear(self, _StaffCostByYear):
         self._StaffCostByYear = _StaffCostByYear
         
+    def setStaffFracByYear(self, _StaffFracByYear):
+        self._StaffFracByYear = _StaffFracByYear
+        
     def setCGStaffCostByYear(self, _CGStaffCostByYear):
         self._CGStaffCostByYear = _CGStaffCostByYear
 
     def setTotalStaffCost(self):
         self._TotalStaffCost = np.sum(self._StaffCostByYear)
+        
+    def setTotalStaffFrac(self):
+        self._TotalStaffFrac = np.sum(self._StaffFracByYear)
         
     def setTotalCGStaffCost(self):
         self._TotalCGStaffCost = np.sum(self._CGStaffCostByYear)
@@ -436,8 +448,10 @@ class WorkPackage:
                     self._filename, \
                     self._WPM, \
                     self._FinancialYears, \
+                    self._StaffFracByYear, \
                     self._StaffCostByYear, \
                     self._CGStaffCostByYear, \
+                    self._TotalStaffFrac, \
                     self._TotalStaffCost, \
                     self._TotalCGStaffCost, \
                     self._EquipmentCostByYear, \
@@ -717,14 +731,23 @@ class WorkPackage:
     @classmethod
     def doCosting(cls):
         for iWp in cls.instances:
+            if WorkPackage.__Debug:
+                print(" WorkPackage.doCosting: start")
+            _StaffFracByYear   = np.array([])
             _StaffCostByYear   = np.array([])
             _CGStaffCostByYear = np.array([])
             _EquipmentCostByYear = np.array([])
             SumInitialised = False
             for iTsk in Tsk.Task.instances:
                 if iTsk._WorkPackage == iWp:
+                    if WorkPackage.__Debug:
+                        print("     ----> W/p, Task:", iWp._Name, "; ", \
+                              iTsk._Name)
+
                     if not SumInitialised:
                         for iYr in range(len(iTsk._StaffCostByYear)):
+                            _StaffFracByYear     = \
+                                np.append(_StaffFracByYear,   [0.])
                             _StaffCostByYear     = \
                                 np.append(_StaffCostByYear,   [0.])
                             _CGStaffCostByYear   = \
@@ -732,14 +755,23 @@ class WorkPackage:
                             _EquipmentCostByYear = \
                                 np.append(_EquipmentCostByYear,   [0.])
                     SumInitialised = True
+
                     if len(iTsk._StaffCostByYear) > 0:
+                        _StaffFracByYear += iTsk._StaffFracByYear
                         _StaffCostByYear += iTsk._StaffCostByYear
+
                     if len(iTsk._CGStaffCostByYear) > 0:
                         _CGStaffCostByYear += iTsk._CGStaffCostByYear
-                    if len(_EquipmentCostByYear):
+
+                    if WorkPackage.__Debug:
+                        print("         ----> W/p, Task: equipment cost", \
+                              iTsk._EquipmentCostByYear)
+                    if len(iTsk._EquipmentCostByYear) > 0:
                         _EquipmentCostByYear += iTsk._EquipmentCostByYear
 
+            iWp._StaffFracByYear = _StaffFracByYear
             iWp._StaffCostByYear = _StaffCostByYear
+            iWp.setTotalStaffFrac()
             iWp.setTotalStaffCost()
             iWp._CGStaffCostByYear = _CGStaffCostByYear
             iWp.setTotalCGStaffCost()

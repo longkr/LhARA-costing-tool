@@ -107,7 +107,7 @@ print("    ----> list of WP definition files:", wpList)
 wpInst = []
 for wpFile in wpList:
     if wpFile.find('.csv') <= 0:
-        raise ValueError("Bad file name", wpFile)
+        print("        ----> Bad file name", wpFile, ". Skip")
     else:
         FileName = os.path.join(wpPath, wpFile)
         print("    ----> Reading data from: ", FileName)
@@ -123,20 +123,13 @@ print("    ----> Work package list report instance created.")
 print("          Should contain: ", len(wpInst), " work packages.")
 print(wpRpt)
 print("    <---- Work package list report test done.")
+filepath  = os.path.join(LhARAPATH, '99-Scratch')
 for iWP in wp.WorkPackage.instances:
-    if iWP._Name == "LaserSpectrometer":
-        iWP_LasSpct = iWP
-try:
-    filepath  = os.path.join(LhARAPATH, '99-Scratch')
     wpSumRpt = Rprt.WorkPackageSummary(filepath, \
-                                       "TestWorkPackageSummary.csv", \
-                                       iWP_LasSpct)
-except:
-    print("     ----> Failed to work package list report instance!",
-          "  Execution terminated.")
-    raise Exception
-print("    ----> Work package summary report instance created.")
-print(wpSumRpt)
+                                       iWP._Name + ".csv", \
+                                       iWP)
+    print("    ----> Work package summary report instances created.")
+    print(wpSumRpt)
 print("    <---- Work package list report test done.")
 
 

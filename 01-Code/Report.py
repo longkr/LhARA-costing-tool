@@ -316,6 +316,12 @@ class WorkPackageSummary(Report):
         Line = self.Inflation(_wpInst)
         self._Lines.append(Line)
         
+        Line = self.Consumables(_wpInst)
+        self._Lines.append(Line)
+        
+        Line = self.Travel(_wpInst)
+        self._Lines.append(Line)
+        
         Line = self.RiskMitigationEquip(_wpInst)
         self._Lines.append(Line)
         
@@ -325,12 +331,6 @@ class WorkPackageSummary(Report):
         Lines = self.Contingency(_wpInst)
         for Line in Lines:
             self._Lines.append(Line)
-        
-        Line = self.Consumables(_wpInst)
-        self._Lines.append(Line)
-        
-        Line = self.Travel(_wpInst)
-        self._Lines.append(Line)
         
         Line = NullLine
         self._Lines.append(Line)
@@ -473,7 +473,7 @@ class WorkPackageSummary(Report):
 
     def Consumables(self, _wpInst):
         Line = []
-        Line.append("Consumables")
+        Line.append("Consumables and other non-staff items")
         for iYr in range(len(_wpInst._FinancialYears)):
             Line.append(None)
             Line.append(_wpInst._ConsumeByYear[iYr])
@@ -529,13 +529,14 @@ class WorkPackageSummary(Report):
         Line = []
         Line.append("Staff total:")
         for iYr in range(len(_wpInst._FinancialYears)):
-            Line.append(None)
+            if isinstance(_wpInst._StaffFracByYear, np.ndarray):
+                Line.append(_wpInst._StaffFracByYear[iYr])
             if isinstance(_wpInst._StaffCostByYear, np.ndarray):
-                Line.append(_wpInst._StaffCostByYear[iYr])
+                Line.append(round(_wpInst._StaffCostByYear[iYr], 2))
             else:
                 Line.append(None)
-        Line.append(None)
-        Line.append(_wpInst._TotalStaffCost)
+        Line.append(_wpInst._TotalStaffFrac)
+        Line.append(round(_wpInst._TotalStaffCost, 2))
         return Line
 
     def StaffHeader(self, _wpInst):

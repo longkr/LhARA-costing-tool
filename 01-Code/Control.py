@@ -91,9 +91,12 @@ class Control(object):
             if  Control.__Debug:
                 print(" Control: no filename provided, take defaults.")
         elif not os.path.isfile(_filename):
+            print(" Control: file ", _filename, " does not exist.", \
+                  " Raising exception")
             raise NonExistantFile('CSV file' + \
                                   _filename + \
                                   ' does not exist; execution termimated.')
+            
 
         cls._filename = _filename
 
@@ -246,3 +249,7 @@ class Control(object):
               self.getfecChargeFractionPrj(), \
               self.getfecChargeFractionCG() )
         return "     <---- Done."
+
+#--------  Exceptions:
+class NonExistantFile(Exception):
+    pass
