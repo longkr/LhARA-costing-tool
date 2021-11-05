@@ -75,6 +75,7 @@ import TaskStaff     as TskStf
 import TaskEquipment as TskEqp
 import WorkPackage   as wp
 import Staff         as Stf
+import OtherNonStaff as ONS
 
 """
          -------->  Base "Report" class  <--------
@@ -298,6 +299,7 @@ class WorkPackageSummary(Report):
         Line = self.RiskMitigationStaff(_wpInst)
         self._Lines.append(Line)
         
+        print(_wpInst)
         Line = self.StaffTotal(_wpInst)
         self._Lines.append(Line)
         
@@ -315,7 +317,12 @@ class WorkPackageSummary(Report):
         
         Line = self.Inflation(_wpInst)
         self._Lines.append(Line)
-        
+
+        for iONS in ONS.OtherNonStaff.instances:
+            if iONS._WPInst == _wpInst:
+                Line = self.OtherNonStaffLines(_wpInst, iONS)
+                self._Lines.append(Line)
+                
         Line = self.Consumables(_wpInst)
         self._Lines.append(Line)
         
@@ -517,6 +524,17 @@ class WorkPackageSummary(Report):
                 Lines.append(copy.deepcopy(Line))
         return Lines
         
+    def OtherNonStaffLines(self, _wpInst, _iONS):
+        Line  = []
+        Line.append(_iONS._Name)
+        for iYr in range(len(_wpInst._FinancialYears)):
+            Line.append(None)
+            Line.append(_iONS._OtherNonStaffCostByYear[iYr])
+        Line.append(None)
+        Line.append(_iONS._TotalOtherNonStaffCost)
+        return Line
+            
+        
     def EquipmentHeader(self, _wpInst):
         Line = []
         Line.append("Non-staff")
@@ -536,7 +554,11 @@ class WorkPackageSummary(Report):
             else:
                 Line.append(None)
         Line.append(_wpInst._TotalStaffFrac)
-        Line.append(round(_wpInst._TotalStaffCost, 2))
+        if isinstance(_wpInst._TotalStaffCost, float):
+            Line.append(round(_wpInst._TotalStaffCost, 2))
+        else:
+            Line.append(None)
+            
         return Line
 
     def StaffHeader(self, _wpInst):

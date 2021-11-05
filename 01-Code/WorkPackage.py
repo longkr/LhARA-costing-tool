@@ -37,13 +37,20 @@ Class WorkPackage:
                           by FY
    _TotalEquipmentCost  = Summed total equipment cost over duration of project 
                           (£k)
+   _OtherNonStaffCostByYear = Total cost of other non-staff items in £k for 
+                          this workpackage by FY
+   _TotalOtherNonStaffCost  = Summed total other non-staff cost over duration 
+                          of project 
+                          (£k)
    _TravelByYear        = Cost of travel (£k) per financial year
    _TotalTravel         = Total cost of travel (£k)
    _ConsumeByYear       = Cost of consumables (£k) per financial year
                           Includes cost of "other non-staff items"
    _TotalConsume        = Total cost of consumables
-   _TrvlCnsmCostByYear  = Sum of travel and consumables by financial year (£k)
-   _TotalTrvlCnsmCost   = Total of sum of travel and consumables (£k)
+   _TrvlCnsmCostByYear  = Sum of travel, other non staff and consumables by 
+                          financial year (£k)
+   _TotalTrvlCnsmCost   = Total of sum of travel, other non staff
+                          and consumables (£k)
    _OtherNonStaffItems  = List of what enters "other non staff items"
    _WorkingMarginByYear = Working margin (£k) by year
    _WorkingMarginTotal  = Total workingmargin (£k)
@@ -95,6 +102,12 @@ Class WorkPackage:
                               Input: numpy array
   
       setTotalEquipmentCost : Set total equipment cost; sum cost per year (£k)
+
+      setOtherNonStaffCostByYear: Set OtherNonStaff cost by financial year (£k)
+                              Input: numpy array
+  
+      setTotalOtherNonStaffCost : Set total OtherNonStaff cost; sum cost per 
+                              year (£k)
 
       setTravelCostByYear   : Set travel cost by financial 
                               year (£k)
@@ -160,6 +173,8 @@ Class WorkPackage:
                     self._TotalCGStaffCost  
                     self._EquipmentCostByYear
                     self._TotalEquipmentCost 
+                    self._OtherNonStaffCostByYear
+                    self._TotalOtherNonStaffCost 
                     self._WorkingMarginByYear
                     self._WorkingMarginTotal
                     self._ContingencyByYear
@@ -197,6 +212,7 @@ import Project       as Prj
 import Task          as Tsk
 import Staff         as Stf
 import Equipment     as Eqp
+import OtherNonStaff as ONS
 import TaskStaff     as TskStff
 import TaskEquipment as TskEqp
 
@@ -212,9 +228,11 @@ class WorkPackage:
 #--------  "Built-in methods":
     def __init__(self, filename=None): #, _PrjInst=None):
         if filename == None:
-            raise NoFilenameProvided('CSV filename required; execution termimated.')
+            raise NoFilenameProvided( \
+                'CSV filename required; execution termimated.')
         elif not os.path.isfile(filename):
-            raise NonExistantFile('CSV file' + filename +' does not exist; execution termimated.')
+            raise NonExistantFile('CSV file' + filename + \
+                                  ' does not exist; execution termimated.')
 
         self._filename        = filename
         self._wpParams        = self.getWorkPackage(filename)
@@ -243,6 +261,8 @@ class WorkPackage:
         self._TotalCGStaffCost    = None
         self._EquipmentCostByYear = None
         self._TotalEquipmentCost  = None
+        self._OtherNonStaffCostByYear = None
+        self._TotalOtherNonStaffCost  = None
         self._WorkingMarginByYear = None
         self._WorkingMarginTotal  = None
         self._ContingencyByYear   = [None, None, None]
@@ -261,7 +281,8 @@ class WorkPackage:
             self._OtherNonStaffItems = \
             self.parseWorkPackage()
 
-        self._TrvlCnsmCostByYear  = self._TravelByYear + self._ConsumeByYear
+        self._TrvlCnsmCostByYear  = self._TravelByYear + \
+                                    self._ConsumeByYear
         self._TotalTrvlCnsmCost   = np.sum(self._TrvlCnsmCostByYear)
         
         WorkPackage.instances.append(self)
@@ -270,9 +291,8 @@ class WorkPackage:
         return "WorkPackage()"
 
     def __str__(self):
-        _PrjName = self._Project._Name
-        print(" WorkPackage: name:", _PrjName, " ---->")
-        print("     Project:", self._Project._Name, \
+        print(" WorkPackage: name:", self._Name, " ---->")
+        print("     Project:", self._Project, \
               " Manager:", self._WPM, \
               " Financial years:", self._FinancialYears)
         print("     Staff FTE by year, total:", self._StaffFracByYear, \
@@ -283,14 +303,16 @@ class WorkPackage:
               self._TotalCGStaffCost)
         print("     Equipment cost by year, total", self._EquipmentCostByYear, \
               self._TotalEquipmentCost)
+        print("     Other non-staff cost by year, total", \
+              self._OtherNonStaffCostByYear, self._TotalOtherNonStaffCost)
         print("     Working margin by year, total", self._WorkingMarginByYear, \
               self._WorkingMarginTotal)
-        print("     Contingency, equipment, by year, total", self._ContingencyByYear[0], \
-              self._ContingencyTotal[0])
-        print("     Contingency, staff, by year, total", self._ContingencyByYear[1], \
-              self._ContingencyTotal[1])
-        print("     Contingency, staff CG, by year, total", self._ContingencyByYear[2], \
-              self._ContingencyTotal[2])
+        print("     Contingency, equipment, by year, total", \
+              self._ContingencyByYear[0], self._ContingencyTotal[0])
+        print("     Contingency, staff, by year, total", \
+              self._ContingencyByYear[1], self._ContingencyTotal[1])
+        print("     Contingency, staff CG, by year, total", \
+              self._ContingencyByYear[2], self._ContingencyTotal[2])
         print("     Travel cost by year, total", self._TravelByYear,
               self._TotalTravel)
         print("     Consumables cost by year (including other non-staff):",
@@ -338,6 +360,12 @@ class WorkPackage:
 
     def setTotalEquipmentCost(self):
         self._TotalEquipmentCost = np.sum(self._EquipmentCostByYear)
+
+    def setOtherNonStaffCostByYear(self, _OtherNonStaffCostByYear):
+        self._OtherNonStaffCostByYear = _OtherNonStaffCostByYear
+
+    def setTotalOtherNonStaffCost(self):
+        self._TotalOtherNonStaffCost = np.sum(self._OtherNonStaffCostByYear)
 
     def setTravelCostByYear(self, _TravelCostByYear):
         self._TravelCostByYear = _TravelCostByYear
@@ -405,6 +433,7 @@ class WorkPackage:
         for i in range(len(self._FinancialYears)):
             Cst = self._StaffCostByYear[i]   + \
                 self._EquipmentCostByYear[i] + \
+                self._OtherNonStaffCostByYear[i] + \
                 self._TrvlCnsmCostByYear[i]  + \
                 self._WorkingMarginByYear[i] + \
                 self._ContingencyByYear[0][i] + \
@@ -418,13 +447,17 @@ class WorkPackage:
     def getHeader(cls):
         HeaderList = ["Name", "Project", "filename", \
                               "Work package manager", \
-                              "Number of financial years", \
+                              "Financial years", \
+                              "Staff fraction by year", \
                               "Staff cost per year (£k)", \
                               "CG staff cost per year (£k)", \
+                              "Total staff fracrion", \
                               "Total staff cost (£k)", \
                               "Total CG staff cost (£k)", \
                               "Equipment cost by year (£k)", \
                               "Total equipment cost (£k)", \
+                              "Other non-staff cost by year (£k)", \
+                              "Total other non-staff cost (£k)", \
                               "Working margin by year (£k)", \
                               "Working margin total (£k)", \
                               "Contingency, equipment, by year (£k)", \
@@ -456,6 +489,8 @@ class WorkPackage:
                     self._TotalCGStaffCost, \
                     self._EquipmentCostByYear, \
                     self._TotalEquipmentCost, \
+                    self._OtherNonStaffCostByYear, \
+                    self._TotalOtherNonStaffCost, \
                     self._WorkingMarginByYear, \
                     self._WorkingMarginTotal, \
                     self._ContingencyByYear[0], \
@@ -633,8 +668,32 @@ class WorkPackage:
                 EqpInst.setTotalEquipmentCost()
                 if self.__Debug:
                     print(" WorkPackage; parseWorkPackage: ", \
-                          "equipment cost by year:", EqpInst._EquipmentCostByYear, \
+                          "equipment cost by year:", \
+                          EqpInst._EquipmentCostByYear, \
                           " Total:", EqpInst._TotalEquipmentCost)
+            elif self._wpParams.iat[i,0] == "OtherNonStaff":
+                OtherNonStaffItems.append(self._wpParams.iat[i,1])
+                if self.__Debug:
+                    print(" WorkPackage; parseWorkPackage: other non-staff: ",\
+                          self._wpParams.iat[i,1])
+                OtherNonStaffName = self._wpParams.iloc[i,1]
+                ONSInst = ONS.OtherNonStaff(OtherNonStaffName, self)
+                if self.__Debug:
+                    print(" WorkPackage; parseWorkPackage: OtherNonStaff ", \
+                              OtherNonStaffName, " created.")
+                ONSCst = np.array([])
+                for iYr in range(len(Yrs)):
+                    Cst = float(self._wpParams.iat[i,2+iYr])
+                    if mt.isnan(Cst):
+                        Cst = 0.
+                    ONSCst = np.append(ONSCst,Cst)
+                ONSInst.setOtherNonStaffCost(ONSCst)
+                ONSInst.setTotalOtherNonStaffCost()
+                if WorkPackage.__Debug:
+                    print(" WorkPackage; parseWorkPackage: ", \
+                          "OtherNonStaff cost by year:", \
+                          ONSInst._OtherNonStaffCostByYear, \
+                          " Total:", ONSInst._TotalOtherNonStaffCost)
             elif str(self._wpParams.iat[i,0]) == "EndStaff":
                 pass
             elif str(self._wpParams.iat[i,0]) == "NonStaffHd":
@@ -675,26 +734,6 @@ class WorkPackage:
                     print(" WorkPackage; parseWorkPackage: ", \
                           "travel cost by year and total:", \
                           _TravelByYear, _TotalTravel)
-            elif str(self._wpParams.iat[i,0]) == "OtherNonStaff":
-                OtherNonStaffItems.append(self._wpParams.iat[i,1])
-                if self.__Debug:
-                    print(" WorkPackage; parseWorkPackage: other non-staff: ",\
-                          self._wpParams.iat[i,1])
-                CnsCst = np.array([])
-                for iYr in range(len(Yrs)):
-                    Cst = float(self._wpParams.iat[i,2+iYr])
-                    if mt.isnan(Cst):
-                        Cst = 0.
-                    CnsCst = np.append(CnsCst,Cst)
-                if not isinstance(_ConsumeByYear, np.ndarray):
-                    _ConsumeByYear = CnsCst
-                else:
-                    _ConsumeByYear += CnsCst
-                _TotalConsume  = np.sum(_ConsumeByYear)
-                if self.__Debug:
-                    print(" WorkPackage; parseWorkPackage: consumables + ", \
-                          "other non-staff cost by year and total:", \
-                          _ConsumeByYear, _TotalConsume)
             elif str(self._wpParams.iat[i,0]) == "NonStaffEnd":
                 pass
             elif str(self._wpParams.iat[i,0]) == "Flag":
@@ -737,6 +776,7 @@ class WorkPackage:
             _StaffCostByYear   = np.array([])
             _CGStaffCostByYear = np.array([])
             _EquipmentCostByYear = np.array([])
+            _OtherNonStaffCostByYear = np.array([])
             SumInitialised = False
             for iTsk in Tsk.Task.instances:
                 if iTsk._WorkPackage == iWp:
@@ -754,6 +794,8 @@ class WorkPackage:
                                 np.append(_CGStaffCostByYear, [0.])
                             _EquipmentCostByYear = \
                                 np.append(_EquipmentCostByYear,   [0.])
+                            _OtherNonStaffCostByYear = \
+                                np.append(_OtherNonStaffCostByYear,   [0.])
                     SumInitialised = True
 
                     if len(iTsk._StaffCostByYear) > 0:
@@ -768,7 +810,16 @@ class WorkPackage:
                               iTsk._EquipmentCostByYear)
                     if len(iTsk._EquipmentCostByYear) > 0:
                         _EquipmentCostByYear += iTsk._EquipmentCostByYear
-
+                        
+            for iONS in ONS.OtherNonStaff.instances:
+                if iONS._WPInst == iWp:
+                    if len(iONS._OtherNonStaffCostByYear) > 0:
+                        _OtherNonStaffCostByYear += \
+                            iONS._OtherNonStaffCostByYear
+                    if WorkPackage.__Debug:
+                        print("         ----> W/p, other non-staff cost", \
+                              _OtherNonStaffCostByYear)
+                        
             iWp._StaffFracByYear = _StaffFracByYear
             iWp._StaffCostByYear = _StaffCostByYear
             iWp.setTotalStaffFrac()
@@ -777,6 +828,8 @@ class WorkPackage:
             iWp.setTotalCGStaffCost()
             iWp._EquipmentCostByYear = _EquipmentCostByYear
             iWp.setTotalEquipmentCost()
+            iWp._OtherNonStaffCostByYear = _OtherNonStaffCostByYear
+            iWp.setTotalOtherNonStaffCost()
 
             iWp.setWorkingMarginByYear()
             iWp.setWorkingMarginTotal()

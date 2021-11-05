@@ -25,6 +25,11 @@ Class Project:
                           by FY
    _TotalEquipCost      = Summed total equipment cost over duration of project
                           (£k)
+   _OtherNonStaffCostByYear = Total cost of other non-staff in £k for this 
+                          workpackage by FY
+   _TotalOthrNSCost     = Summed total other non-staff cost over duration of 
+                          project
+                          (£k)
    _TrvlCnsmCostByYear  = Travel and consumable cost in £k for this workpackage
                           by FY
    _TotalTrvlCnsmCost   = Summed travel and consumable cost in £k for this 
@@ -70,10 +75,18 @@ Class Project:
 
       setTotalEquipmentCost : Set total equipment cost -- sums cost per year
 
-      setTrvlCnsmCostByYear : Set total travel and consumables cost in £k
+      setEOtherNonStaffCostByYear: Set equipment cost per year:
+                 Input: numpy array containing cost in £k
+
+      setTotalOtherNonStaffCost : Set total non-staff cost -- sums cost per 
+                                  year
+
+      setTrvlCnsmCostByYear : Set total travel, other non-staff and 
+                         consumables cost in £k
                  Input: numpy array containing cost in £k
         
-      setTotalTrvlCnsmCost  : Set total equipment cost -- sums cost per year
+      setTotalTrvlCnsmCost  : Set total all non-staff costs -- sums cost per 
+                              year
 
 
   Processing methods:
@@ -129,6 +142,8 @@ class Project:
         self._TotalCGStaffCost    = None
         self._EquipmentCostByYear = None
         self._TotalEquipmentCost  = None
+        self._OtherNonStaffCostByYear = None
+        self._TotalOtherNonStaffCost  = None
         self._TrvlCnsmCostByYear  = None
         self._TotalTrvlCnsmCost   = None
 
@@ -146,6 +161,8 @@ class Project:
               self._CGStaffCostByYear, self._TotalCGStaffCost)
         print("     Equipment cost by year, total", \
               self._EquipmentCostByYear, self._TotalEquipmentCost)
+        print("     Other non-staff cost by year, total", \
+              self._OtherNonStaffCostByYear, self._TotalOtherNonStaffCost)
         print("     Travel and consumable cost by year, total:", \
               self._TrvlCnsmCostByYear, self._TotalTrvlCnsmCost)
         return "     <---- Project done."
@@ -175,6 +192,12 @@ class Project:
 
     def setTotalEquipmentCost(self):
         self._TotalEquipmentCost = np.sum(self._EquipmentCostByYear)
+
+    def setOtherNonStaffCostByYear(self, _OtherNonStaffCostByYear):
+        self._OtherNonStaffCostByYear = _OtherNonStaffCostByYear
+
+    def setTotalOtherNonStaffCost(self):
+        self._TotalOtherNonStaffCost = np.sum(self._OtherNonStaffCostByYear)
 
     def setTrvlCnsmCostByYear(self, _TrvlCnsmCostByYear):
         self._TrvlCnsmCostByYear = _TrvlCnsmCostByYear
@@ -221,6 +244,8 @@ class Project:
                             "Total CG staff cost (£k)", \
                             "Equipment cost by year (£k)", \
                             "Total equipment cost (£k)", \
+                            "Other non-staff cost by year (£k)", \
+                            "Total other non-staff cost (£k)", \
                             "Travel and consumables by year (£k)", \
                             "Total travel and consumables (£k)"])
         for inst in Project.instances:
@@ -231,6 +256,8 @@ class Project:
                                 inst._TotalCGStaffCost, \
                                 inst._EquipmentCostByYear, \
                                 inst._TotalEquipmentCost, \
+                                inst._OtherNonStaffCostByYear, \
+                                inst._TotalOtherNonStaffCost, \
                                 inst._TrvlCnsmCostByYear, \
                                 inst._TotalTrvlCnsmCost])
         ProjectDataframe = pnds.DataFrame(ProjectData)
@@ -251,6 +278,8 @@ class Project:
                iPrj._TotalCGStaffCost    == None or \
                not isinstance(iPrj._EquipmentCostByYear, np.ndarray) or \
                iPrj._TotalEquipmentCost  == None or \
+               not isinstance(iPrj._OtherNonStaffCostByYear, np.ndarray) or \
+               iPrj._TotalOtherNonStaffCost  == None or \
                not isinstance(iPrj._TrvlCnsmCostByYear,  np.ndarray) or \
                iPrj._TotalTrvlCnsmCost   == None:
                 del iPrj
@@ -266,6 +295,7 @@ class Project:
             _StaffCostByYear     = np.array([])
             _CGStaffCostByYear   = np.array([])
             _EquipmentCostByYear = np.array([])
+            _OtherNonStaffCostByYear = np.array([])
             _TrvlCnsmCostByYear  = np.array([])
             SumInitialised = False
             for iWP in WP.WorkPackage.instances:
@@ -277,12 +307,15 @@ class Project:
                             np.append(_CGStaffCostByYear,   [0.])
                         _EquipmentCostByYear = \
                             np.append(_EquipmentCostByYear, [0.])
+                        _OtherNonStaffCostByYear = \
+                            np.append(_OtherNonStaffCostByYear, [0.])
                         _TrvlCnsmCostByYear  = \
                             np.append(_TrvlCnsmCostByYear,  [0.])
                 SumInitialised     = True
                 _StaffCostByYear     += iWP._StaffCostByYear
                 _CGStaffCostByYear   += iWP._CGStaffCostByYear
                 _EquipmentCostByYear += iWP._EquipmentCostByYear
+                _OtherNonStaffCostByYear += iWP._OtherNonStaffCostByYear
                 _TrvlCnsmCostByYear  += iWP._TrvlCnsmCostByYear
             iPrj._StaffCostByYear = _StaffCostByYear
             iPrj.setTotalStaffCost()
@@ -290,6 +323,8 @@ class Project:
             iPrj.setTotalCGStaffCost()
             iPrj._EquipmentCostByYear = _EquipmentCostByYear
             iPrj.setTotalEquipmentCost()
+            iPrj._OtherNonStaffCostByYear = _OtherNonStaffCostByYear
+            iPrj.setTotalOtherNonStaffCost()
             iPrj._TrvlCnsmCostByYear = _TrvlCnsmCostByYear
             iPrj.setTotalTrvlCnsmCost()
 

@@ -86,16 +86,23 @@ Created on Wed 19Jun21. Version history:
 import numpy  as np
 import pandas as pd
 
+import WorkPackage as wp
+
 class OtherNonStaff:
-    __Debug = True
+    __Debug = False
     instances = []
 
 #--------  "Built-in methods":
-    def __init__(self, _Name="None"):
+    def __init__(self, _Name="None", _WPInst=None):
         if _Name == "None":
             _Name = " OtherNonStaff instance created with no content."
-            
+
+        if _WPInst == "None" or \
+           not isinstance(_WPInst, wp.WorkPackage):
+            raise OtherNonStaffNoWP
+
         self._Name                    = _Name
+        self._WPInst                  = _WPInst
         self._OtherNonStaffCostByYear = np.array([])
         self._TotalOtherNonStaffCost  = float("nan")
 
@@ -106,6 +113,7 @@ class OtherNonStaff:
 
     def __str__(self):
         print(" OtherNonStaff: \n     OtherNonStaff name:", self._Name)
+        print("     From Work Package name:", self._WPInst._Name)
         print("     Cost by financial year:", self._OtherNonStaffCostByYear)
         return "     Total cost: %g"%(self._TotalOtherNonStaffCost)
 
@@ -218,4 +226,7 @@ class OtherNonStaff:
 
 #--------  Exceptions:
 class DuplicateOtherNonStaffClassInstance(Exception):
+    pass
+
+class OtherNonStaffNoWP(Exception):
     pass

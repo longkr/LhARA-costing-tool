@@ -10,9 +10,11 @@ Test script for "OtherNonStaff" class
 
 """
 
+import os
 import numpy as np
 
 import OtherNonStaff as ONS
+import WorkPackage   as wp
 
 ##! Start:
 print("========  OtherNonStaff: tests start  ========")
@@ -26,11 +28,14 @@ print("OtherNonStaffTest:", OtherNonStaffTest, " check built-in methods.")
 print("    __init__:")
 try:
     ONS0 = ONS.OtherNonStaff()
-except:
-    print('      ----> Failed to create instance.')
-    raise Exception
+except ONS.OtherNonStaffNoWP:
+    print('      ----> Successfully trapped OtherNonStaff exception.')
+LhARAPATH = os.getenv('LhARAPATH')
+filename  = os.path.join(LhARAPATH, '11-WorkPackages/Dummy4Test.csv')
+WP1 = wp.WorkPackage(filename)
+print('      ----> instance WP1 created.')
 try:
-    ONS1 = ONS.OtherNonStaff("LhARA")
+    ONS1 = ONS.OtherNonStaff("LhARA", WP1)
 except:
     print('      ----> Failed to create instance.')
     raise Exception
@@ -50,9 +55,9 @@ print("    <---- __str__ done.")
 OtherNonStaffTest = 2
 print()
 print("OtherNonStaffTest:", OtherNonStaffTest, " check getInstance method.")
-ONS2 = ONS.OtherNonStaff("Test-1")
-ONS3 = ONS.OtherNonStaff("Test-2")
-ONS4 = ONS.OtherNonStaff("Test-2")
+ONS2 = ONS.OtherNonStaff("Test-1", WP1)
+ONS3 = ONS.OtherNonStaff("Test-2", WP1)
+ONS4 = ONS.OtherNonStaff("Test-2", WP1)
 inst = ONS.OtherNonStaff.getInstance("Dummy")
 if inst == None:
     print('      ----> Correctly reported no instance:', inst)
