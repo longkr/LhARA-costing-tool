@@ -118,19 +118,20 @@ class LhARACostingTool(object):
 
         #..  Project
         if cls._Debug:
+            print("                   Run doCosting")
+        Prj.Project.doCosting()
+        if cls._Debug:
             print("          Project: clean")
         nDel = Prj.Project.clean()
         if cls._Debug:
             print("                 ", nDel, " instances deleted")
-            print("                   Run doCosting")
-        Prj.Project.doCosting()
-        if cls._Debug:
             print("                  <---- done")
 
         """
                Make reports
         """
 
+        #-------->  Report path handling:
         BaseREPORTPATH = os.getenv('REPORTPATH')
         RptDt = date.today()
         if BaseREPORTPATH == None or not os.path.isdir(BaseREPORTPATH):
@@ -144,6 +145,7 @@ class LhARACostingTool(object):
                 print("          Report path: \n",
                       "                      ", REPORTPATH)
 
+            #-------->  Workpackage report handling:
             if cls._Debug:
                 print("          Report: list work packages")
             wpRpt = Rpt.WorkPackageList(REPORTPATH, \
@@ -167,3 +169,18 @@ class LhARACostingTool(object):
             if cls._Debug:
                 print("                  <---- done")
    
+            #-------->  Staff report handling:
+            if cls._Debug:
+                print("          Report: list all staff")
+            StfLstAll = Rpt.StaffList(REPORTPATH, "StaffReportList.csv")
+            StfLstAll.asCSV()
+
+            if len(Prj.Project.instances) == 1:
+                iPrj = Prj.Project.instances[0]
+                iStfSmRpt = Rpt.StaffEffortSummary(REPORTPATH, \
+                                                   "StaffEffortSummary.csv", \
+                                                   iPrj)
+                iStfSmRpt.asCSV()
+                
+            if cls._Debug:
+                print("                  <---- done")

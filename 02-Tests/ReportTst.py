@@ -12,10 +12,12 @@ Test script for "Reports" class
 """
 
 import os
+import numpy as np
 
 import Control     as Cntrl
 import Staff       as Stf
 import WorkPackage as wp
+import Project     as Prj
 import Report      as Rprt
 
 ##! Start:
@@ -83,7 +85,8 @@ print("    ----> Overview report instance created.")
 print(Ovrvw1)
 print("    <---- Overview report test done.")
 print()
-print("ReportsTest:", ReportsTest, " check Staff list derived class methods.")
+print("ReportsTest:", ReportsTest, \
+      " check Staff list derived class methods.")
 LhARAPATH = os.getenv('LhARAPATH')
 filename  = os.path.join(LhARAPATH, '12-Staff/StaffDatabase.csv')
 Stf.Staff.parseStaffDatabase(filename)
@@ -150,6 +153,22 @@ print("ReportsTest:", ReportsTest, \
 DataFrame = wpSumRpt.createPandasDataFrame()
 wpSumRpt.createCSV(DataFrame)
 print(DataFrame)
+print("    <---- CSV work package summary report generated.")
+print()
+print("ReportsTest:", ReportsTest, \
+      " check creation of staff effort summary report.")
+print(Prj.Project.instances)
+iPrj = Prj.Project.instances[0]
+ByYr = np.array([1, 2, 3, 4, 5])
+Yrs  = ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27']
+iPrj.setStaffCostByYear(ByYr)
+iPrj.setFinancialYears(Yrs)
+print(iPrj)
+iStfSmRpt = Rprt.StaffEffortSummary(filepath, "StaffEffortSummary.csv", iPrj)
+print(iStfSmRpt)
+#DataFrame = wpSumRpt.createPandasDataFrame()
+#wpSumRpt.createCSV(DataFrame)
+#print(DataFrame)
 print("    <---- CSV work package summary report generated.")
 
 

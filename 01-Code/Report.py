@@ -74,6 +74,7 @@ import Task          as Tsk
 import TaskStaff     as TskStf
 import TaskEquipment as TskEqp
 import WorkPackage   as wp
+import Project       as Prj
 import Staff         as Stf
 import OtherNonStaff as ONS
 
@@ -175,12 +176,14 @@ class StaffList(Report):
 
     def __init__(self, _ReportPath, _FileName):
 
-        Report.__init__(self, "Staff report: full staff list", _ReportPath, _FileName)
+        Report.__init__(self, "Staff report: full staff list", \
+                        _ReportPath, _FileName)
 
         self._Header = Stf.Staff.getHeader()
         self._Lines = []
         for iStf in Stf.Staff.instances:
             self._Lines.append(iStf.getData())
+
 
     def __str__(self):
         print(" Report: Name: ", self._Name)
@@ -245,6 +248,189 @@ class WorkPackageList(Report):
         wp.WorkPackage.createCSV(dataframe, filename)
         
 
+"""
+Class StaffEffortSummary:  ---->  "StaffEffortSummary" report  <----
+=========================
+
+  StaffEffortSummary derived class creates and formats the summary
+  of the staff effort for a particular project.
+
+"""
+class StaffEffortSummary(Report):
+    __Debug   = True
+
+    def __init__(self, _ReportPath, _FileName, _PrjInst):
+
+        if not isinstance(_PrjInst, Prj.Project):
+            raise ProjectInstanceInvalid( \
+                          "Project instance requested invalid")
+        
+        Report.__init__(self, "Staff effort summary", _ReportPath, _FileName)
+
+        self._Header = []
+        self._Header.append(_PrjInst._Name)
+        for i in range(len(_PrjInst._FinancialYears)):
+            for j in range(2):
+                self._Header.append(None)
+        self._Header.append("Report date:")
+        RptDt = date.today()
+        self._Header.append(RptDt.strftime("%d-%b-%Y"))
+
+        self._Lines = []
+        Line        = []
+
+        Line.append(None)
+        NullLine = Line
+        self._Lines.append(Line)
+
+        Lines = self.YearHeader(_PrjInst)
+        for iLn in range(len(Lines)):
+            Line = Lines[iLn]
+            self._Lines.append(Line)
+
+        FrcGrndTot = np.array([])
+        CstGrndTot = np.array([])
+        for iYr in range(len(_PrjInst._FinancialYears)):
+            FrcGrndTot = np.append(FrcGrndTot, 0.)
+            CstGrndTot = np.append(CstGrndTot, 0.)
+
+        InstCode   = None
+        FrcTot     = np.array([])
+        CstTot     = np.array([])
+        for iStf in Stf.Staff.instances:
+            Line = []
+
+            #----> Institute:
+            if InstCode != iStf._InstituteCode:
+                if len(FrcTot) != 0:
+                    Line.append("Total")
+                    for iYr in range(len(_PrjInst._FinancialYears)):
+                        Line.append(FrcTot[iYr])
+                        Line.append(CstTot[iYr])
+                    Line.append(np.sum(FrcTot))
+                    Line.append(np.sum(CstTot))
+                    self._Lines.append(Line)
+                    Line = []
+                    FrcGrndTot += FrcTot
+                    CstGrndTot += CstTot
+
+                FrcTot = np.array([])
+                CstTot = np.array([])
+                for iYr in range(len(_PrjInst._FinancialYears)):
+                    FrcTot = np.append(FrcTot, 0.)
+                    CstTot = np.append(CstTot, 0.)
+                    
+                InstCode = iStf._InstituteCode
+                Line.append(InstCode)
+                self._Lines.append(Line)
+                Line = []
+
+            #----> Staff code:
+            Line.append(iStf._StaffCode)
+            self._Lines.append(Line)
+            Line = []
+
+            #----> Staff fraction and cost by year:
+            Frc = np.array([])
+            Cst = np.array([])
+            iTsk     = None
+            wpName   = None
+            wpList   = _PrjInst._Name + ": "
+            for iYr in range(len(_PrjInst._FinancialYears)):
+                Frc = np.append(Frc, 0.)
+                Cst = np.append(Cst, 0.)
+            for iTskStf in TskStf.TaskStaff.instances:
+                if iTskStf._Staff == iStf:
+                    if iTsk != iTskStf._Task:
+                        if wpName != iTskStf._Task._WorkPackage._Name:
+                            wpName = iTskStf._Task._WorkPackage._Name
+                            wpList += wpName + " "
+                    if isinstance(iTskStf._StaffFracByYear, np.ndarray):
+                        Frc += iTskStf._StaffFracByYear
+                    if isinstance(iTskStf._StaffCostByYear, np.ndarray):
+                        Cst += iTskStf._StaffCostByYear
+            Line.append(wpList)
+            for iYr in range(len(_PrjInst._FinancialYears)):
+                Line.append(Frc[iYr])
+                Line.append(Cst[iYr])
+            Line.append(np.sum(Frc))
+            Line.append(np.sum(Cst))
+            self._Lines.append(Line)
+            FrcTot += Frc
+            CstTot += Cst
+
+        Line = []
+        if len(FrcTot) != 0:
+            Line.append("Total")
+            for iYr in range(len(_PrjInst._FinancialYears)):
+                Line.append(FrcTot[iYr])
+                Line.append(CstTot[iYr])
+            Line.append(np.sum(FrcTot))
+            Line.append(np.sum(CstTot))
+            self._Lines.append(Line)
+
+        Line = []
+        Line.append("Grand total")
+        for iYr in range(len(_PrjInst._FinancialYears)):
+            Line.append(FrcGrndTot[iYr])
+            Line.append(CstGrndTot[iYr])
+        Line.append(np.sum(FrcGrndTot))
+        Line.append(np.sum(CstGrndTot))
+        self._Lines.append(Line)
+
+    def __str__(self):
+        print(" Report: Name: ", self._Name)
+        if self.__Debug:
+            print("     Output directory path: ", self._ReportPath)
+        else:
+            dirname,  basename   = os.path.split(self._ReportPath)
+            print("     Output directory path: ", basename)
+        print("     Report file name: ", self._FileName)
+        print("     Header fields:", self._Header)
+        for i in range(len(self._Lines)):
+            print("     ", self._Lines[i])
+        return "     <---- Report __str__ done."
+
+
+    def YearHeader(self, _iPrj):
+        Line  = []
+        Lines = []
+        
+        Line.append("Staff")
+        for iYr in range(len(_iPrj._FinancialYears)):
+            Line.append(_iPrj._FinancialYears[iYr])
+            Line.append(None)
+        Line.append("Total")
+        Line.append(None)
+        Lines.append(Line)
+        
+        Line = []
+        Line.append(None)
+        for iYr in range(len(_iPrj._FinancialYears)+1):
+            Line.append("Fraction")
+            Line.append("£k")
+        Lines.append(Line)
+
+        return Lines
+    
+#--------  Report:
+    def asCSV(self):
+
+        Data = []
+        Data.append(self._Header)
+        for i in range(len(self._Lines)):
+            Data.append(self._Lines[i])
+        print(Data)
+        
+        DataFrame = pnds.DataFrame(Data)
+        print(DataFrame)
+            
+        filename = os.path.join(self._ReportPath, self._FileName)
+        print(filename)
+
+        DataFrame.to_csv(filename)
+
+        
 """
 Class WorkPackageSummary:  ---->  "WorkPackageSummary" report  <----
 =========================
@@ -655,4 +841,7 @@ class NoWriteAccessToOutputPath:
     pass
 
 class WorkPackageInstanceInvalid:
+    pass
+
+class ProjectInstanceInvalid:
     pass

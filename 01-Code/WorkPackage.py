@@ -571,6 +571,7 @@ class WorkPackage:
                     if Yr != "Total":
                         Yrs.append(Yr)
                         nYrs += 1
+                PrjInst.setFinancialYears(Yrs)
                 if self.__Debug:
                     print(" WorkPackage; parseWorkPackage: financial years:", \
                           Yrs)

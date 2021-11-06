@@ -16,6 +16,7 @@ Class Project:
   Instance attributes:
   --------------------
    _Name                = Project name
+   _FinancialYears
    _StaffCostByYear     = Total cost of staff in £k for this workpackage by FY
    _CGStaffCostByYear   = Cost of CG staff in £k for this workpackage by FY
    _TotalStaffCost      = Summed total staff cost over duration of project (£k)
@@ -136,6 +137,7 @@ class Project:
         self._Name = _ProjectName
 
         #.. Defined, but not filled, at init:
+        self._FinancialYears      = None
         self._StaffCostByYear     = None
         self._CGStaffCostByYear   = None
         self._TotalStaffCost      = None
@@ -155,6 +157,7 @@ class Project:
     def __str__(self):
         _PrjName = self._Name
         print(" Project: name:", _PrjName, " ---->")
+        print("     Financial years:", self._FinancialYears)
         print("     Staff cost by year, total:", \
               self._StaffCostByYear, self._TotalStaffCost)
         print("     CG staff cost by year, total:", \
@@ -175,6 +178,12 @@ class Project:
 
         
 #--------  Get/set methods:
+    def setFinancialYears(self, _Years):
+        self._FinancialYears = _Years
+
+    def getFinancialYears(self):
+        return self._FinancialYears
+        
     def setStaffCostByYear(self, _StaffCostByYear):
         self._StaffCostByYear = _StaffCostByYear
         
@@ -238,6 +247,7 @@ class Project:
     def createPandasDataframe(cls):
         ProjectData = []
         ProjectData.append(["Project", \
+                            "Financial years", \
                             "Staff cost per year (£k)", \
                             "CG staff cost per year (£k)", \
                             "Total staff cost (£k)", \
@@ -250,6 +260,7 @@ class Project:
                             "Total travel and consumables (£k)"])
         for inst in Project.instances:
             ProjectData.append([inst._Name, \
+                                inst._FinancialYears, \
                                 inst._StaffCostByYear, \
                                 inst._CGStaffCostByYear, \
                                 inst._TotalStaffCost, \
@@ -292,6 +303,7 @@ class Project:
     @classmethod
     def doCosting(cls):
         for iPrj in cls.instances:
+            _FinancialYears      = []
             _StaffCostByYear     = np.array([])
             _CGStaffCostByYear   = np.array([])
             _EquipmentCostByYear = np.array([])
@@ -299,6 +311,11 @@ class Project:
             _TrvlCnsmCostByYear  = np.array([])
             SumInitialised = False
             for iWP in WP.WorkPackage.instances:
+                if len(_FinancialYears) == 0:
+                    _FinancialYears = iWP._FinancialYears
+                elif _FinancialYears != iWP._FinancialYears:
+                    raise InconsistentFinancialYears
+                
                 for iYr in range(len(iWP._StaffCostByYear)):
                     if not SumInitialised:
                         _StaffCostByYear     = \
@@ -334,4 +351,7 @@ class DuplicateProjectClassInstance(Exception):
     pass
 
 class NoProjecNameDefined(Exception):
+    pass
+
+class InconsistentFinancialYears(Exception):
     pass
