@@ -218,6 +218,11 @@ class Overview(Report):
         Line = []
 
         nWP = 0
+        FrcTot = np.array([])
+        CstTot = np.array([])
+        for iYr in range(len(_PrjInst._FinancialYears)):
+            FrcTot = np.append(FrcTot, 0.)
+            CstTot = np.append(CstTot, 0.)
         for iWP in wp.WorkPackage.instances:
             nWP += 1
             Line.append(nWP)
@@ -231,21 +236,23 @@ class Overview(Report):
                     if iTskStf._Task._WorkPackage == iWP and \
                        iTskStf._Staff._InstituteCode == InstCode:
                         if Frc.size == 0:
-                            Frc = iTskStf._StaffFracByYear
+                            Frc    = iTskStf._StaffFracByYear
                         else:
-                            Frc += iTskStf._StaffFracByYear
+                            Frc    += iTskStf._StaffFracByYear
                         if Cst.size == 0:
                             if isinstance(iTskStf._StaffCostByYear, np.ndarray):
-                                Cst = iTskStf._StaffCostByYear
+                                Cst    = iTskStf._StaffCostByYear
+                                CstTot = Cst
                         else:
                             if isinstance(iTskStf._StaffCostByYear, np.ndarray):
-                                Cst += iTskStf._StaffCostByYear
-                if len(Frc) != 0:
+                                Cst    += iTskStf._StaffCostByYear
+                                CstTot += iTskStf._StaffCostByYear
+                if Frc.size != 0:
                     Line.append(None)
                     Line.append(InstCode)
                     for iYr in range(len(_PrjInst._FinancialYears)):
                         Line.append(Frc[iYr])
-                        if Cst.size !=0:
+                        if Cst.size != 0:
                             Line.append(Cst[iYr])
                         else:
                             Line.append(None)
@@ -253,6 +260,20 @@ class Overview(Report):
                     Line.append(np.sum(Cst))
                     self._Lines.append(Line)
                     Line = []
+                    FrcTot += Frc
+                    if Cst.size !=0:
+                        CstTot += Cst
+                    
+        Line.append(None)
+        Line.append("Staff totals")
+        for iYr in range(len(_PrjInst._FinancialYears)):
+            Line.append(FrcTot[iYr])
+            Line.append(CstTot[iYr])
+        Line.append(np.sum(FrcTot))
+        Line.append(np.sum(CstTot))
+        self._Lines.append(Line)
+        Line = []
+
         
         self._Overview = []
 
