@@ -10,9 +10,9 @@ Class Staff:
 
   Class attributes:
   -----------------
-  __Debug  : Boolean: set for debug print out
-  instances: List of instances if the WorkPackage class.
-
+  __Debug   : Boolean: set for debug print out
+  instances : List of instances if the WorkPackage class.
+  institutes: List of institutes contributing staff
       
   Instance attributes:
   --------------------
@@ -110,8 +110,9 @@ import pandas as pnds
 import math   as mth
 
 class Staff:
-    __Debug = False
-    instances = []
+    __Debug    = False
+    instances  = []
+    institutes = []
 
 #--------  "Built-in methods":
     def __init__(self, _StaffCode=None, _NameOrPost=None, _filename=None, \
@@ -153,6 +154,9 @@ class Staff:
         self._AnnualCost    = _AnnualCost
         self._ProjectOrCG   = _ProjectOrCG
         self._Comments      = _Comments
+
+        if not (_InstituteCode in Staff.institutes):
+            Staff.institutes.append(_InstituteCode)
 
         Staff.instances.append(self)
 

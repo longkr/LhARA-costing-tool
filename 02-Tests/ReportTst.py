@@ -74,16 +74,6 @@ print("    <---- __str__ done.")
 ##! Check reports:
 ReportsTest = 2
 print()
-print("ReportsTest:", ReportsTest, " check Overview derived class methods.")
-try:
-    Ovrvw1 = Rprt.Overview(LhARAPATH, "TestReport.csv")
-except:
-    print("     ----> Failed to create Overview report instance!",
-          "  Execution terminated.")
-    raise Exception
-print("    ----> Overview report instance created.")
-print(Ovrvw1)
-print("    <---- Overview report test done.")
 print()
 print("ReportsTest:", ReportsTest, \
       " check Staff list derived class methods.")
@@ -105,7 +95,7 @@ print("ReportsTest:", ReportsTest, \
       " check work package list derived class methods.")
 LhARAPATH = os.getenv('LhARAPATH')
 wpPath    = os.path.join(LhARAPATH, '11-WorkPackages')
-wpList    = os.listdir(wpPath)
+wpList    = sorted(os.listdir(wpPath))
 print("    ----> list of WP definition files:", wpList)
 wpInst = []
 for wpFile in wpList:
@@ -171,6 +161,16 @@ print(iStfSmRpt)
 #print(DataFrame)
 print("    <---- CSV work package summary report generated.")
 
+print("ReportsTest:", ReportsTest, " check Overview derived class methods.")
+try:
+    Ovrvw1 = Rprt.Overview(LhARAPATH, "TestReport.csv", iPrj)
+except:
+    print("     ----> Failed to create Overview report instance!",
+          "  Execution terminated.")
+    raise Exception
+print("    ----> Overview report instance created.")
+print(Ovrvw1)
+print("    <---- Overview report test done.")
 
 ##! Complete:
 print()
