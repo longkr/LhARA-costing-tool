@@ -214,9 +214,31 @@ class Project:
     def setTotalTrvlCnsmCost(self):
         self._TotalTrvlCnsmCost = np.sum(self._TrvlCnsmCostByYear)
 
+    def getTotalProjectCostByYear(self):
+        TotByYr = np.array([])
+        for iYr in range(len(self._FinancialYears)):
+            TotByYr = np.append(TotByYr, 0.)
+        if isinstance(self._StaffCostByYear, np.ndarray):
+            TotByYr += self._StaffCostByYear
+        if isinstance(self._EquipmentCostByYear, np.ndarray):
+            TotByYr += self._EquipmentCostByYear
+        if isinstance(self._OtherNonStaffCostByYear, np.ndarray):
+            TotByYr += self._OtherNonStaffCostByYear
+        if isinstance(self._TrvlCnsmCostByYear, np.ndarray):
+            TotByYr += self._TrvlCnsmCostByYear
+        return  TotByYr
+    
     def getTotalProjectCost(self):
-        return self._TotalStaffCost + self._TotalCGStaffCost + \
-               self._TotalEquipmentCost + self._TotalTrvlCnsmCost
+        Total = 0.
+        if isinstance(self._TotalStaffCost, float):
+            Total += self._TotalStaffCost
+        if isinstance(self._TotalEquipmentCost, float):
+            Total += self._TotalEquipmentCost
+        if isinstance(self._TotalOtherNonStaffCost, float):
+            Total += self._TotalOtherNonStaffCost
+        if isinstance(self._TotalTrvlCnsmCost, float):
+            Total += self._TotalTrvlCnsmCost
+        return Total
 
     @classmethod
     def getInstance(cls, _Name):

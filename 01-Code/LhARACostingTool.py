@@ -158,7 +158,7 @@ class LhARACostingTool(object):
                 print("          Report: work package summaries")
             for iWP in wp.WorkPackage.instances:
                 filepath = REPORTPATH
-                filename = iWP._Name + ".csv"
+                filename = iWP._Code + ".csv"
                 if cls._Debug:
                     print("                 ----> ", iWP._Name)
                 wpSumRpt = Rpt.WorkPackageSummary(filepath, \
@@ -181,6 +181,17 @@ class LhARACostingTool(object):
                                                    "StaffEffortSummary.csv", \
                                                    iPrj)
                 iStfSmRpt.asCSV()
+                
+            if cls._Debug:
+                print("                  <---- done")
+   
+            #-------->  Overview report handling:
+            if cls._Debug:
+                print("          Report: project overview")
+                
+            if isinstance(iPrj, Prj.Project):
+                Ovrvw = Rpt.Overview(REPORTPATH, "Overview.csv", iPrj)
+                Ovrvw.asCSV()
                 
             if cls._Debug:
                 print("                  <---- done")

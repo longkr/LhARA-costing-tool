@@ -22,6 +22,7 @@ Class WorkPackage:
                           workpackage specification
    _wpParams            = Pandas dataframe instance containing workpackage 
                           specification
+   _Code                = Work package code
    _Name                = Work package name
    _WPM                 = Work package manager(s)
    _Project             = Instance of Project class to which this work package 
@@ -149,6 +150,7 @@ Class WorkPackage:
                         work package attributes.  
              Returns:
                self._Project
+               self._Code
                self._Name
                self._WPM
                self._FinancialYears
@@ -236,10 +238,12 @@ class WorkPackage:
 
         self._filename        = filename
         self._wpParams        = self.getWorkPackage(filename)
+        self._Code = "PH"
         self._Name = "Place holder"
         if self.__Debug:
             xDummy = self.printWorkPackage()
 
+        self._Code                = None
         self._Name                = None
         self._Project             = None
         self._WPM                 = None
@@ -271,6 +275,7 @@ class WorkPackage:
         self._GrandTotal          = None
 
         self._Project,  \
+            self._Code, \
             self._Name, \
             self._WPM,  \
             self._FinancialYears, \
@@ -291,7 +296,7 @@ class WorkPackage:
         return "WorkPackage()"
 
     def __str__(self):
-        print(" WorkPackage: name:", self._Name, " ---->")
+        print(" WorkPackage: code, name:", self._Code, ", ", self._Name)
         print("     Project:", self._Project, \
               " Manager:", self._WPM, \
               " Financial years:", self._FinancialYears)
@@ -337,6 +342,24 @@ class WorkPackage:
     def getFilename(self):
         return self._filename
 
+    def getTotalNonStaffByYear(self):
+        TotNSByYr = np.array([])
+        for iYr in range(len(self._FinancialYears)):
+            TotNSByYr = np.append(TotNSByYr, 0.)
+            if isinstance(self._EquipmentCostByYear, np.ndarray):
+                TotNSByYr      += self._EquipmentCostByYear[iYr]
+            if isinstance(self._OtherNonStaffCostByYear, np.ndarray):
+                TotNSByYr[iYr] += self._OtherNonStaffCostByYear[iYr]
+            if isinstance(self._ConsumeByYear, np.ndarray):
+                TotNSByYr[iYr] += self._ConsumeByYear[iYr]
+            if isinstance(self._TravelByYear, np.ndarray):
+                TotNSByYr[iYr] += self._TravelByYear[iYr]
+            if isinstance(self._WorkingMarginByYear, np.ndarray):
+                TotNSByYr[iYr] += self._WorkingMarginByYear[iYr]
+            if isinstance(self._ContingencyByYear, np.ndarray):
+                TotNSByYr[iYr] += self._ContingencyByYear[iYr]
+        return TotNSByYr
+            
     def setStaffCostByYear(self, _StaffCostByYear):
         self._StaffCostByYear = _StaffCostByYear
         
@@ -445,7 +468,7 @@ class WorkPackage:
         
     @classmethod
     def getHeader(cls):
-        HeaderList = ["Name", "Project", "filename", \
+        HeaderList = ["Code", "Name", "Project", "filename", \
                               "Work package manager", \
                               "Financial years", \
                               "Staff fraction by year", \
@@ -476,7 +499,7 @@ class WorkPackage:
         return HeaderList
 
     def getData(self):
-        DataList = [self._Name, \
+        DataList = [self._Code, self._Name, \
                     self._Project._Name, \
                     self._filename, \
                     self._WPM, \
@@ -559,7 +582,8 @@ class WorkPackage:
                               ProjectName, " created.")
                 PrjInst = Prj.Project.getInstance(ProjectName)
             elif self._wpParams.iat[i,0] == "Work package":
-                WorkPackageName = self._wpParams.iloc[i,1]
+                WorkPackageCode = self._wpParams.iloc[i,1]
+                WorkPackageName = self._wpParams.iloc[i,2]
             elif self._wpParams.iat[i,0] == "Manager":
                 WPM = self._wpParams.iloc[i,2]
             elif self._wpParams.iat[i,0] == "Years":
@@ -746,7 +770,7 @@ class WorkPackage:
                     print(" WorkPackage; parseWorkPackage: ", \
                           "Unprocessed ---->", self._wpParams.iloc[i,0])
 
-        return PrjInst, WorkPackageName, WPM, Yrs, \
+        return PrjInst, WorkPackageCode, WorkPackageName, WPM, Yrs, \
                _TravelByYear, _TotalTravel, \
                _ConsumeByYear, _TotalConsume, \
                OtherNonStaffItems

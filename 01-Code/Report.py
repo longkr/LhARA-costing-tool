@@ -266,6 +266,7 @@ class Overview(Report):
                     
         Line.append(None)
         Line.append("Staff totals")
+        
         for iYr in range(len(_PrjInst._FinancialYears)):
             Line.append(FrcTot[iYr])
             Line.append(CstTot[iYr])
@@ -274,8 +275,69 @@ class Overview(Report):
         self._Lines.append(Line)
         Line = []
 
+        Line.append("Non-staff cost summary")
+        self._Lines.append(Line)
+        Line = []
+
+        nWP      = 0
+        GrnTotNS = np.array([])
+        for iWP in wp.WorkPackage.instances:
+            nWP += 1
+            Line.append(nWP)
+            Line.append(iWP._Name)
+            TotNSByYr = iWP.getTotalNonStaffByYear()
+            for iYr in range(len(iWP._FinancialYears)):
+                Line.append(None)
+                Line.append(TotNSByYr[iYr])
+                GrnTotNS       = np.append(GrnTotNS, 0.)
+                GrnTotNS[iYr] += TotNSByYr[iYr]
+            Line.append(None)
+            Line.append(np.sum(TotNSByYr))
+            self._Lines.append(Line)
+            Line = []
+
+        Line.append(None)
+        Line.append("Non-staff totals")
+        for iYr in range(len(iWP._FinancialYears)):
+            Line.append(None)
+            Line.append(GrnTotNS[iYr])
+        Line.append(None)
+        Line.append(np.sum(GrnTotNS))
+        self._Lines.append(Line)
+        Line = []
+            
+        Line.append("Total staff and non-staff by work package")
+        self._Lines.append(Line)
+        Line = []
+
+        nWP      = 0
+        for iWP in wp.WorkPackage.instances:
+            nWP += 1
+            Line.append(nWP)
+            Line.append(iWP._Name)
+            for iYr in range(len(iWP._FinancialYears)):
+                if isinstance(iWP._StaffFracByYear, np.ndarray):
+                    Line.append(iWP._StaffFracByYear[iYr])
+                if isinstance(iWP._TotalCostByYear, np.ndarray):
+                    Line.append(iWP._TotalCostByYear[iYr])
+            Line.append(np.sum(iWP._StaffFracByYear))
+            Line.append(np.sum(iWP._TotalCostByYear))
+            self._Lines.append(Line)
+            Line = []
         
-        self._Overview = []
+        self._Lines.append(Line)
+        Line = []
+
+        Line.append("Grand totals")
+        Line.append(None)
+        TotCst = _PrjInst.getTotalProjectCostByYear()
+        for iYr in range(len(_PrjInst._FinancialYears)):
+            Line.append(None)
+            Line.append(TotCst[iYr])
+        Line.append(None)
+        Line.append(_PrjInst.getTotalProjectCost())
+        self._Lines.append(Line)
+        Line = []
 
     def YearHeader(self, _iPrj):
         Line  = []
@@ -289,8 +351,8 @@ class Overview(Report):
         Line.append("Total")
         Line.append(None)
         Lines.append(Line)
-        
         Line = []
+        
         Line.append("Id")
         Line.append("Name")
         for iYr in range(len(_iPrj._FinancialYears)+1):
@@ -771,7 +833,7 @@ class WorkPackageSummary(Report):
 
     def Consumables(self, _wpInst):
         Line = []
-        Line.append("Consumables and other non-staff items")
+        Line.append("Consumables")
         for iYr in range(len(_wpInst._FinancialYears)):
             Line.append(None)
             Line.append(_wpInst._ConsumeByYear[iYr])
