@@ -152,13 +152,16 @@ class Report:
         Data.append(self._Header)
         for i in range(len(self._Lines)):
             Data.append(self._Lines[i])
-        print(Data)
+        if self.__Debug:
+            print(Data)
         
         DataFrame = pnds.DataFrame(Data)
-        print(DataFrame)
+        if self.__Debug:
+            print(DataFrame)
             
         filename = os.path.join(self._ReportPath, self._FileName)
-        print(filename)
+        if self.__Debug:
+            print(filename)
 
         DataFrame.to_csv(filename)
         
@@ -177,10 +180,13 @@ Class Overview:   -------->  "Overview" report; derived class  <--------
 
 """
 class Overview(Report):
-    __Debug   = True
+    __Debug   = False
 
     def __init__(self, _ReportPath, _FileName, _PrjInst):
 
+        """
+           --------> Get started:
+        """
         if not isinstance(_PrjInst, Prj.Project):
             raise ProjectInstanceInvalid( \
                           "Project instance requested invalid")
@@ -213,6 +219,9 @@ class Overview(Report):
         Line  = []
         Lines = []
 
+        """
+           --------> Work through staff cost overview:
+        """
         Line.append("Staff effort, summary by institute")
         self._Lines.append(Line)
         Line = []
@@ -220,21 +229,46 @@ class Overview(Report):
         nWP = 0
         FrcTot = np.array([])
         CstTot = np.array([])
+
         for iYr in range(len(_PrjInst._FinancialYears)):
             FrcTot = np.append(FrcTot, 0.)
             CstTot = np.append(CstTot, 0.)
+
+        """
+           Loop over work packages:
+        """
+        if Overview.__Debug:
+            print(" Overview(Report): Loop over w/ps to sum staff cost", \
+                  " by year")
         for iWP in wp.WorkPackage.instances:
             nWP += 1
             Line.append(nWP)
             Line.append(iWP._Name)
             self._Lines.append(Line)
             Line = []
+            if Overview.__Debug:
+                print("     ----> Work package: ", iWP.getName())
+                
+            """
+               Loop over institutes contributing staff:
+            """
             for InstCode in Stf.Staff.institutes:
                 Frc = np.array([])
                 Cst = np.array([])
+
+                """
+                   Loop over task staff instances:
+                """
                 for iTskStf in TskStf.TaskStaff.instances:
                     if iTskStf._Task._WorkPackage == iWP and \
                        iTskStf._Staff._InstituteCode == InstCode:
+                        if Overview.__Debug:
+                            print("           ----> Institute: Staff code", \
+                                  InstCode, iTskStf._Staff.getStaffCode())
+                            print("                 Fraction by year:", \
+                                  iTskStf._StaffFracByYear)
+                            print("                 Cost by year    :", \
+                                  iTskStf._StaffCostByYear)
                         if Frc.size == 0:
                             Frc    = iTskStf._StaffFracByYear
                         else:
@@ -242,28 +276,43 @@ class Overview(Report):
                         if Cst.size == 0:
                             if isinstance(iTskStf._StaffCostByYear, np.ndarray):
                                 Cst    = iTskStf._StaffCostByYear
-                                CstTot = Cst
                         else:
-                            if isinstance(iTskStf._StaffCostByYear, np.ndarray):
+                            if isinstance(iTskStf._StaffCostByYear, \
+                                          np.ndarray):
                                 Cst    += iTskStf._StaffCostByYear
-                                CstTot += iTskStf._StaffCostByYear
+
+                if Overview.__Debug and Frc.size != 0:
+                    print("                 WP/institute totals:")
+                    print("                     Fraction by year:", Frc)
+                    print("                     Cost by year    :", Cst)
+
+                """
+                   Now create line for overview table
+                """
                 if Frc.size != 0:
                     Line.append(None)
                     Line.append(InstCode)
+                                    
                     for iYr in range(len(_PrjInst._FinancialYears)):
                         Line.append(Frc[iYr])
                         if Cst.size != 0:
                             Line.append(Cst[iYr])
                         else:
                             Line.append(None)
+                            
                     Line.append(np.sum(Frc))
                     Line.append(np.sum(Cst))
                     self._Lines.append(Line)
+                    if Overview.__Debug:
+                        print("                 Line for csv file:")
+                        print("                 ---->", Line)
                     Line = []
                     FrcTot += Frc
-                    if Cst.size !=0:
-                        CstTot += Cst
-                    
+                    CstTot += Cst
+
+        """
+           Prepare totals line for csv file:
+        """
         Line.append(None)
         Line.append("Staff totals")
         
@@ -273,18 +322,30 @@ class Overview(Report):
         Line.append(np.sum(FrcTot))
         Line.append(np.sum(CstTot))
         self._Lines.append(Line)
+        if Overview.__Debug:
+            print("           Line for csv file:")
+            print("           ---->", Line)
         Line = []
 
         Line.append("Non-staff cost summary")
         self._Lines.append(Line)
         Line = []
 
+        """
+           --------> Work through non-staff cost overview:
+        """
         nWP      = 0
         GrnTotNS = np.array([])
+        if Overview.__Debug:
+            print(" Overview(Report): Loop over w/ps to sum non-staff costs", \
+                  " by year")
         for iWP in wp.WorkPackage.instances:
             nWP += 1
             Line.append(nWP)
             Line.append(iWP._Name)
+            if Overview.__Debug:
+                print("     ----> Work package: ", iWP.getName())
+
             TotNSByYr = iWP.getTotalNonStaffByYear()
             for iYr in range(len(iWP._FinancialYears)):
                 Line.append(None)
@@ -294,6 +355,9 @@ class Overview(Report):
             Line.append(None)
             Line.append(np.sum(TotNSByYr))
             self._Lines.append(Line)
+            if Overview.__Debug:
+                print("           Line for csv file:")
+                print("           ---->", Line)
             Line = []
 
         Line.append(None)
@@ -310,11 +374,20 @@ class Overview(Report):
         self._Lines.append(Line)
         Line = []
 
+        """
+           --------> Sum total staff and non-staff
+        """
+        if Overview.__Debug:
+            print(" Overview(Report): Sum staff and non-staff totals", \
+                  " by year")
         nWP      = 0
         for iWP in wp.WorkPackage.instances:
             nWP += 1
             Line.append(nWP)
             Line.append(iWP._Name)
+            if Overview.__Debug:
+                print("     ----> Work package: ", iWP.getName())
+
             for iYr in range(len(iWP._FinancialYears)):
                 if isinstance(iWP._StaffFracByYear, np.ndarray):
                     Line.append(iWP._StaffFracByYear[iYr])
@@ -323,6 +396,8 @@ class Overview(Report):
             Line.append(np.sum(iWP._StaffFracByYear))
             Line.append(np.sum(iWP._TotalCostByYear))
             self._Lines.append(Line)
+            if Overview.__Debug:
+                print("           Line for csv:", Line)
             Line = []
         
         self._Lines.append(Line)
@@ -366,7 +441,7 @@ class Overview(Report):
 Class StaffList:   -------->  "Staff" report; derived class  <--------
 ================
 
-  Staff derived class creates and formats the Overview report.
+  Staff derived class creates and formats the StaffList report.
 
 """
 class StaffList(Report):
@@ -462,9 +537,18 @@ class StaffEffortSummary(Report):
         if not isinstance(_PrjInst, Prj.Project):
             raise ProjectInstanceInvalid( \
                           "Project instance requested invalid")
-        
+
+        """
+           --------> Get started:
+        """
+        if StaffEffortSummary.__Debug:
+            print(" ----> StaffEffortSummary: instanciation entered:")
+
         Report.__init__(self, "Staff effort summary", _ReportPath, _FileName)
 
+        """
+           --------> Set header lines:
+        """
         self._Header = []
         self._Header.append(_PrjInst._Name)
         for i in range(len(_PrjInst._FinancialYears)):
@@ -474,9 +558,11 @@ class StaffEffortSummary(Report):
         RptDt = date.today()
         self._Header.append(RptDt.strftime("%d-%b-%Y"))
 
+        """
+           --------> Financial years:
+        """
         self._Lines = []
         Line        = []
-
         Line.append(None)
         NullLine = Line
         self._Lines.append(Line)
@@ -492,10 +578,18 @@ class StaffEffortSummary(Report):
             FrcGrndTot = np.append(FrcGrndTot, 0.)
             CstGrndTot = np.append(CstGrndTot, 0.)
 
+        """
+           --------> Process staff list:
+        """
         InstCode   = None
         FrcTot     = np.array([])
         CstTot     = np.array([])
         for iStf in Stf.Staff.instances:
+            if StaffEffortSummary.__Debug:
+                print("     ----> New from Staff instances: ", \
+                      iStf._InstituteCode, "; ", iStf._StaffCode)
+                print("           Present institute code: ", InstCode)
+                      
             Line = []
 
             #----> Institute:
@@ -511,6 +605,15 @@ class StaffEffortSummary(Report):
                     Line = []
                     FrcGrndTot += FrcTot
                     CstGrndTot += CstTot
+                    
+                    if StaffEffortSummary.__Debug:
+                        print("         ----> Institute totals: ")
+                        print("             ----> Fractions: ", \
+                 FrcTot[0], FrcTot[1], FrcTot[2], FrcTot[3], FrcTot[4], \
+                              np.sum(FrcTot))
+                        print("             ----> Costs    : ", \
+                 CstTot[0], CstTot[1], CstTot[2], CstTot[3], CstTot[4], \
+                              np.sum(CstTot))
 
                 FrcTot = np.array([])
                 CstTot = np.array([])
@@ -522,6 +625,9 @@ class StaffEffortSummary(Report):
                 Line.append(InstCode)
                 self._Lines.append(Line)
                 Line = []
+                if StaffEffortSummary.__Debug:
+                    print("         ----> Staff to task for InstCode: ", \
+                          InstCode)
 
             #----> Staff code:
             Line.append(iStf._StaffCode)
@@ -539,6 +645,10 @@ class StaffEffortSummary(Report):
                 Cst = np.append(Cst, 0.)
             for iTskStf in TskStf.TaskStaff.instances:
                 if iTskStf._Staff == iStf:
+                    if StaffEffortSummary.__Debug:
+                        print("             ----> Task matched! \n", \
+                "                       Task:", iTskStf._Task._Name, \
+                              " - staff code:", iStf._StaffCode)
                     if iTsk != iTskStf._Task:
                         if wpName != iTskStf._Task._WorkPackage._Name:
                             wpName = iTskStf._Task._WorkPackage._Name
@@ -554,6 +664,8 @@ class StaffEffortSummary(Report):
             Line.append(np.sum(Frc))
             Line.append(np.sum(Cst))
             self._Lines.append(Line)
+            if StaffEffortSummary.__Debug:
+                print("         ----> Staff line: ", Line)
             FrcTot += Frc
             CstTot += Cst
 
@@ -566,7 +678,11 @@ class StaffEffortSummary(Report):
             Line.append(np.sum(FrcTot))
             Line.append(np.sum(CstTot))
             self._Lines.append(Line)
+        if StaffEffortSummary.__Debug:
+            print("     ----> Total: ", Line)
 
+        FrcGrndTot += FrcTot
+        CstGrndTot += CstTot
         Line = []
         Line.append("Grand total")
         for iYr in range(len(_PrjInst._FinancialYears)):
@@ -575,6 +691,8 @@ class StaffEffortSummary(Report):
         Line.append(np.sum(FrcGrndTot))
         Line.append(np.sum(CstGrndTot))
         self._Lines.append(Line)
+        if StaffEffortSummary.__Debug:
+            print("     ----> Grand total: ", Line)
 
     def YearHeader(self, _iPrj):
         Line  = []
@@ -651,8 +769,9 @@ class WorkPackageSummary(Report):
 
         Line = self.RiskMitigationStaff(_wpInst)
         self._Lines.append(Line)
-        
-        print(_wpInst)
+
+        if WorkPackageSummary.__Debug:
+            print(_wpInst)
         Line = self.StaffTotal(_wpInst)
         self._Lines.append(Line)
         
@@ -783,7 +902,7 @@ class WorkPackageSummary(Report):
             else:
                Line.append(0.)
         Line.append(None)
-        Line.append(_wpInst._ContingencyTotal[2])
+        Line.append(_wpInst._ContingencyTotal[1])
         Lines.append(Line)
 
         return Lines

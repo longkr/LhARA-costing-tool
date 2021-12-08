@@ -23,7 +23,8 @@ Class Staff:
    _GradeOrLevel  = Grade of level (e.g. Senior Lecturer)
    _AnnualCost    = Total FEC per year
    _ProjectOrCG   = Charged to "Project" or Consolidated Grant ("CG")
-   _Comments      = Free format string field; additional information (e.g. WAG)
+   _Comments      = Free format string field; additional information 
+                    (e.g. WAG)
 
     
   Methods:
@@ -140,7 +141,7 @@ class Staff:
             _GradeOrLevel = "Head of House"
 
         if mth.isnan(_AnnualCost):
-            _AnnualCost    = 999.
+            _AnnualCost    = 100.
 
         if _ProjectOrCG == None:
             _ProjectOrCG   = "Project"
@@ -245,14 +246,14 @@ class Staff:
         return len(cls.instances)
 
     @classmethod
-    def getInstance(cls, _StaffCode):
+    def getInstance(cls, _InstCode, _StaffCode):
         InstList = []
         if Staff.__Debug:
-            print(" Staff; getInstance: search for Staff name:", _StaffCode)
+            print(" Staff; getInstance: search for InstCode, StaffCode:", _InstCode, _StaffCode)
         for inst in cls.instances:
             if Staff.__Debug:
-                print(" Staff; getInstance: instance:", inst._StaffCode)
-            if inst._StaffCode == _StaffCode:
+                print(" Staff; getInstance: instance:", inst._InstituteCode, inst._StaffCode)
+            if inst._InstituteCode == _InstCode and inst._StaffCode == _StaffCode:
                 InstList.append(inst)
         Ninst = len(InstList)
         if Ninst == 0:
@@ -282,6 +283,8 @@ class Staff:
                          self._ProjectOrCG, self._Comments]
         return StaffDataList
 
+    def getStaffCode(self):
+        return self._StaffCode
         
 #--------  Print methods:
     @classmethod

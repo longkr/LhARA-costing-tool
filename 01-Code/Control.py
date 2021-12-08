@@ -87,38 +87,34 @@ class Control(object):
         if cls.__instance is None:
             cls.__instance = super(Control, cls).__new__(cls)
         
-        if _filename == None:
-            if  Control.__Debug:
-                print(" Control: no filename provided, take defaults.")
-        elif not os.path.isfile(_filename):
-            print(" Control: file ", _filename, " does not exist.", \
-                  " Raising exception")
-            raise NonExistantFile('CSV file' + \
-                                  _filename + \
-                                  ' does not exist; execution termimated.')
-            
+            if _filename == None:
+                if  Control.__Debug:
+                    print(" Control: no filename provided, take defaults.")
+            elif not os.path.isfile(_filename):
+                print(" Control: file ", _filename, " does not exist.", \
+                      " Raising exception")
+                raise NonExistantFile('CSV file' + \
+                                      _filename + \
+                                      ' does not exist; execution termimated.')
 
-        cls._filename = _filename
+            #.. Set defaults:
+            cls._filename          = _filename
+            cls._IssueDate         = date.today()
+            cls._Inflation         = [1., 1., 1]
+            cls._VAT               = 0.2
+            cls._WorkingMargin     = 0.1
+            cls._Contingency       = [0.2, 0.3, 0.4]
+            cls._fecChargeFraction = [0.8, 0.8]
+            cls._CntrlParams       = None
 
-        #.. Set defaults:
-        if _filename != None:
-            cls._CntrlParams   = cls.getControls(_filename)
-        else:
-            cls._CntrlParams   = None
-        cls._IssueDate         = date.today()
-        cls._Inflation         = [1., 1., 1]
-        cls._VAT               = 0.2
-        cls._WorkingMargin     = 0.1
-        cls._Contingency       = [0.2, 0.3, 0.4]
-        cls._fecChargeFraction = [0.8, 0.8]
+            #.. Parse control file:
+            if _filename != None:
+                cls._cntrlParams = cls.getControls(_filename)
+                if cls.__Debug:
+                    print(" Control: control parameters: \n", \
+                          cls._cntrlParams)
 
-        if _filename != None:
-            cls._cntrlParams = cls.getControls(_filename)
-            if cls.__Debug:
-                print(" Control: control parameters: \n", \
-                      cls._cntrlParams)
-
-            cls._IssueDate, \
+                cls._IssueDate, \
                 cls._Inflation, \
                 cls._VAT, \
                 cls._WorkingMargin, \

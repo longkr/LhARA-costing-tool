@@ -13,7 +13,7 @@ Class WorkPackage:
 
   Class attributes:
   -----------------
-  __Debug  : Boolean: set for debug print out
+  __Debug : Boolean: set for debug print out
   instances: List of instances if the WorkPackage class.
       
   Instance attributes:
@@ -221,7 +221,7 @@ import TaskEquipment as TskEqp
 iCntrl = Cntrl.Control()
 
 class WorkPackage:
-    __Debug    = False
+    __Debug   = False
     instances = []
 
     if __Debug:
@@ -342,22 +342,53 @@ class WorkPackage:
     def getFilename(self):
         return self._filename
 
+    def getName(self):
+        return self._Name
+
     def getTotalNonStaffByYear(self):
         TotNSByYr = np.array([])
         for iYr in range(len(self._FinancialYears)):
             TotNSByYr = np.append(TotNSByYr, 0.)
-            if isinstance(self._EquipmentCostByYear, np.ndarray):
-                TotNSByYr      += self._EquipmentCostByYear[iYr]
-            if isinstance(self._OtherNonStaffCostByYear, np.ndarray):
-                TotNSByYr[iYr] += self._OtherNonStaffCostByYear[iYr]
-            if isinstance(self._ConsumeByYear, np.ndarray):
-                TotNSByYr[iYr] += self._ConsumeByYear[iYr]
-            if isinstance(self._TravelByYear, np.ndarray):
-                TotNSByYr[iYr] += self._TravelByYear[iYr]
-            if isinstance(self._WorkingMarginByYear, np.ndarray):
-                TotNSByYr[iYr] += self._WorkingMarginByYear[iYr]
-            if isinstance(self._ContingencyByYear, np.ndarray):
-                TotNSByYr[iYr] += self._ContingencyByYear[iYr]
+        
+        if isinstance(self._EquipmentCostByYear, np.ndarray):
+            if WorkPackage.__Debug:
+                print(" WorkPackage:getTotalNonStaffByYear: ", \
+                      "EquipmentCostByYear:", self._EquipmentCostByYear)
+            TotNSByYr = np.add(TotNSByYr, self._EquipmentCostByYear)
+        if isinstance(self._OtherNonStaffCostByYear, np.ndarray):
+            if WorkPackage.__Debug:
+                print(" WorkPackage:getTotalNonStaffByYear: ", \
+                      "OtherNonStaffCostByYear:", self._OtherNonStaffCostByYear)
+            TotNSByYr = np.add(TotNSByYr, self._OtherNonStaffCostByYear)
+        if isinstance(self._ConsumeByYear, np.ndarray):
+            if WorkPackage.__Debug:
+                print(" WorkPackage:getTotalNonStaffByYear: ", \
+                      "ConsumeByYear:", self._ConsumeByYear)
+            TotNSByYr = np.add(TotNSByYr, self._ConsumeByYear)
+        if isinstance(self._TravelByYear, np.ndarray):
+            if WorkPackage.__Debug:
+                print(" WorkPackage:getTotalNonStaffByYear: ", \
+                      "TravelByYear:", self._TravelByYear)
+            TotNSByYr = np.add(TotNSByYr, self._TravelByYear)
+        if isinstance(self._WorkingMarginByYear, np.ndarray):
+            if WorkPackage.__Debug:
+                print(" WorkPackage:getTotalNonStaffByYear: ", \
+                      " WorkingMarginByYear:", self._WorkingMarginByYear)
+            TotNSByYr = np.add(TotNSByYr, self._WorkingMarginByYear)
+        if isinstance(self._ContingencyByYear[0], np.ndarray):
+            if WorkPackage.__Debug:
+                print(" WorkPackage:getTotalNonStaffByYear: ", \
+                      "Equipment ContingencyCostByYear:", \
+                      self._ContingencyByYear[0])
+                print(" WorkPackage:getTotalNonStaffByYear: ", \
+                      "Staff ContingencyCostByYear:", \
+                      self._ContingencyByYear[1])
+            TotNSByYr = np.add(TotNSByYr, self._ContingencyByYear[0])
+            TotNSByYr = np.add(TotNSByYr, self._ContingencyByYear[1])
+            
+        if WorkPackage.__Debug:
+            print(" WorkPackage:getTotalNonStaffByYear:", TotNSByYr)
+        
         return TotNSByYr
             
     def setStaffCostByYear(self, _StaffCostByYear):
@@ -584,6 +615,9 @@ class WorkPackage:
             elif self._wpParams.iat[i,0] == "Work package":
                 WorkPackageCode = self._wpParams.iloc[i,1]
                 WorkPackageName = self._wpParams.iloc[i,2]
+                if self.__Debug:
+                    print(" WorkPackage; parseWorkPackage: WorkPackage: ", \
+                          WorkPackageName, " being processed.")
             elif self._wpParams.iat[i,0] == "Manager":
                 WPM = self._wpParams.iloc[i,2]
             elif self._wpParams.iat[i,0] == "Years":
@@ -617,9 +651,14 @@ class WorkPackage:
                     if self.__Debug:
                         print(" WorkPackage; parseWorkPackage: Task ", \
                               TaskName, " created.")
+            elif self._wpParams.iat[i,0] == "Institute":
+                InstCode = self._wpParams.iloc[i,1]
+                if self.__Debug:
+                    print(" WorkPackage; parseWorkPackage: Institute instance = ", \
+                          InstCode)
             elif self._wpParams.iat[i,0] == "Staff":
                 StaffCode = self._wpParams.iloc[i,1]
-                StfInst = Stf.Staff.getInstance(StaffCode)
+                StfInst = Stf.Staff.getInstance(InstCode, StaffCode)
                 if self.__Debug:
                     print(" WorkPackage; parseWorkPackage: Staff instance = ", \
                           StfInst)
@@ -629,10 +668,11 @@ class WorkPackage:
                               StaffCode, " exists.")
                 else:
                     NameOrPost = "Created for WP " + WorkPackageName
-                    StfInst = Stf.Staff(StaffCode, NameOrPost)
+                    StfInst = Stf.Staff(StaffCode, NameOrPost, None, InstCode)
                     if self.__Debug:
                         print(" WorkPackage; parseWorkPackage: Staff ", \
                               StaffCode, " created.")
+                        print(StfInst)
                 TskStfInst = TskStff.TaskStaff.getInstance(TskInst, StfInst)
                 if self.__Debug:
                     print(" WorkPackage; parseWorkPackage: TskStfInst:", \

@@ -36,6 +36,11 @@ Class Project:
    _TotalTrvlCnsmCost   = Summed travel and consumable cost in £k for this 
                           workpackage
 
+   _WorkingMarginByYear = WM by year
+   _ContingencyByYear   = Contingency by year
+   _WorkingMarginTotal  = WM by year
+   _ContingencyTotal    = Contingency by year
+
     
   Methods:
   --------
@@ -149,6 +154,11 @@ class Project:
         self._TrvlCnsmCostByYear  = None
         self._TotalTrvlCnsmCost   = None
 
+        self._WorkingMarginByYear = None
+        self._ContingencyByYear   = None
+        self._WorkingMarginTotal  = None
+        self._ContingencyTotal    = None
+        
         Project.instances.append(self)
 
     def __repr__(self):
@@ -168,6 +178,10 @@ class Project:
               self._OtherNonStaffCostByYear, self._TotalOtherNonStaffCost)
         print("     Travel and consumable cost by year, total:", \
               self._TrvlCnsmCostByYear, self._TotalTrvlCnsmCost)
+        print("     Working Margin by year, total:", \
+              self._WorkingMarginByYear, self._WorkingMarginTotal)
+        print("     Contingency by year, total:", \
+              self._ContingencyByYear, self._ContingencyTotal)
         return "     <---- Project done."
 
     
@@ -214,6 +228,18 @@ class Project:
     def setTotalTrvlCnsmCost(self):
         self._TotalTrvlCnsmCost = np.sum(self._TrvlCnsmCostByYear)
 
+    def setWorkingMarginByYear(self, _WorkingMarginByYear):
+        self._WorkingMarginByYear = _WorkingMarginByYear
+        
+    def setWorkingMarginTotal(self):
+        self._WorkingMarginTotal = np.sum(self._WorkingMarginByYear)
+
+    def setContingencyByYear(self, _ContingencyByYear):
+        self._ContingencyByYear = _ContingencyByYear
+        
+    def setContingencyTotal(self):
+        self._ContingencyTotal = np.sum(self._ContingencyByYear)
+
     def getTotalProjectCostByYear(self):
         TotByYr = np.array([])
         for iYr in range(len(self._FinancialYears)):
@@ -226,6 +252,10 @@ class Project:
             TotByYr += self._OtherNonStaffCostByYear
         if isinstance(self._TrvlCnsmCostByYear, np.ndarray):
             TotByYr += self._TrvlCnsmCostByYear
+        if isinstance(self._WorkingMarginByYear, np.ndarray):
+            TotByYr += self._WorkingMarginByYear
+        if isinstance(self._ContingencyByYear, np.ndarray):
+            TotByYr += self._ContingencyByYear
         return  TotByYr
     
     def getTotalProjectCost(self):
@@ -279,7 +309,11 @@ class Project:
                             "Other non-staff cost by year (£k)", \
                             "Total other non-staff cost (£k)", \
                             "Travel and consumables by year (£k)", \
-                            "Total travel and consumables (£k)"])
+                            "Total travel and consumables (£k)", \
+                            "Working Margin by year (£k)", \
+                            "Working Margin (£k)", \
+                            "Contingency by year (£k)", \
+                            "Contingency (£k)"])
         for inst in Project.instances:
             ProjectData.append([inst._Name, \
                                 inst._FinancialYears, \
@@ -292,7 +326,11 @@ class Project:
                                 inst._OtherNonStaffCostByYear, \
                                 inst._TotalOtherNonStaffCost, \
                                 inst._TrvlCnsmCostByYear, \
-                                inst._TotalTrvlCnsmCost])
+                                inst._TotalTrvlCnsmCost, \
+                                inst._WorkingMarginByYear, \
+                                inst._WorkingMarginTotal, \
+                                inst._ContingencyByYear, \
+                                inst._ContingencyTotal])
         ProjectDataframe = pnds.DataFrame(ProjectData)
         if cls.__Debug:
             print(" Project; createPandasDataframe: \n", ProjectDataframe)
@@ -314,7 +352,11 @@ class Project:
                not isinstance(iPrj._OtherNonStaffCostByYear, np.ndarray) or \
                iPrj._TotalOtherNonStaffCost  == None or \
                not isinstance(iPrj._TrvlCnsmCostByYear,  np.ndarray) or \
-               iPrj._TotalTrvlCnsmCost   == None:
+               iPrj._TotalTrvlCnsmCost   == None or \
+               not isinstance(iPrj._WorkingMarginByYear,  np.ndarray) or \
+               iPrj._WorkingMarginTotal   == None or \
+               not isinstance(iPrj._ContingencyByYear,  np.ndarray) or \
+               iPrj._ContingencyTotal   == None:
                 del iPrj
                 nDel += 1
             else:
@@ -325,12 +367,14 @@ class Project:
     @classmethod
     def doCosting(cls):
         for iPrj in cls.instances:
-            _FinancialYears      = []
-            _StaffCostByYear     = np.array([])
-            _CGStaffCostByYear   = np.array([])
-            _EquipmentCostByYear = np.array([])
+            _FinancialYears          = []
+            _StaffCostByYear         = np.array([])
+            _CGStaffCostByYear       = np.array([])
+            _EquipmentCostByYear     = np.array([])
             _OtherNonStaffCostByYear = np.array([])
-            _TrvlCnsmCostByYear  = np.array([])
+            _TrvlCnsmCostByYear      = np.array([])
+            _WorkingMarginByYear     = np.array([])
+            _ContingencyByYear       = np.array([])
             SumInitialised = False
             for iWP in WP.WorkPackage.instances:
                 if len(_FinancialYears) == 0:
@@ -350,12 +394,21 @@ class Project:
                             np.append(_OtherNonStaffCostByYear, [0.])
                         _TrvlCnsmCostByYear  = \
                             np.append(_TrvlCnsmCostByYear,  [0.])
+                        _WorkingMarginByYear  = \
+                            np.append(_WorkingMarginByYear,  [0.])
+                        _ContingencyByYear  = \
+                            np.append(_ContingencyByYear,  [0.])
                 SumInitialised     = True
-                _StaffCostByYear     += iWP._StaffCostByYear
-                _CGStaffCostByYear   += iWP._CGStaffCostByYear
-                _EquipmentCostByYear += iWP._EquipmentCostByYear
+
+                _StaffCostByYear         += iWP._StaffCostByYear
+                _CGStaffCostByYear       += iWP._CGStaffCostByYear
+                _EquipmentCostByYear     += iWP._EquipmentCostByYear
                 _OtherNonStaffCostByYear += iWP._OtherNonStaffCostByYear
-                _TrvlCnsmCostByYear  += iWP._TrvlCnsmCostByYear
+                _TrvlCnsmCostByYear      += iWP._TrvlCnsmCostByYear
+                _WorkingMarginByYear     += iWP._WorkingMarginByYear
+                _ContingencyByYear       += iWP._ContingencyByYear[0]
+                _ContingencyByYear       += iWP._ContingencyByYear[1]
+                
             iPrj._StaffCostByYear = _StaffCostByYear
             iPrj.setTotalStaffCost()
             iPrj._CGStaffCostByYear = _CGStaffCostByYear
@@ -366,6 +419,10 @@ class Project:
             iPrj.setTotalOtherNonStaffCost()
             iPrj._TrvlCnsmCostByYear = _TrvlCnsmCostByYear
             iPrj.setTotalTrvlCnsmCost()
+            iPrj._WorkingMarginByYear = _WorkingMarginByYear
+            iPrj.setWorkingMarginTotal()
+            iPrj._ContingencyByYear = _ContingencyByYear
+            iPrj.setContingencyTotal()
 
 
 #--------  Exceptions:
