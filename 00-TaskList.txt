@@ -2,7 +2,5 @@ Jobs to do in LhARA costing tool s/w:
 -------------------------------------
  2021-07-26: - Need to agree handling of VAT with PM team, then implement.
              - Need to complete documentation
- 2021-10-12: - Workpackage crashes at line 740 if there is an undefined flag
-               (e.g. Meetings) in equipment list
 
 
