@@ -19,11 +19,13 @@ Class Control:
    __filename  : Filename from which parameters have been read.  If None
                  then default values are used.
    _CntrlParams: Pandas data frame instance containing parameters
-   _IssueDate         = date.today(); i.e. date when reports etc. are generated
+   _IssueDate         = date.today(); i.e. date when reports etc. are
+                        generated 
    _Inflation         = Equipment, Staff, year to start inflation calculation
    _VAT               = VAT charge rate
    _WorkingMargin     = Working margin (fractio)
-   _Contingency       = Contingency (fraction) equipment, project staff, CG staff
+   _Contingency       = Contingency (fraction) equipment, project
+                        staff, CG staff 
    _fecChargeFraction = fEC charge fraction on staff, project, CG
     
 
