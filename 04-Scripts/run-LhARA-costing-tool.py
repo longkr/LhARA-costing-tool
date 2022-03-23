@@ -39,6 +39,11 @@ wpDirectory = os.path.join(HOMEPATH, \
 if Debug:
     print("    Directory containing work package definitions: \n", \
           "            ----> ", wpDirectory)
+REPORTPATH = os.path.join(HOMEPATH, \
+                           'Reports')
+if Debug:
+    print("    Directory in which reports will be placed: \n", \
+          "            ----> ", REPORTPATH)
 
     
 ##! --------  Create costing control instance:
