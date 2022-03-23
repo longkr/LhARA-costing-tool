@@ -25,17 +25,17 @@ if Debug:
 ##! --------  Identify necessary files:
 HOMEPATH     = os.getenv('HOMEPATH')
 ControlFile  = os.path.join(HOMEPATH, \
-                            '10-Control/LhARA-costing-tool-control.csv')
+                            'Control/LhARA-costing-tool-control.csv')
 if Debug:
     print("    Control file: \n", \
           "            ----> ", ControlFile)
 StaffDatabaseFile = os.path.join(HOMEPATH, \
-                                 '12-Staff/StaffDatabase.csv')
+                                 'Staff/StaffDatabase.csv')
 if Debug:
     print("    Staff database file: \n", \
           "            ----> ", StaffDatabaseFile)
 wpDirectory = os.path.join(HOMEPATH, \
-                           '11-WorkPackages')
+                           'WorkPackages')
 if Debug:
     print("    Directory containing work package definitions: \n", \
           "            ----> ", wpDirectory)
