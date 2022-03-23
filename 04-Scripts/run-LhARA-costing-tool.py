@@ -30,7 +30,7 @@ if Debug:
     print("    Control file: \n", \
           "            ----> ", ControlFile)
 StaffDatabaseFile = os.path.join(HOMEPATH, \
-                                 'StaffDataBase/StaffDatabase.csv')
+                                 'StaffDatabase/StaffDatabase.csv')
 if Debug:
     print("    Staff database file: \n", \
           "            ----> ", StaffDatabaseFile)
