@@ -18,7 +18,8 @@ if [ $debug == "true" ]; then
 fi
 export HOMEPATH
 
-LhARAPATH=$HOMEPATH
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+LhARAPATH=$SCRIPT_DIR
 if [ $debug == "true" ]; then
     echo "LhARA path set:"
     echo "    " $LhARAPATH
@@ -27,7 +28,6 @@ export LhARAPATH
 
 add="/01-Code"
 dir="$LhARAPATH$add"
-echo $dir
 if [ -z ${PYTHONPATH+x} ]; then
     echo $dir
     PYTHONPATH=":$dir"
