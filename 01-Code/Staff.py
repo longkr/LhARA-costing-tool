@@ -336,3 +336,6 @@ class NoStaffName(Exception):
 
 class NoStaffDataBaseFile(Exception):
     pass
+
+class StaffDataBaseFileDNE(Exception):
+    pass
