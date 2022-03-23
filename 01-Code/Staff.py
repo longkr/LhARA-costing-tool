@@ -195,7 +195,8 @@ class Staff:
                          no file name given, execution terminated.")
         elif not os.path.isfile(filename):
             raise StaffDataBaseFileDNE(" Staff.parseStaffDatabase: \
-                   staff database file does not exist, execution terminated.")
+                   staff database file ", filename, \
+                   " does not exist, execution terminated.")
 
         _StffDtbsParams = cls.getStaffDatabase(filename)
         if cls.__Debug:
