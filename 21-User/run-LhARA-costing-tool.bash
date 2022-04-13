@@ -20,7 +20,6 @@ if [ $debug == "true" ]; then
 fi
 export HOMEPATH
 
-LhARAPATH="/Users/kennethlong/CubMac-Home/CCAP/18-LhARA/00-Admin/01-Costing/01-LhARA-costing-tool"
 if [ $debug == "true" ]; then
     echo "LhARA path set:"
     echo "    " $LhARAPATH
