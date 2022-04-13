@@ -277,7 +277,7 @@ class Overview(Report):
                             print("                 Cost by year    :", \
                                   iTskStf._StaffCostByYear)
                         Frc    += iTskStf._StaffFracByYear
-                        if iTskStf._StaffCostByYear != None:
+                        if iTskStf._StaffCostByYear.all() != None:
                             Cst    += iTskStf._StaffCostByYear
 
                 if Overview.__Debug and Frc.size != 0:
@@ -930,8 +930,6 @@ class WorkPackageSummary(Report):
         Line = []
         Line.append("Inflation:")
         for iYr in range(len(_wpInst._FinancialYears)):
-            print(" Report.Inflation: iYr, yr to strt:", \
-                  iYr, iCntrl._Inflation[2])
             Line.append(None)
             if isinstance(_wpInst._InflationByYr, np.ndarray):
                 Line.append(_wpInst._InflationByYr[iYr])
