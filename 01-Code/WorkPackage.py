@@ -508,6 +508,7 @@ class WorkPackage:
         for i in range(len(self._FinancialYears)):
             Cst = self._StaffCostByYear[i]   + \
                 self._EquipmentCostByYear[i] + \
+                self._InflationByYr[i] + \
                 self._OtherNonStaffCostByYear[i] + \
                 self._TrvlCnsmCostByYear[i]  + \
                 self._WorkingMarginByYear[i] + \
