@@ -1,6 +1,8 @@
 Jobs to do in LhARA costing tool s/w:
 -------------------------------------
- 2021-07-26: - Need to agree handling of VAT with PM team, then implement.
+2022-03-23: - Export script needs to be rewritten to deal with present used
+              strucutre.
+2021-07-26: - Need to agree handling of VAT with PM team, then implement.
              - Need to complete documentation
 
 

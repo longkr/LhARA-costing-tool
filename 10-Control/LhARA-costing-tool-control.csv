@@ -1,7 +1,7 @@
-Flag,Values,,
-Issue date,14-Jul-21,,
-"Inflation (capital, staff, start in year)",0%,0%,1
-VAT,0%,,
-WorkingMargin,0%,,
-"Contingency (material, project staff, CG staff)",0%,0%,0%
-"fEC charge fraction (Project, CG)",80%,80%,
+Flag,Values,,,
+Issue date,13-Sept-22,,,
+"Inflation (capital, staff, start in year)",2.5%,3.5%,3,
+VAT,0%,,,
+"WorkingMargin, start in year",10%,3,,
+"Contingency (material, project staff, CG staff, start in year)",20%,20%,20%,3
+"fEC charge fraction (Project, CG)",80%,80%,,
