@@ -465,9 +465,14 @@ class WorkPackage:
         for i in range(len(self._FinancialYears)):
             Cst = self._StaffCostByYear[i] + \
                   self._EquipmentCostByYear[i]
+            fWM = iCntrl.getWorkingMargin()
+            if i >= iCntrl.getWorkingMarginStrtInYr():
+                fWM = iCntrl.getWorkingMargin()
+            else:
+                fWM = 0.
             self._WorkingMarginByYear = np.append( \
                                         self._WorkingMarginByYear, \
-                                        Cst * iCntrl.getWorkingMargin() )
+                                        Cst * fWM )
 
     def setWorkingMarginTotal(self):
         self._WorkingMarginTotal = np.sum(self._WorkingMarginByYear)
@@ -482,17 +487,25 @@ class WorkPackage:
         ContStaffCG             = np.array([])
 
         for i in range(len(self._FinancialYears)):
-            # Equipment:
-            Cnt = self._EquipmentCostByYear[i] * iCntrl.getContingencyMaterial()
-            ContEquip = np.append(ContEquip, Cnt)
-            # Staff:
-            StfByYr   = self._StaffCostByYear[i]
-            CGStfByYr = self._CGStaffCostByYear[i]
-            Cnt1 =  (StfByYr - CGStfByYr) * iCntrl.getContingencyStaffPrj()
-            Cnt2 =  CGStfByYr * iCntrl.getContingencyStaffCG()
-            Cnt  = Cnt1 + Cnt2
-            ContStaff = np.append(ContStaff, Cnt)
-            # CG staff:
+            if i >= iCntrl.getContingencyStrtInYr():
+                # Equipment:
+                CntE = \
+                    self._EquipmentCostByYear[i] * \
+                    iCntrl.getContingencyMaterial()
+                # Staff:
+                StfByYr   = self._StaffCostByYear[i]
+                CGStfByYr = self._CGStaffCostByYear[i]
+                Cnt1 =  (StfByYr - CGStfByYr) * iCntrl.getContingencyStaffPrj()
+                Cnt2 =  CGStfByYr * iCntrl.getContingencyStaffCG()
+                CntS = Cnt1 + Cnt2
+            else:
+                CntE = 0.
+                CntS = 0.
+                Cnt1 = 0.
+                Cnt2 = 0.
+            
+            ContEquip   = np.append(ContEquip,   CntE)
+            ContStaff   = np.append(ContStaff,   CntS)
             ContStaffCG = np.append(ContStaffCG, Cnt2)
 
         self._ContingencyByYear = [ ContEquip, ContStaff, ContStaffCG ]

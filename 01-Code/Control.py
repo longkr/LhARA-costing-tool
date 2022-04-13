@@ -171,17 +171,17 @@ class Control(object):
                 Inflation.append( \
                       float(cls._cntrlParams.iat[i,2].strip("%")) / 100.)
                 iDm1 = int(cls._cntrlParams.iat[i,3])
-                IDm2 = max(0, iDm1-1)
-                Inflation.append(IDm2)
-                
-                
+                iDm2 = max(0, iDm1-1)
+                Inflation.append(iDm2)
             elif cls._cntrlParams.iat[i,0].find("VAT") >= 0:
                 VAT = float(cls._cntrlParams.iat[i,1].strip("%")) / 100.
             elif cls._cntrlParams.iat[i,0].find("WorkingMargin") >= 0:
                 WorkingMargin = []
                 WorkingMargin.append( \
                     float(cls._cntrlParams.iat[i,1].strip("%")) / 100.)
-                WorkingMargin.append(int(cls._cntrlParams.iat[i,2]))
+                iDm1 = int(cls._cntrlParams.iat[i,2])
+                iDm2 = max(0, iDm1-1)
+                WorkingMargin.append(iDm2)
             elif cls._cntrlParams.iat[i,0].find("Contingency") >= 0:
                 Contingency = []
                 Contingency.append( \
@@ -190,6 +190,8 @@ class Control(object):
                       float(cls._cntrlParams.iat[i,2].strip("%")) / 100.)
                 Contingency.append( \
                       float(cls._cntrlParams.iat[i,3].strip("%")) / 100.)
+                iDm1 = int(cls._cntrlParams.iat[i,4])
+                iDm2 = max(0, iDm1-1)
                 Contingency.append(int(cls._cntrlParams.iat[i,4]))
             elif cls._cntrlParams.iat[i,0].find("fEC") >= 0:
                 fEC = []
