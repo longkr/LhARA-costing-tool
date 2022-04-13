@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -192,7 +191,7 @@ class Control(object):
                       float(cls._cntrlParams.iat[i,3].strip("%")) / 100.)
                 iDm1 = int(cls._cntrlParams.iat[i,4])
                 iDm2 = max(0, iDm1-1)
-                Contingency.append(int(cls._cntrlParams.iat[i,4]))
+                Contingency.append(iDm2)
             elif cls._cntrlParams.iat[i,0].find("fEC") >= 0:
                 fEC = []
                 fEC.append( \
