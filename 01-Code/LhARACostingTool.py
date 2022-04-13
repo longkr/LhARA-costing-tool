@@ -20,8 +20,7 @@ Class LhARACostingTool:
   Methods:
   --------
   Built-in methods __new__, __repr__ and __str__.
-      __new__ : Creates singleton class and prints version, PDG
-                reference, and values of constants used.
+      __new__ : Creates singleton class
       __repr__: One liner with call.
       __str__ : Dump of constants
 

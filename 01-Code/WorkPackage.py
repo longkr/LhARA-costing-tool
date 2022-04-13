@@ -28,7 +28,8 @@ Class WorkPackage:
    _Project             = Instance of Project class to which this work package 
                           belongs
    _StaffFracByYear     = Total staff FTE for this workpackage by FY
-   _StaffCostByYear     = Total cost of staff in £k for this workpackage by FY
+   _StaffCostByYear     = Total cost of staff in £k for this workpackage by 
+                          FY
    _CGStaffCostByYear   = Cost of CG staff in £k for this workpackage by FY
    _TotalStaffCost      = Summed total staff cost over duration of project (£k)
    _TotalStaffFrac      = Summed total FTE over duration of project (£k)
@@ -38,6 +39,8 @@ Class WorkPackage:
                           by FY
    _TotalEquipmentCost  = Summed total equipment cost over duration of project 
                           (£k)
+   _InflationByYr       = Cost of inflation by year (£k)
+   _TotalInflation      = Total cost of inflation (£k)
    _OtherNonStaffCostByYear = Total cost of other non-staff items in £k for 
                           this workpackage by FY
    _TotalOtherNonStaffCost  = Summed total other non-staff cost over duration 
@@ -52,14 +55,14 @@ Class WorkPackage:
                           financial year (£k)
    _TotalTrvlCnsmCost   = Total of sum of travel, other non staff
                           and consumables (£k)
-   _OtherNonStaffItems  = List of what enters "other non staff items"
+   _OtherNonStaffItems  = List of what enters "other non staff items
    _WorkingMarginByYear = Working margin (£k) by year
    _WorkingMarginTotal  = Total workingmargin (£k)
    _ContingencyByYear   = Contingency by year, list of np arrays:
                           Equipment, Staff, CG staff
    _ContingencyTotal    = Total, equipment, staff, CG staff
-   _TotalCostByYear     = Sum of equipment, staff, trave, consumables, other non-staff,
-                          working margin, and contingency
+   _TotalCostByYear     = Sum of equipment, staff, trave, consumables, other 
+                          non-staff, working margin, and contingency
    -GrandTotal          = Grand total cost
 
     
@@ -265,6 +268,8 @@ class WorkPackage:
         self._TotalCGStaffCost    = None
         self._EquipmentCostByYear = None
         self._TotalEquipmentCost  = None
+        self._InflationByYr       = None
+        self._TotalInflation      = None
         self._OtherNonStaffCostByYear = None
         self._TotalOtherNonStaffCost  = None
         self._WorkingMarginByYear = None
@@ -308,6 +313,8 @@ class WorkPackage:
               self._TotalCGStaffCost)
         print("     Equipment cost by year, total", self._EquipmentCostByYear, \
               self._TotalEquipmentCost)
+        print("     Cost of inflation by year, total", self._InflationByYr, \
+              self._TotalInflation)
         print("     Other non-staff cost by year, total", \
               self._OtherNonStaffCostByYear, self._TotalOtherNonStaffCost)
         print("     Working margin by year, total", self._WorkingMarginByYear, \
@@ -439,6 +446,20 @@ class WorkPackage:
     def setTotalTrvlCnsmCost(self):
         self._TotalTrvlCnsmCost = np.sum(self._TrvlCnsmCostByYear)
 
+    def setInflationByYr(self):
+        self._InflationByYr = np.array([])
+        for i in range(len(self._FinancialYears)):
+            Infl = 0.
+            if i >= iCntrl._Inflation[2]:
+                Infl += ((1. + iCntrl._Inflation[0])**i - 1) * \
+                    self._StaffCostByYear[i]
+                Infl += ((1. + iCntrl._Inflation[1])**i - 1) * \
+                    self._EquipmentCostByYear[i]
+            self._InflationByYr = np.append(self._InflationByYr, Infl)
+
+    def setTotalInflation(self):
+        self._TotalInflation = np.sum(self._InflationByYr)
+            
     def setWorkingMarginByYear(self):
         self._WorkingMarginByYear = np.array([])
         for i in range(len(self._FinancialYears)):
@@ -893,6 +914,10 @@ class WorkPackage:
             iWp.setTotalCGStaffCost()
             iWp._EquipmentCostByYear = _EquipmentCostByYear
             iWp.setTotalEquipmentCost()
+
+            iWp.setInflationByYr()
+            iWp.setTotalInflation()
+            
             iWp._OtherNonStaffCostByYear = _OtherNonStaffCostByYear
             iWp.setTotalOtherNonStaffCost()
 

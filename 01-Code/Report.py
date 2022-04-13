@@ -70,6 +70,8 @@ from datetime import date
 import pandas as pnds
 import numpy  as np
 
+import Control       as Cntrl
+
 import Task          as Tsk
 import TaskStaff     as TskStf
 import TaskEquipment as TskEqp
@@ -77,6 +79,8 @@ import WorkPackage   as wp
 import Project       as Prj
 import Staff         as Stf
 import OtherNonStaff as ONS
+
+iCntrl = Cntrl.Control()
 
 """
          -------->  Base "Report" class  <--------
@@ -255,6 +259,9 @@ class Overview(Report):
             for InstCode in Stf.Staff.institutes:
                 Frc = np.array([])
                 Cst = np.array([])
+                for iYr in range(len(_PrjInst._FinancialYears)):
+                    Frc = np.append(Frc, 0.)
+                    Cst = np.append(Cst, 0.)
 
                 """
                    Loop over task staff instances:
@@ -269,17 +276,9 @@ class Overview(Report):
                                   iTskStf._StaffFracByYear)
                             print("                 Cost by year    :", \
                                   iTskStf._StaffCostByYear)
-                        if Frc.size == 0:
-                            Frc    = iTskStf._StaffFracByYear
-                        else:
-                            Frc    += iTskStf._StaffFracByYear
-                        if Cst.size == 0:
-                            if isinstance(iTskStf._StaffCostByYear, np.ndarray):
-                                Cst    = iTskStf._StaffCostByYear
-                        else:
-                            if isinstance(iTskStf._StaffCostByYear, \
-                                          np.ndarray):
-                                Cst    += iTskStf._StaffCostByYear
+                        Frc    += iTskStf._StaffFracByYear
+                        if iTskStf._StaffCostByYear != None:
+                            Cst    += iTskStf._StaffCostByYear
 
                 if Overview.__Debug and Frc.size != 0:
                     print("                 WP/institute totals:")
@@ -929,12 +928,17 @@ class WorkPackageSummary(Report):
 
     def Inflation(self, _wpInst):
         Line = []
-        Line.append("Inflation (not yet implemented):")
+        Line.append("Inflation:")
         for iYr in range(len(_wpInst._FinancialYears)):
+            print(" Report.Inflation: iYr, yr to strt:", \
+                  iYr, iCntrl._Inflation[2])
             Line.append(None)
-            Line.append(0.)
+            if isinstance(_wpInst._InflationByYr, np.ndarray):
+                Line.append(_wpInst._InflationByYr[iYr])
+            else:
+                Line.append(None)
         Line.append(None)
-        Line.append(0.)
+        Line.append(_wpInst._TotalInflation)
         return Line
 
     def EquipmentTotal(self, _wpInst):

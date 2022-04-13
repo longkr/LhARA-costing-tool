@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -23,9 +24,9 @@ Class Control:
                         generated 
    _Inflation         = Equipment, Staff, year to start inflation calculation
    _VAT               = VAT charge rate
-   _WorkingMargin     = Working margin (fractio)
+   _WorkingMargin     = Working margin (fraction), year to start addition of WM
    _Contingency       = Contingency (fraction) equipment, project
-                        staff, CG staff 
+                        staff, CG staff, year to start addition of contingency
    _fecChargeFraction = fEC charge fraction on staff, project, CG
     
 
@@ -69,6 +70,7 @@ Class Control:
   
 Created on Thu 31Dec20;16:42: Version history:
 ----------------------------------------------
+ 1.1: 13Sep22: Udated to allow WM, contingency to start in year n
  1.0: 14Jul21: First implementation
 
 @author: kennethlong
@@ -102,10 +104,10 @@ class Control(object):
             #.. Set defaults:
             cls._filename          = _filename
             cls._IssueDate         = date.today()
-            cls._Inflation         = [1., 1., 1]
+            cls._Inflation         = [0.01, 0.02, 1]
             cls._VAT               = 0.2
-            cls._WorkingMargin     = 0.1
-            cls._Contingency       = [0.2, 0.3, 0.4]
+            cls._WorkingMargin     = [0.1, 1]
+            cls._Contingency       = [0.2, 0.3, 0.4, 1]
             cls._fecChargeFraction = [0.8, 0.8]
             cls._CntrlParams       = None
 
@@ -130,12 +132,17 @@ class Control(object):
 
     def __str__(self):
         print(" Control paramters:")
-        print("                              Issue date:", self._IssueDate)
-        print(" Inflation(capital, staff, start in year:", self._Inflation)
-        print("                                     VAT:", self._VAT)
-        print("                          Working margin:", self._WorkingMargin)
-        print("                             Contingency:", self._Contingency)
-        print("                     FEC charge fraction:", \
+        print("                                             Issue date:", \
+              self._IssueDate)
+        print("                Inflation(capital, staff, start in year:", \
+              self._Inflation)
+        print("                                                    VAT:", \
+              self._VAT)
+        print("                          Working margin, start in year:", \
+              self._WorkingMargin)
+        print(" Contingency (capital, prj stff, CG stff, start in year:", \
+              self._Contingency)
+        print("                                    FEC charge fraction:", \
               self._fecChargeFraction)
         return "     <---- Done."
 
@@ -163,12 +170,18 @@ class Control(object):
                       float(cls._cntrlParams.iat[i,1].strip("%")) / 100. )
                 Inflation.append( \
                       float(cls._cntrlParams.iat[i,2].strip("%")) / 100.)
-                Inflation.append(int(cls._cntrlParams.iat[i,3]))
+                iDm1 = int(cls._cntrlParams.iat[i,3])
+                IDm2 = max(0, iDm1-1)
+                Inflation.append(IDm2)
+                
+                
             elif cls._cntrlParams.iat[i,0].find("VAT") >= 0:
                 VAT = float(cls._cntrlParams.iat[i,1].strip("%")) / 100.
             elif cls._cntrlParams.iat[i,0].find("WorkingMargin") >= 0:
-                WorkingMargin = \
-                    float(cls._cntrlParams.iat[i,1].strip("%")) / 100.
+                WorkingMargin = []
+                WorkingMargin.append( \
+                    float(cls._cntrlParams.iat[i,1].strip("%")) / 100.)
+                WorkingMargin.append(int(cls._cntrlParams.iat[i,2]))
             elif cls._cntrlParams.iat[i,0].find("Contingency") >= 0:
                 Contingency = []
                 Contingency.append( \
@@ -177,6 +190,7 @@ class Control(object):
                       float(cls._cntrlParams.iat[i,2].strip("%")) / 100.)
                 Contingency.append( \
                       float(cls._cntrlParams.iat[i,3].strip("%")) / 100.)
+                Contingency.append(int(cls._cntrlParams.iat[i,4]))
             elif cls._cntrlParams.iat[i,0].find("fEC") >= 0:
                 fEC = []
                 fEC.append( \
@@ -209,7 +223,10 @@ class Control(object):
         return self._VAT
         
     def getWorkingMargin(self):
-        return self._WorkingMargin
+        return self._WorkingMargin[0]
+        
+    def getWorkingMarginStrtInYr(self):
+        return self._WorkingMargin[1]
         
     def getContingencyMaterial(self):
         return self._Contingency[0]
@@ -219,6 +236,9 @@ class Control(object):
         
     def getContingencyStaffCG(self):
         return self._Contingency[2]
+
+    def getContingencyStrtInYr(self):
+        return self._Contingency[3]
 
     def getfecChargeFractionPrj(self):
         return self._fecChargeFraction[0]
@@ -230,20 +250,21 @@ class Control(object):
 #--------  Print methods:
     def print(self):
         print(" Control paramters:")
-        print("                                  Issue date:", \
+        print("                                                 Issue date:", \
               self.getIssueDate())
-        print("    Inflation; capital, staff, start in year:", \
+        print("                   Inflation; capital, staff, start in year:", \
               self.getInflationCapital(), self.getInflationStaff(), \
               self.getInflationStrtInYr())
-        print("                                         VAT:", \
+        print("                                                        VAT:", \
               self.getVAT())
-        print("                              Working margin:", \
-              self.getWorkingMargin())
-        print(" Contingency; material, staff (project & CG):", \
+        print("                              Working margin, start in year:", \
+              self.getWorkingMargin(), self.getWorkingMarginStrtInYr())
+        print(" Contingency; material, staff (project & CG), start in year:", \
               self.getContingencyMaterial(), \
               self.getContingencyStaffPrj(), \
-              self.getContingencyStaffCG() )
-        print("             FEC charge fraction; project, CG:", \
+              self.getContingencyStaffCG(),  \
+              self.getContingencyStrtInYr() )
+        print("                           FEC charge fraction; project, CG:", \
               self.getfecChargeFractionPrj(), \
               self.getfecChargeFractionCG() )
         return "     <---- Done."
