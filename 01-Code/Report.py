@@ -301,7 +301,8 @@ class Overview(Report):
                             
                     Line.append(np.sum(Frc))
                     Line.append(np.sum(Cst))
-                    self._Lines.append(Line)
+                    if np.sum(Cst) != 0.:
+                        self._Lines.append(Line)
                     if Overview.__Debug:
                         print("                 Line for csv file:")
                         print("                 ---->", Line)
