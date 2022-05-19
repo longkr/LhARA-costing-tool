@@ -601,12 +601,12 @@ class StaffEffortSummary(Report):
                 print("           Present institute code: ", InstCode)
 
             #----> Check staff member used in project:
-            StaffTaskList = []
-            StaffTaskList = sorted(TskStf.TaskStaff.instances, \
-                                   key=itemgetter(iStf), \
-                                   )
-            if len(StaffTaskList) == 0:
-                print(" Skipping staff member:", iStf)
+            nTsks = 0
+            for iTskStf in TskStf.TaskStaff.instances:
+                if iTskStf._Staff == iStf:
+                    nTsks += 1
+            if nTsks == 0:
+                print(" No tasks for staff member (skip):", iStf)
                 continue
                       
             Line = []
