@@ -599,6 +599,15 @@ class StaffEffortSummary(Report):
                 print("     ----> New from Staff instances: ", \
                       iStf._InstituteCode, "; ", iStf._StaffCode)
                 print("           Present institute code: ", InstCode)
+
+            #----> Check staff member used in project:
+            StaffTaskList = []
+            StaffTaskList = sorted(TskStf.TaskStaff.instances, \
+                                   key=attrgetter('_Staff'), \
+                                   )
+            if len(StaffTaskList) == 0:
+                print(" Skipping staff member:", iStf)
+                continue
                       
             Line = []
 
