@@ -378,8 +378,14 @@ class Project:
             SumInitialised = False
             for iWP in WP.WorkPackage.instances:
                 if len(_FinancialYears) == 0:
+                    print(" First financial years: WP:", \
+                          iWP._Name, iWP._FinancialYears, \
+                          len(iWP._FinancialYears))
                     _FinancialYears = iWP._FinancialYears
                 elif _FinancialYears != iWP._FinancialYears:
+                    print(" Inconsistent financial years: WP:", \
+                          iWP._Name, iWP._FinancialYears, \
+                          len(iWP._FinancialYears))
                     raise InconsistentFinancialYears
                 
                 for iYr in range(len(iWP._StaffCostByYear)):
