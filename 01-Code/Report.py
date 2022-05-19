@@ -603,7 +603,7 @@ class StaffEffortSummary(Report):
             #----> Check staff member used in project:
             StaffTaskList = []
             StaffTaskList = sorted(TskStf.TaskStaff.instances, \
-                                   key=attrgetter('_Staff'), \
+                                   key=itemgetter(iStf), \
                                    )
             if len(StaffTaskList) == 0:
                 print(" Skipping staff member:", iStf)
