@@ -250,11 +250,14 @@ class Staff:
     def getInstance(cls, _InstCode, _StaffCode):
         InstList = []
         if Staff.__Debug:
-            print(" Staff; getInstance: search for InstCode, StaffCode:", _InstCode, _StaffCode)
+            print(" Staff; getInstance: search for InstCode, StaffCode:", \
+                  _InstCode, _StaffCode)
         for inst in cls.instances:
             if Staff.__Debug:
-                print(" Staff; getInstance: instance:", inst._InstituteCode, inst._StaffCode)
-            if inst._InstituteCode == _InstCode and inst._StaffCode == _StaffCode:
+                print(" Staff; getInstance: instance:", \
+                      inst._InstituteCode, inst._StaffCode)
+            if inst._InstituteCode == _InstCode and \
+               inst._StaffCode == _StaffCode:
                 InstList.append(inst)
         Ninst = len(InstList)
         if Ninst == 0:

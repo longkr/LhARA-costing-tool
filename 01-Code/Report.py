@@ -67,6 +67,8 @@ Created on Wed 19Jun21. Version history:
 import os
 import copy
 from datetime import date
+from operator import itemgetter, attrgetter
+
 import pandas as pnds
 import numpy  as np
 
@@ -577,14 +579,22 @@ class StaffEffortSummary(Report):
         for iYr in range(len(_PrjInst._FinancialYears)):
             FrcGrndTot = np.append(FrcGrndTot, 0.)
             CstGrndTot = np.append(CstGrndTot, 0.)
-
+        
+        """
+           --------> Ordered staff list by institute code and staff name:
+        """
+        SortedStaffList = sorted(Stf.Staff.instances, \
+                                 attrgetter('_InstituteCode', '_StaffCode'), \
+                                 )
+        
         """
            --------> Process staff list:
         """
         InstCode   = None
         FrcTot     = np.array([])
         CstTot     = np.array([])
-        for iStf in Stf.Staff.instances:
+        StaffEffortSummary.__Debug = True
+        for iStf in SortedStaffList:
             if StaffEffortSummary.__Debug:
                 print("     ----> New from Staff instances: ", \
                       iStf._InstituteCode, "; ", iStf._StaffCode)
