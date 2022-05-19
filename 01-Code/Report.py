@@ -584,7 +584,7 @@ class StaffEffortSummary(Report):
            --------> Ordered staff list by institute code and staff name:
         """
         SortedStaffList = sorted(Stf.Staff.instances, \
-                                 attrgetter('_InstituteCode', '_StaffCode'), \
+                          key=attrgetter('_InstituteCode', '_StaffCode'), \
                                  )
         
         """
