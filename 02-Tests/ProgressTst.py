@@ -11,6 +11,7 @@ Test script for "Progress" class
 """
 
 import os
+import datetime as DT
 
 import WorkPackage as wp
 import Task        as Tsk
@@ -27,7 +28,25 @@ WP1 = wp.WorkPackage(filename)
 Tsk1 = Tsk.Task("LhARA", WP1)
 print('    ----> instances WP1 and Tsk1 created.')
 
+#.. Create date:
+DateToday = datetime.datetime.now()
+
+##! Check built-in methods:
+ProgressTest = 1
+print()
+print("ProgressTest:", ProgressTest, " check built-in methods.")
+
+#.. __init__
+print("  __init__:")
+print("    ----> Attempt to create instance with correct call:")
+try:
+    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, 23)
+except:
+    print('      !!!!> Failed to create instance.')
+    raise Exception
+print('    <---- instance Prg1 created.')
 
 ##! Complete:
 print()
 print("========  Progress: tests complete  ========")
+
