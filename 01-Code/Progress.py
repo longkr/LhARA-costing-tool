@@ -86,7 +86,7 @@ class Progress:
         print("     Date            :", self.getDate())
         print("     FractionComplete:", self.getFractionComplete())
         print("     Spend           :", self.getSpend())
-        return "     <---- Progress complete."
+        return "  <---- Done."
 
     
 #--------  I/o methods:
@@ -128,7 +128,7 @@ class Progress:
         return self._FractionComplete
         
     def getSpend(self):
-        return self._Spemd
+        return self._Spend
         
 
 #--------  Processing methods:
