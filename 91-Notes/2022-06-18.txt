@@ -1,18 +1,21 @@
-Tests:
- - ControlTst.py          - OK
- - EquipmentTst.py        - OK
- - LhARACostingToolTst.py - OK
- - OtherNonStaffTst.py    - OK
- - ProgressTst.py         - OK
- - ProjectTst.py          - OK
- - ReportTst.py           - OK
- 
- - StaffTst.py            - Fail:
- Traceback (most recent call last):
-  File "/Users/kennethlong/KL-GIT/02-LhARA/01-LhARA-costing-tool/02-Tests/StaffTst.py", line 65, in <module>
-    inst = Stf.Staff.getInstance("Dummy")
-TypeError: getInstance() missing 1 required positional argument: '_StaffCode'
+18Jun22:
 
+Beginning to develop the earned-value analysis.
+
+First attempted at Progress class.
+
+Tried tests, made 'em work.  But, not sure if everything is perfect!
+
+-------- record of tests:
+Tests:
+ - ControlTst.py                        - OK
+ - EquipmentTst.py                      - OK
+ - LhARACostingToolTst.py               - OK
+ - OtherNonStaffTst.py                  - OK
+ - ProgressTst.py                       - OK
+ - ProjectTst.py                        - OK
+ - ReportTst.py                         - OK
+ - StaffTst.py                          - OK
  - TaskEquipmentTst.py                  - OK
  - TaskStaffTst.py                      - OK
  - TaskTst.py                           - OK
