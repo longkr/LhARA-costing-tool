@@ -188,7 +188,8 @@ class LhARACostingTool(object):
             if cls._Debug:
                 print("          Report: project overview")
                 
-            if isinstance(iPrj, Prj.Project):
+            if len(Prj.Project.instances) == 1:
+                iPrj = Prj.Project.instances[0]
                 Ovrvw = Rpt.Overview(REPORTPATH, "Overview.csv", iPrj)
                 Ovrvw.asCSV()
                 
