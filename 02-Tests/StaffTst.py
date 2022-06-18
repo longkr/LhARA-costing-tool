@@ -62,21 +62,21 @@ print("StaffTest:", StaffTest, " check getInstance method.")
 Stf2 = Stf.Staff("Test-1", "Test-1")
 Stf3 = Stf.Staff("Test-2", "Vatican")
 Stf4 = Stf.Staff("Test-2", "Vatican")
-inst = Stf.Staff.getInstance("Dummy")
+inst = Stf.Staff.getInstance("Dummy", "Dummy")
 if inst == None:
     print('      ----> Correctly reported no instance:', inst)
 else:
     raise Exception("Failed to catch absense of instance in getInstance")
 try:
-    inst = Stf.Staff.getInstance("Test-2")
+    inst = Stf.Staff.getInstance("Test-2", "Vatican")
 except Stf.DuplicateStaffClassInstance:
     print('      ----> Correctly caught multiple instance exception.')
-inst = Stf.Staff.getInstance("Test-1")
+inst = Stf.Staff.getInstance("Institute-Code", "Test-1")
 if inst == Stf2:
     print('      ----> Correctly found:', inst)
 else:
     raise Exception("Failed to get instance Test-1")
-inst = Stf.Staff.getInstance("LhARA")
+inst = Stf.Staff.getInstance("Institute-Code", "LhARA")
 if inst == Stf1:
     print('      ----> Correctly found:', inst)
 else:
