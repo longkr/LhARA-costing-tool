@@ -365,6 +365,17 @@ class Project:
         return nDel
 
     @classmethod
+    def clear(cls):
+        OldInst = cls.instances
+        NewInst = []
+        nDel    = 0
+        for iPrj in OldInst:
+            del iPrj
+            nDel += 1
+        cls.instances = NewInst
+        return nDel
+
+    @classmethod
     def doCosting(cls):
         for iPrj in cls.instances:
             _FinancialYears          = []
@@ -378,9 +389,6 @@ class Project:
             SumInitialised = False
             for iWP in WP.WorkPackage.instances:
                 if len(_FinancialYears) == 0:
-                    print(" First financial years: WP:", \
-                          iWP._Name, iWP._FinancialYears, \
-                          len(iWP._FinancialYears))
                     _FinancialYears = iWP._FinancialYears
                 elif _FinancialYears != iWP._FinancialYears:
                     print(" Inconsistent financial years: WP:", \

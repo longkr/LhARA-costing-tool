@@ -247,6 +247,17 @@ class Task:
         return nDel
 
     @classmethod
+    def clear(cls):
+        OldInst = cls.instances
+        NewInst = []
+        nDel    = 0
+        for iTsk in OldInst:
+            del iTsk
+            nDel += 1
+        cls.instances = NewInst
+        return nDel
+
+    @classmethod
     def doCosting(cls):
         for iTsk in cls.instances:
             _StaffFracByYear   = np.array([])

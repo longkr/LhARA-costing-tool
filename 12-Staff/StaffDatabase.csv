@@ -1,51 +1,14 @@
-Institute Code,Staff code,Name or post,Level,Cost per year (£k),Source,Comments
-BHM Physics,BHM-Phys-Stf-1,Unnamed,Staff,100,Project,
-BHM Physics,BHM-Phys-PDRA,Unnamed,PDRA,100,Project,
-BHM Physics,BHM-Phys-PhD,Unnamed,PG,25,Project,
-IC NHS HC Trust,IC-NHS-HC-Trst-Stf-1,Named,Staff,100,Project,
-IC NHS HC Trust,IC-NHS-HC-Trst-PhD-1,Named,PG,25,Project,
-ICR,ICR Staff 1,Unnamed,Staff,100,Project,
-ICR,ICR Staff 2,Unnamed,Staff,100,Project,
-ICR,ICR Staff/PhD,Unnamed,PG,25,Project,
-Imperial Physics,IC-Phys-Support-1,Kordopati,Admin,100,Project,
-Imperial Physics,IC-Phys-Stf-1,Named,Staff,100,Project,
-Imperial Physics,IC-Phys-PDRA-1,Named,PDRA,100,Project,
-Imperial Physics,IC-Phys-PDRA-2,Named,PDRA,100,Project,
-Imperial Physics,IC-Phys-PDRA-3,Named,PDRA,100,Project,
-Imperial Physics,IC-Phys-RF-Eng-1,Unnamed,Eng,100,Project,
-Imperial Physics,IC-Phys-Tech-1,Unnamed,Tech,100,Project,
-Imperial Physics,IC-Phys-PG-1,Unnamed,PG,25,Project,
-Lancaster Physics,Lanc-Phys-Stf-1,Named,Staff,100,Project,
-Lancaster Physics,Lanc-Phys-PDRA-1,Unnamed,PDRA,100,Project,
-Lancaster Physics,Lanc-Phys-PG-1,Unnamed,PG,25,Project,
-Liverpool Physics,Liv-Phys-PDRA,Unnamed,PDRA,100,Project,
-Liverpool Physics,Liv-Phys-PhD,Unnamed,PG,25,Project,
-Manchester Physics,Man-Phys-PDRA-1,Unnamed,PDRA,100,Project,
-Manchester Physics,Man-Phys-Stf-1,Named,Staff,100,Project,
-Queen's Physics,Qns-Phys-Stf-1,Named,Staff,100,Project,
-Queen's Physics,Qns-Phys-PG-1,Unnamed,PG,25,Project,
-RHUL Physics,RHUL-Phys-PDRA-1,Unnamed,PDRA,100,Project,
-RHUL Physics,RHUL-Phys-PG-1,Unnamed,PG,25,Project,
-Strathclyde Physics,Strathclyde-Phys-Stf-1,Whyte,Staff,100,Project,
-Strathclyde Physics,Strathclyde-Phys-PDRA-1,Named,PDRA,100,Project,
-Strathclyde Physics,Strathclyde-Phys-RF-Eng-1,Unnamed,Eng,100,Project,
-Strathclyde Physics,Strathclyde-Phys-Tech-1,Unnamed,Tech,100,Project,
-Strathclyde Physics,Strathclyde-Phys-PG-1,Unnamed,PG,25,Project,
-STFC-PPD,STFC-Finance-Support,Name1,BandE,100,Project,
-STFC-PPD,STFC staff,Name2,BandZ,100,Project,
-STFC-TD,Mech,Unnamed,Band,100,Project,
-STFC-TD,Elec,Unnamed,Band,100,Project,
-STFC-TD,Controls,Unnamed,Band,100,Project,
-STFC-TD,Tech Serv,Unnamed,Band,100,Project,
-STFC-TD,Vacuum,Unnamed,Band,100,Project,
-STFC-TD,Radiation,Unnamed,Band,100,Project,
-Swansea Physics,Swns-Phys-PDRA-1,Named,PDRA,100,Project,
-Swansea Physics,Swns-Phys-Stf-1,Unnamed,Staff,100,Project,
-Swansea Physics,Swns-Phys-PG-1,Unnamed,PG,25,Project,
-Swansea Physics,Swns-Phys-PG-2,Unnamed,PG,25,Project,
-Swansea Physics,Swan-Phys-Tech-1,Name1,Tech,100,Project,
-Swansea Physics,Swan-Phys-Tech-2,Name2,Tech,100,Project,
-UC Berkeley (USA),Consultant,Unnamed,Staff,100,Project,
-UCL Biomedical Engineering,UCL Staff 1,Unnamed,Staff,100,Project,
-UCL Biomedical Engineering,UCL PDRA,Unnamed,PDRA,100,Project,
-UCL Biomedical Engineering,UCL PhD,Unnamed,PG,25,Project,
+﻿Institute Code,Staff code,Name or post,Level,Cost per year (£k),Source,Comments
+Strathclyde Physics,Strathclyde-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
+Imperial Physics,IC-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
+Lancaster Physics,Lanc-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
+Queen's Physics,Qns-Phys-PG-1,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
+UCL Biomedical Engineering,UCL PhD,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
+BHM Physics,BHM-Phys-PhD,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
+IC NHS HC Trust,IC-NHS-HC-Trst-PhD-1,PG,PG,25,Project,Starts in Yr 3
+Imperial Physics,Imp PG1,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
+RHUL Physics,RHUL PG1,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
+Swansea Physics,Swns-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
+Swansea Physics,Swns-Phys-PG-2,PG,PG,25,Project,Starts in Yr 3
+"ICR, Radiotherapy and Imaging",ICR PhD,PG,PG,25,Project,Starts in Yr 3
+Liverpool Physics,Liv-Phys-PhD,PG,PG,25,Project,Starts in Yr 3

@@ -211,6 +211,24 @@ class TaskStaff:
 
         
     @classmethod
+    def clear(cls):
+        if cls.__Debug:
+            print(" TaskStaff: clear ----> start.")
+        OldInst = cls.instances
+        NewInst = []
+        nDel    = 0
+        for iTskStf in OldInst:
+            if cls.__Debug:
+                print(iTskStf)
+            del iTskStf
+            nDel += 1
+            if cls.__Debug:
+                print("    ----> Deleted!")
+        cls.instances = NewInst
+        return nDel
+
+        
+    @classmethod
     def doCosting(cls):
         for iTskStf in cls.instances:
             iTskStf.setStaffCostByYear()

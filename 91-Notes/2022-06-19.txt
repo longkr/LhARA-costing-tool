@@ -1,0 +1,8 @@
+19Jun22:
+
+Find that:
+ - Clean in LhARACostingTool does not clean TaskEquipment ... need to
+   check if this is what it shoud be.
+ - Create clear in LhARACostingTool -- has same feature --
+   TaskEquipment is not cleared.  Need to check this.
+ - Also, staff data base not cleaned or cleared.

@@ -11,19 +11,27 @@ Test script for "Progress" class
 """
 
 import os
+import sys
 import datetime as DT
 
-import WorkPackage as wp
-import Task        as Tsk
-import Progress    as Prg
+import Staff            as Stf
+import WorkPackage      as wp
+import Task             as Tsk
+import Progress         as Prg
+import LhARACostingTool as LCT
 
 ##! Start:
 print("========  Progress: tests start  ========")
 
+Debug = False
+for arg in sys.argv:
+    if arg == "Debug=true":
+        Debug = True
+
 #.. Create dummy task:
 print("  Create dummy work package and task instances:")
 LhARAPATH = os.getenv('LhARAPATH')
-filename  = os.path.join(LhARAPATH, '11-WorkPackages/Dummy4Test.csv')
+filename  = os.path.join(LhARAPATH, '11-WorkPackages/WP1.csv')
 WP1 = wp.WorkPackage(filename)
 Tsk1 = Tsk.Task("LhARA", WP1)
 print('    ----> instances WP1 and Tsk1 created.')
@@ -32,7 +40,42 @@ print('    ----> instances WP1 and Tsk1 created.')
 DateToday = DT.datetime.now()
 print('    ----> Date instance:', DateToday)
 
+#.. Create costing tool instance:
+iLCT  = LCT.LhARACostingTool(Debug)
+print('    ----> Costing tool instance created.')
+
 print('  <---- Prerequisits created.')
+
+
+##! --------  Identify necessary files:
+HOMEPATH     = os.getenv('HOMEPATH')
+ControlFile  = os.path.join(HOMEPATH, \
+                            'Control/LhARA-costing-tool-control.csv')
+if Debug:
+    print("    Control file: \n", \
+          "            ----> ", ControlFile)
+StaffDatabaseFile = os.path.join(HOMEPATH, \
+                                 '12-Staff/StaffDatabase.csv')
+if Debug:
+    print("    Staff database file: \n", \
+          "            ----> ", StaffDatabaseFile)
+wpDirectory = os.path.join(HOMEPATH, \
+                           '11-WorkPackages')
+if Debug:
+    print("    Directory containing work package definitions: \n", \
+          "            ----> ", wpDirectory)
+REPORTPATH = os.path.join(HOMEPATH, \
+                           'Reports')
+if Debug:
+    print("    Directory in which reports will be placed: \n", \
+          "            ----> ", REPORTPATH)
+
+##! --------  Create costing control instance:
+import Control as cntrl
+iCntrl  = cntrl.Control(ControlFile)
+if Debug:
+    print("    Dump of control parameters: \n", iCntrl)
+  
 
 ##! Check built-in methods:
 ProgressTest = 1
@@ -87,6 +130,61 @@ else:
     print('      !!!!> Failed to trap Spend not float.')
     raise Exception
 print('    <---- Wrong argument tests done.')
+
+#.. Tidy up:
+print("  Clear present set of instances:")
+print("    ----> Clear data structure:")
+iLCT.ClearDataStructure()
+print('    <---- Costing data structure cleared.')
+
+
+##! Test earned-value methods:
+ProgressTest += 1
+print()
+print("ProgressTest:", ProgressTest, " Test earned value methods.")
+
+#.. Load costing data structure:
+print("    ----> Load costing data structure:")
+import Control as cntrl
+iCntrl  = cntrl.Control(ControlFile)
+if Debug:
+    print("      ----> Dump of control parameters: \n", iCntrl)
+nStf = Stf.Staff.parseStaffDatabase(StaffDatabaseFile)
+if Debug:
+    print("     ----> Staff data base read; ", nStf, \
+          " instances of Staff created.")
+nDel = Stf.Staff.cleanStaffDatabase()
+if Debug:
+    print("           Staff data base cleaned; ", nDel, \
+          " instances of Staff deleted.")
+    print("          ", Stf.Staff.getNumberOfStaff(), "staff remain.")
+wpList    = sorted(os.listdir(wpDirectory))
+if Debug:
+    print("     ----> Read work package definitions from: \n", \
+          "              ---->", wpList)
+wpInst = []
+for wpFile in wpList:
+    if wpFile.find('.csv') <= 0:
+        if Debug:
+            print("Bad file name", wpFile, " skipping this file.")
+    else:
+        FileName = os.path.join(wpDirectory, wpFile)
+        if Debug:
+            print("              ----> Reading data from: ", FileName)
+        wpInst.append(wp.WorkPackage(FileName))
+if Debug:
+    print("              ---->", len(wpInst), " work packages intialised:")
+    for Inst in wpInst:
+        print("                       ", Inst._Name)
+
+
+#.. Load costing data structure:
+print("     ----> Complete costing data structure:")
+print("       ----> Execute costing tool:")
+iLCT.Execute()
+print('       <---- Costing tool executed.')
+print("     <---- Costing data structure complete.")
+
 
 ##! Complete:
 print()

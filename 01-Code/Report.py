@@ -593,7 +593,6 @@ class StaffEffortSummary(Report):
         InstCode   = None
         FrcTot     = np.array([])
         CstTot     = np.array([])
-        StaffEffortSummary.__Debug = True
         for iStf in SortedStaffList:
             if StaffEffortSummary.__Debug:
                 print("     ----> New from Staff instances: ", \
@@ -606,7 +605,8 @@ class StaffEffortSummary(Report):
                 if iTskStf._Staff == iStf:
                     nTsks += 1
             if nTsks == 0:
-                print(" No tasks for staff member (skip):", iStf)
+                if StaffEffortSummary.__Debug:
+                    print(" No tasks for staff member (skip):", iStf)
                 continue
                       
             Line = []

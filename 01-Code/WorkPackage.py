@@ -868,6 +868,17 @@ class WorkPackage:
         return nDel
 
     @classmethod
+    def clear(cls):
+        OldInst = cls.instances
+        NewInst = []
+        nDel    = 0
+        for iWP in OldInst:
+            del iWP
+            nDel += 1
+        cls.instances = NewInst
+        return nDel
+
+    @classmethod
     def doCosting(cls):
         for iWp in cls.instances:
             if WorkPackage.__Debug:

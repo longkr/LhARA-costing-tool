@@ -29,7 +29,8 @@ if iLCT != iLCT1:
 ##! Check built-in methods:
 LhARACostingToolTest = 2
 print()
-print("LhARACostingToolTest:", LhARACostingToolTest, " check built-in methods.")
+print("LhARACostingToolTest:", LhARACostingToolTest, \
+      " check built-in methods.")
 print("    ----> __repr__:")
 print(repr(iLCT))
 print("    ----> __str__:")

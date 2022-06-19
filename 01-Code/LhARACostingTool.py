@@ -177,7 +177,7 @@ class LhARACostingTool(object):
             if len(Prj.Project.instances) == 1:
                 iPrj = Prj.Project.instances[0]
                 iStfSmRpt = Rpt.StaffEffortSummary(REPORTPATH, \
-                                                   "StaffEffortSummary.csv", \
+                                        "StaffEffortSummary.csv", \
                                                    iPrj)
                 iStfSmRpt.asCSV()
                 
@@ -195,3 +195,36 @@ class LhARACostingTool(object):
                 
             if cls._Debug:
                 print("                  <---- done")
+
+    @classmethod
+    def ClearDataStructure(cls):
+        if cls._Debug:
+            print("    ----> LhARACostingTool: Clear data structure.")
+
+        #.. TaskStaff
+        if cls._Debug:
+            print("          TaskStaff: clear")
+        nDel = TskStf.TaskStaff.clear()
+        if cls._Debug:
+            print("                   ", nDel, " instances deleted")
+
+        #..  Task
+        if cls._Debug:
+            print("          Task: clear")
+        nDel = Tsk.Task.clear()
+        if cls._Debug:
+            print("              ", nDel, " instances deleted")
+
+        #..  Workpage
+        if cls._Debug:
+            print("          WorkPackage: clear")
+        nDel = wp.WorkPackage.clear()
+        if cls._Debug:
+            print("                     ", nDel, " instances deleted")
+
+        #..  Project
+        if cls._Debug:
+            print("          Project: clear")
+        nDel = Prj.Project.clear()
+        if cls._Debug:
+            print("                 ", nDel, " instances deleted")
