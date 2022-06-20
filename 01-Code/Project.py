@@ -36,8 +36,10 @@ Class Project:
    _TotalTrvlCnsmCost   = Summed travel and consumable cost in £k for this 
                           workpackage
 
+   _InflationByYear     = Inflation by year
    _WorkingMarginByYear = WM by year
    _ContingencyByYear   = Contingency by year
+   -InflationTotal      = Inflation total
    _WorkingMarginTotal  = WM by year
    _ContingencyTotal    = Contingency by year
 
@@ -154,8 +156,10 @@ class Project:
         self._TrvlCnsmCostByYear  = None
         self._TotalTrvlCnsmCost   = None
 
+        self._InflationByYear     = None
         self._WorkingMarginByYear = None
         self._ContingencyByYear   = None
+        self._InflationTotal      = None
         self._WorkingMarginTotal  = None
         self._ContingencyTotal    = None
         
@@ -178,6 +182,8 @@ class Project:
               self._OtherNonStaffCostByYear, self._TotalOtherNonStaffCost)
         print("     Travel and consumable cost by year, total:", \
               self._TrvlCnsmCostByYear, self._TotalTrvlCnsmCost)
+        print("     Inflation by year, total:", \
+              self._InflationByYear, self._InflationTotal)
         print("     Working Margin by year, total:", \
               self._WorkingMarginByYear, self._WorkingMarginTotal)
         print("     Contingency by year, total:", \
@@ -248,6 +254,7 @@ class Project:
             TotByYr += self._StaffCostByYear
         if isinstance(self._EquipmentCostByYear, np.ndarray):
             TotByYr += self._EquipmentCostByYear
+
         if isinstance(self._OtherNonStaffCostByYear, np.ndarray):
             TotByYr += self._OtherNonStaffCostByYear
         if isinstance(self._TrvlCnsmCostByYear, np.ndarray):

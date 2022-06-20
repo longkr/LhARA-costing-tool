@@ -59,7 +59,7 @@ Class Report:
 Created on Wed 19Jun21. Version history:
 ----------------------------------------
  1.0: 02Jul21: First implementation
-
+ 1.1: 20Jun22: Fix reporting of total CG contingency.
 
 @author: kennethlong
 """
@@ -909,7 +909,7 @@ class WorkPackageSummary(Report):
             else:
                Line.append(0.)
         Line.append(None)
-        Line.append(_wpInst._ContingencyTotal[1])
+        Line.append(_wpInst._ContingencyTotal[2])
         Lines.append(Line)
         
         Line = []
