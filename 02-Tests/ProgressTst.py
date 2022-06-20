@@ -6,6 +6,11 @@ Test script for "Progress" class
 
   Assumes python path includes LhARA code.
 
+  Provides tests for:
+    - Class Progress
+    - Derived classes:
+        - PlannedValue
+
   Script starts by testing built in methods.
 
 """
@@ -77,10 +82,16 @@ if Debug:
     print("    Dump of control parameters: \n", iCntrl)
   
 
-##! Check built-in methods:
+"""
+
+   Progress Tests
+
+"""
+##! --------  Progess tests:
+#.. Check built-in methods:
 ProgressTest = 1
 print()
-print("ProgressTest:", ProgressTest, " check built-in methods.")
+print("Progress: check built-in methods.")
 
 #.. __init__
 print("  __init__:")
@@ -131,17 +142,71 @@ else:
     raise Exception
 print('    <---- Wrong argument tests done.')
 
-#.. Tidy up:
+
+"""
+
+   PlannedValue Tests
+
+"""
+##! PlannedValue tests:
+#.. Check built-in methods:
+ProgressTest += 1
+print()
+print("Progress:", ProgressTest, \
+      " PlannedValue: check built-in methods.")
+
+#.. __init__
+print("  __init__:")
+print("    ----> Attempt to create instance with correct call:")
+try:
+    PV1 = Prg.PlannedValue(Tsk1, DateToday)
+except:
+    print('      !!!!> Failed to create instance.')
+    raise Exception
+print('    <---- instance PV1 created.')
+#.. __repr__
+print("  __repr__:")
+print("    ---->", repr(PV1))
+print("    <---- __repr__ done.")
+#.. __str__
+print("  __str__:")
+print(str(PV1))
+print("    <---- __str__ done.")
+print("    ----> Check wrong-argument traps:")
+Dummy = None
+try:
+    PV1 = Prg.PlannedValue(Dummy, DateToday)
+except:
+    print('      ----> Correctly trapped Task instance.')
+else:
+    print('      !!!!> Failed to trap _Task not instance of Task.')
+    raise Exception
+try:
+    PV1 = Prg.PlannedValue(Tsk1, Dummy)
+except:
+    print('      ----> Correctly trapped Date instance.')
+else:
+    print('      !!!!> Failed to trap _Date not instance of datetime.')
+    raise Exception
+print('    <---- Wrong argument tests done.')
+
+##! Tidy up:
+ProgressTest += 1
+print()
+print("Progress:", ProgressTest, \
+      " Clear data structures.")
+
 print("  Clear present set of instances:")
 print("    ----> Clear data structure:")
 iLCT.ClearDataStructure()
+del PV1
 print('    <---- Costing data structure cleared.')
 
 
-##! Test earned-value methods:
+##! Load costing data structure:
 ProgressTest += 1
 print()
-print("ProgressTest:", ProgressTest, " Test earned value methods.")
+print("Progress:", ProgressTest, " Load costing data structure.")
 
 #.. Load costing data structure:
 print("    ----> Load costing data structure:")

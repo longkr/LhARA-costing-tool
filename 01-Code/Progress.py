@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+  This module provides Class:
+    Progress
+
+  Derived classes:
+    PlannedValue
+"""
+
+"""
 Class Progress:
 ===============
 
@@ -145,4 +153,101 @@ class ProgressFractionCompleteNotValid(Exception):
     pass
 
 class ProgressSpendNotValid(Exception):
+    pass
+
+"""
+Class PlannedValue:
+===================
+
+  Creates an instance of the PlannedValue class and provides access methods
+  to complete the attributes.
+
+
+  Class attributes:
+  -----------------
+  __Debug : Boolean: set for debug print out
+  instances: List of instances if the Progress class.
+
+      
+  Instance attributes:
+  --------------------
+   _Task         = Date as a date-time object
+   _Date         = Date as a date-time object
+   _PlannedValue = Fractional completion of task at _Date.
+
+    
+  Methods:
+  --------
+  Built-in methods __new__, __repr__ and __str__.
+      __init__: Creates instance and prints some parameters if __Debug is 
+                True.
+      __repr__: One liner with call.
+      __str__ : Dump of constants.
+
+
+  I/o methods:
+
+
+  Get/set methods:
+    set: set 
+      Input: numpy array
+        
+    get: get 
+      Input: numpy array
+        
+
+
+  Processing methods:
+
+  
+Created on Wed 17Jun22. Version history:
+----------------------------------------
+ 1.0: 120un22: First implementation
+
+@author: kennethlong
+"""
+
+class PlannedValue(Progress):
+    __Debug = False
+    instances = []
+
+#--------  "Built-in methods":
+    def __init__(self, _Task=None, _Date=None):
+
+        self.setTask(_Task)
+        self.setDate(_Date)
+        self.setPlannedValue(None)
+                
+        PlannedValue.instances.append(self)
+        
+    def __repr__(self):
+        return "PlannedValue(Task, Date)"
+
+    def __str__(self):
+        print(" PlannedValue:", self.getTask()._Name)
+        print("     Date            :", self.getDate())
+        print("     Planned value   :", self.getPlannedValue())
+        return "  <---- Done."
+
+    
+#--------  I/o methods:
+
+
+#--------  Get/set methods:
+    def setPlannedValue(self, _PV):
+        if not isinstance(_PV, float) and not (_PV is None):
+            raise PlannedValuePVNotValid(\
+                            " PlannedValue.setPlannedValue: " \
+                                       "not valid.")
+        self._PlannedValue = _PV
+        
+    def getPlannedValue(self):
+        return self._PlannedValue
+                
+
+#--------  Processing methods:
+
+    
+#--------  Exceptions:
+class PlannedValuePVNotValid(Exception):
     pass
