@@ -1,0 +1,7 @@
+20Jun22:
+========
+ - Continued development of earned value
+ - Found series of bugs:
+   - Total CG effort wrongly reported in WorkPackage report
+   - Inflation not handled properly in Overview report.
+   - Required fixes in Project, Workpackage and report.

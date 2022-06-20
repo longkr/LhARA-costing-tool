@@ -234,6 +234,12 @@ class Project:
     def setTotalTrvlCnsmCost(self):
         self._TotalTrvlCnsmCost = np.sum(self._TrvlCnsmCostByYear)
 
+    def setInflationByYear(self, _InflationByYear):
+        self._InflationYear = _InflationByYear
+        
+    def setInflationTotal(self):
+        self._InflationTotal = np.sum(self._InflationByYear)
+
     def setWorkingMarginByYear(self, _WorkingMarginByYear):
         self._WorkingMarginByYear = _WorkingMarginByYear
         
@@ -259,6 +265,8 @@ class Project:
             TotByYr += self._OtherNonStaffCostByYear
         if isinstance(self._TrvlCnsmCostByYear, np.ndarray):
             TotByYr += self._TrvlCnsmCostByYear
+        if isinstance(self._InflationByYear, np.ndarray):
+            TotByYr += self._InflationByYear
         if isinstance(self._WorkingMarginByYear, np.ndarray):
             TotByYr += self._WorkingMarginByYear
         if isinstance(self._ContingencyByYear, np.ndarray):
@@ -266,15 +274,14 @@ class Project:
         return  TotByYr
     
     def getTotalProjectCost(self):
+        CstTotByYr = np.array([])
+        for iYr in range(len(self._FinancialYears)):
+            CstTotByYr = np.append(CstTotByYr, 0.)
         Total = 0.
-        if isinstance(self._TotalStaffCost, float):
-            Total += self._TotalStaffCost
-        if isinstance(self._TotalEquipmentCost, float):
-            Total += self._TotalEquipmentCost
-        if isinstance(self._TotalOtherNonStaffCost, float):
-            Total += self._TotalOtherNonStaffCost
-        if isinstance(self._TotalTrvlCnsmCost, float):
-            Total += self._TotalTrvlCnsmCost
+
+        CstTotByYr = self.getTotalProjectCostByYear()
+        Total      = np.sum(CstTotByYr)
+
         return Total
 
     @classmethod
@@ -317,6 +324,7 @@ class Project:
                             "Total other non-staff cost (£k)", \
                             "Travel and consumables by year (£k)", \
                             "Total travel and consumables (£k)", \
+                            "Total inflation (£k)", \
                             "Working Margin by year (£k)", \
                             "Working Margin (£k)", \
                             "Contingency by year (£k)", \
@@ -334,6 +342,7 @@ class Project:
                                 inst._TotalOtherNonStaffCost, \
                                 inst._TrvlCnsmCostByYear, \
                                 inst._TotalTrvlCnsmCost, \
+                                inst._InflationTotal, \
                                 inst._WorkingMarginByYear, \
                                 inst._WorkingMarginTotal, \
                                 inst._ContingencyByYear, \
@@ -360,6 +369,8 @@ class Project:
                iPrj._TotalOtherNonStaffCost  == None or \
                not isinstance(iPrj._TrvlCnsmCostByYear,  np.ndarray) or \
                iPrj._TotalTrvlCnsmCost   == None or \
+               not isinstance(iPrj._InflationByYear,  np.ndarray) or \
+               iPrj._InflationTotal   == None or \
                not isinstance(iPrj._WorkingMarginByYear,  np.ndarray) or \
                iPrj._WorkingMarginTotal   == None or \
                not isinstance(iPrj._ContingencyByYear,  np.ndarray) or \
@@ -391,6 +402,7 @@ class Project:
             _EquipmentCostByYear     = np.array([])
             _OtherNonStaffCostByYear = np.array([])
             _TrvlCnsmCostByYear      = np.array([])
+            _InflationByYear         = np.array([])
             _WorkingMarginByYear     = np.array([])
             _ContingencyByYear       = np.array([])
             SumInitialised = False
@@ -415,6 +427,8 @@ class Project:
                             np.append(_OtherNonStaffCostByYear, [0.])
                         _TrvlCnsmCostByYear  = \
                             np.append(_TrvlCnsmCostByYear,  [0.])
+                        _InflationByYear  = \
+                            np.append(_InflationByYear,  [0.])
                         _WorkingMarginByYear  = \
                             np.append(_WorkingMarginByYear,  [0.])
                         _ContingencyByYear  = \
@@ -426,6 +440,7 @@ class Project:
                 _EquipmentCostByYear     += iWP._EquipmentCostByYear
                 _OtherNonStaffCostByYear += iWP._OtherNonStaffCostByYear
                 _TrvlCnsmCostByYear      += iWP._TrvlCnsmCostByYear
+                _InflationByYear         += iWP._InflationByYr
                 _WorkingMarginByYear     += iWP._WorkingMarginByYear
                 _ContingencyByYear       += iWP._ContingencyByYear[0]
                 _ContingencyByYear       += iWP._ContingencyByYear[1]
@@ -440,6 +455,8 @@ class Project:
             iPrj.setTotalOtherNonStaffCost()
             iPrj._TrvlCnsmCostByYear = _TrvlCnsmCostByYear
             iPrj.setTotalTrvlCnsmCost()
+            iPrj._InflationByYear = _InflationByYear
+            iPrj.setInflationTotal()
             iPrj._WorkingMarginByYear = _WorkingMarginByYear
             iPrj.setWorkingMarginTotal()
             iPrj._ContingencyByYear = _ContingencyByYear
