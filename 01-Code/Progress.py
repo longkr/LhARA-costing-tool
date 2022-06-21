@@ -45,6 +45,9 @@ Class Progress:
 
 
   I/o methods:
+    loadProgress: Reads progress CSV file and creates Progress, PV, 
+                  instances as appropriate.
+        Class method
 
 
   Get/set methods:
@@ -66,7 +69,9 @@ Created on Wed 17Jun22. Version history:
 @author: kennethlong
 """
 
+import os
 import datetime as DT
+import pandas   as pnds
 
 import Task  as Tsk
 
@@ -98,7 +103,25 @@ class Progress:
 
     
 #--------  I/o methods:
+    @classmethod
+    def loadProgress(cls, _filename=None):
+        if _filename == None:
+            raise NoFilenameProvided( \
+                'CSV filename required; execution termimated.')
+        elif not os.path.isfile(_filename):
+            raise NonExistantFile('CSV file' + _filename + \
+                                  ' does not exist; execution termimated.')
 
+        ProgParams = pnds.read_csv(_filename)
+        iRow       = ProgParams.index
+        # if cls.__Debug:
+        print(" Progress.loadProgress: parse progress report")
+        ProgList = ProgParams.values.tolist()
+        iCnt = 0
+        for i in iRow:
+            iCnt += 1
+            #if cls.__Debug:
+            print("   ----> Parse row", iCnt, ProgList[iCnt-1])
 
 #--------  Get/set methods:
     def setTask(self, _Task):
@@ -250,4 +273,10 @@ class PlannedValue(Progress):
     
 #--------  Exceptions:
 class PlannedValuePVNotValid(Exception):
+    pass
+
+class NoFilenameProvided(Exception):
+    pass
+
+class NonExistantFile(Exception):
     pass

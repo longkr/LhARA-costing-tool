@@ -251,6 +251,24 @@ print('       <---- Costing tool executed.')
 print("     <---- Costing data structure complete.")
 
 
+PrgDirectory = os.path.join(HOMEPATH, \
+                           '13-ProgressReports')
+if Debug:
+    print("    Directory containing progress reports: \n", \
+          "        ----> ", PrgDirectory)
+PrgList    = sorted(os.listdir(PrgDirectory))
+for PrgFile in PrgList:
+    if PrgFile.find('.csv') <= 0:
+        if Debug:
+            print("Bad file name", PrgFile, " skipping this file.")
+    else:
+        FileName = os.path.join(PrgDirectory, PrgFile)
+        if Debug:
+            print("        ----> Reading data from: ", FileName)
+        Prg.Progress.loadProgress(FileName)
+if Debug:
+    print("          ----> progress reports loaded")
+
 ##! Complete:
 print()
 print("========  Progress: tests complete  ========")
