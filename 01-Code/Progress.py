@@ -74,7 +74,7 @@ import datetime as DT
 import pandas   as pnds
 
 import Task  as Tsk
-
+import WorkPackage as wp
 
 class Progress:
     __Debug = False
@@ -122,6 +122,20 @@ class Progress:
             iCnt += 1
             #if cls.__Debug:
             print("   ----> Parse row", iCnt, ProgList[iCnt-1])
+
+            if ProgParams.iloc[i,0] == "Work package":
+                #if cls.__Debug:
+                print("     ----> Work package:", ProgParams.iloc[i,1])
+                wpInst = None
+                for wpInstIter in wp.WorkPackage.instances:
+                    if wpInstIter._Name == ProgParams.iloc[i,1]:
+                        #if cls.__Debug:
+                        print("       ----> Identified:")
+                    wpInst = wpInstIter
+                if wpInst == None:
+                    #if cls.__Debug:
+                    print("       ----> Not identified!")
+                
 
 #--------  Get/set methods:
     def setTask(self, _Task):
