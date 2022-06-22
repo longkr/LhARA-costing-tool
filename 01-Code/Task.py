@@ -21,13 +21,14 @@ Class Task:
                           is defined
    _StaffCostByYear     = Total cost of staff in £k for this task by FY
    _CGStaffCostByYear   = Cost of CG staff in £k for this task by FY
-   _TotalStaffCost      = Summed total staff cost over duration of project (£k)
+   _TotalStaffCost      = Summed total staff cost over duration of project
+                          (£k)
    _TotalStaffFrac      = Summed total FTE over duration of project (£k)
    _TotalCGStaffCost    = Summed total CG staff cost over duration of project 
                           (£k)
    _EquipmentCostByYear = Total cost of equipment in £k for this task by FY
-   _TotalEquipCost      = Summed total equipment cost over duration of project 
-                          (£k)
+   _TotalEquipCost      = Summed total equipment cost over duration of
+                          project (£k)
     
   Methods:
   --------
@@ -47,7 +48,7 @@ Class Task:
 
 
   Get/set methods:
-      getInstance: Finds instance of class with Task._Name
+    getInstance: Finds instance of class with Task._Name
                  Input: _Name -- str -- name of Project to be found
                 Return: Instance of class; None if not found or if more than
                         one instance
