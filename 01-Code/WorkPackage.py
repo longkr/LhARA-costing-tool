@@ -377,6 +377,11 @@ class WorkPackage:
                 print(" WorkPackage:getTotalNonStaffByYear: ", \
                       "TravelByYear:", self._TravelByYear)
             TotNSByYr = np.add(TotNSByYr, self._TravelByYear)
+        if isinstance(self._InflationByYr, np.ndarray):
+            if WorkPackage.__Debug:
+                print(" WorkPackage:getTotalNonStaffByYear: ", \
+                      " InflationByYr:", self._InflationByYr)
+            TotNSByYr = np.add(TotNSByYr, self._InflationByYr)
         if isinstance(self._WorkingMarginByYear, np.ndarray):
             if WorkPackage.__Debug:
                 print(" WorkPackage:getTotalNonStaffByYear: ", \
