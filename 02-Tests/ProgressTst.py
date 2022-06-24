@@ -97,7 +97,7 @@ print("Progress: check built-in methods.")
 print("  __init__:")
 print("    ----> Attempt to create instance with correct call:")
 try:
-    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, 23.0)
+    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, 0.15, 23.0)
 except:
     print('      !!!!> Failed to create instance.')
     raise Exception
@@ -111,30 +111,37 @@ print("  __str__:")
 print(str(Prg1))
 print("    <---- __str__ done.")
 print("    ----> Check wrong-argument traps:")
-Dummy = None
+Dummy = "String"
 try:
-    Prg1 = Prg.Progress(Done, DateToday, 0.15, 23.0)
+    Prg1 = Prg.Progress(Dummy, DateToday, 0.15, 0.15, 23.0)
 except:
     print('      ----> Correctly trapped Task instance.')
 else:
     print('      !!!!> Failed to trap _Task not instance of Task.')
     raise Exception
 try:
-    Prg1 = Prg.Progress(Tsk1, Dummy, 0.15, 23.0)
+    Prg1 = Prg.Progress(Tsk1, Dummy, 0.15, 0.15, 23.0)
 except:
     print('      ----> Correctly trapped Date instance.')
 else:
     print('      !!!!> Failed to trap _Date not instance of datetime.')
     raise Exception
 try:
-    Prg1 = Prg.Progress(Tsk1, DateToday, Dummy, 23.0)
+    Prg1 = Prg.Progress(Tsk1, DateToday, Dummy, 0.15, 23.0)
+except:
+    print('      ----> Correctly trapped PlannedCompletionFraction error.')
+else:
+    print('      !!!!> Failed to trap PlannedFractionComplete not float.')
+    raise Exception
+try:
+    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, Dummy, 23.0)
 except:
     print('      ----> Correctly trapped CompletionFraction error.')
 else:
     print('      !!!!> Failed to trap FractionComplete not float.')
     raise Exception
 try:
-    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, Dummy)
+    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, 0.15, Dummy)
 except:
     print('      ----> Correctly trapped Spend error.')
 else:
@@ -142,6 +149,8 @@ else:
     raise Exception
 print('    <---- Wrong argument tests done.')
 
+del Prg1
+Prg.Progress.instances = []
 
 """
 
@@ -200,6 +209,7 @@ print("  Clear present set of instances:")
 print("    ----> Clear data structure:")
 iLCT.ClearDataStructure()
 del PV1
+Prg.PlannedValue.instances = []
 print('    <---- Costing data structure cleared.')
 
 
@@ -251,6 +261,11 @@ print('       <---- Costing tool executed.')
 print("     <---- Costing data structure complete.")
 
 
+##! Load progress data:
+ProgressTest += 1
+print()
+print("Progress:", ProgressTest, " Load costing data structure.")
+
 PrgDirectory = os.path.join(HOMEPATH, \
                            '13-ProgressReports')
 if Debug:
@@ -266,8 +281,26 @@ for PrgFile in PrgList:
         if Debug:
             print("        ----> Reading data from: ", FileName)
         Prg.Progress.loadProgress(FileName)
+print("     ----> Print progress records:")
 if Debug:
-    print("          ----> progress reports loaded")
+    print("          ----> progress reports loaded:")
+    for iPrg in Prg.Progress.instances:
+        print(iPrg)
+print("    <---- Progress data loaded.")
+
+##! Planned value:
+ProgressTest += 1
+print()
+print("Progress:", ProgressTest, " Planned value test.")
+
+#.. For each progress report, calculate planned value:
+for iPrg in Prg.Progress.instances:
+    if Debug:
+        print("    ----> Get planned value for:", iPrg._Task._Name)
+    PV1 = Prg.PlannedValue(iPrg._Task, iPrg._Date, iPrg)
+    if Debug:
+        print("      ----> Planned value:", PV1._PlannedValue)
+print("    <---- Planned value loaded.")
 
 ##! Complete:
 print()

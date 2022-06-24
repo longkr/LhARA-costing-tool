@@ -182,6 +182,13 @@ class Task:
 
         return RtnInst
 
+    def getTotalValue(self):
+        TV = None
+        if self._TotalStaffCost     != None and \
+           self._TotalEquipmentCost != None:
+            TV = self._TotalStaffCost + self._TotalEquipmentCost
+        return TV
+
     def setStaffCostByYear(self, _StaffCostByYear):
         self._StaffCostByYear = _StaffCostByYear
         

@@ -72,6 +72,7 @@ Created on Wed 17Jun22. Version history:
 import os
 import datetime as DT
 import pandas   as pnds
+import math     as mt
 
 import Task  as Tsk
 import WorkPackage as wp
@@ -82,23 +83,28 @@ class Progress:
 
 #--------  "Built-in methods":
     def __init__(self, _Task=None, _Date=None, \
+                       _PlannedFractionComplete=None, \
                        _FractionComplete=None, _Spend=None):
 
         self.setTask(_Task)
         self.setDate(_Date)
+        self.setPlannedFractionComplete(_PlannedFractionComplete)
         self.setFractionComplete(_FractionComplete)
         self.setSpend(_Spend)
                 
         Progress.instances.append(self)
         
     def __repr__(self):
-        return "Progress(Task, Date, FractionComplete, Spend)"
+        return "Progress(Task, Date, PlannedFractionComplete " \
+               "FractionComplete, Spend)"
 
     def __str__(self):
         print(" Progress:", self.getTask()._Name)
-        print("     Date            :", self.getDate())
-        print("     FractionComplete:", self.getFractionComplete())
-        print("     Spend           :", self.getSpend())
+        print("     Date                   :", self.getDate())
+        print("     PlannedFractionComplete:", \
+              self.getPlannedFractionComplete())
+        print("     FractionComplete       :", self.getFractionComplete())
+        print("     Spend                  :", self.getSpend())
         return "  <---- Done."
 
     
@@ -114,28 +120,54 @@ class Progress:
 
         ProgParams = pnds.read_csv(_filename)
         iRow       = ProgParams.index
-        # if cls.__Debug:
-        print(" Progress.loadProgress: parse progress report")
+        if cls.__Debug:
+            print(" Progress.loadProgress: parse progress report")
         ProgList = ProgParams.values.tolist()
         iCnt = 0
         for i in iRow:
+            wpInst = None
+            TskInst = None
             iCnt += 1
-            #if cls.__Debug:
-            print("   ----> Parse row", iCnt, ProgList[iCnt-1])
+            if cls.__Debug:
+                print("   ----> Parse row", iCnt, ProgList[iCnt-1])
 
             if ProgParams.iloc[i,0] == "Work package":
-                #if cls.__Debug:
-                print("     ----> Work package:", ProgParams.iloc[i,1])
-                wpInst = None
+                if cls.__Debug:
+                    print("     ----> Work package:", ProgParams.iloc[i,1])
                 for wpInstIter in wp.WorkPackage.instances:
                     if wpInstIter._Name == ProgParams.iloc[i,1]:
-                        #if cls.__Debug:
-                        print("       ----> Identified:")
+                        if cls.__Debug:
+                            print("       ----> Identified:")
                     wpInst = wpInstIter
                 if wpInst == None:
-                    #if cls.__Debug:
-                    print("       ----> Not identified!")
-                
+                    if cls.__Debug:
+                        print("       ----> Not identified!")
+
+            elif ProgParams.iloc[i,0] == "ProgressLine":
+                if cls.__Debug:
+                    print("       ----> Progress line for task:", \
+                      ProgParams.iloc[i,1])
+                for TskInstIter in Tsk.Task.instances:
+                    if TskInstIter._Name == ProgParams.iloc[i,1]:
+                        if cls.__Debug:
+                            print("         ----> Identified.")
+                    TskInst = TskInstIter
+                if TskInst == None:
+                    if cls.__Debug:
+                        print("         ----> Not identified!")
+                    
+            if TskInst != None:
+                if cls.__Debug:
+                    print("           ----> Progress line:", \
+                      DT.datetime.strptime(ProgParams.iloc[i,3],'%d %B %Y'),\
+                      ProgParams.iloc[i,4], \
+                      ProgParams.iloc[i,5], \
+                      ProgParams.iloc[i,6])
+                PrgInst = Progress(TskInst, \
+                    DT.datetime.strptime(ProgParams.iloc[i,3],'%d %B %Y'), \
+                                   float(ProgParams.iloc[i,4]), \
+                                   float(ProgParams.iloc[i,5]), \
+                                   float(ProgParams.iloc[i,5]) )
 
 #--------  Get/set methods:
     def setTask(self, _Task):
@@ -151,17 +183,30 @@ class Progress:
         self._Date = _Date
         
     def setFractionComplete(self, _FractionComplete):
-        if not isinstance(_FractionComplete, float):
+        if _FractionComplete == "nan" or \
+           isinstance(_FractionComplete, float):
+            self._FractionComplete = _FractionComplete
+        else:
             raise ProgressFractionCompleteNotValid( \
                                        " Progress.setFractionComplete: " \
                                        "_FractionComplete not a float")
-        self._FractionComplete = _FractionComplete
+        
+    def setPlannedFractionComplete(self, _PlannedFractionComplete):
+        if isinstance(_PlannedFractionComplete, float) or \
+            mt.isnan(float(_PlannedFractionComplete)):
+            self._PlannedFractionComplete = _PlannedFractionComplete
+        else:
+            raise ProgressPlannedFractionCompleteNotValid( \
+                               " Progress.setPlannedFractionComplete: " \
+                               "_FractionComplete not a float")
         
     def setSpend(self, _Spend):
-        if not isinstance(_Spend, float):
+        if isinstance(_Spend, float) or \
+           _Spend == "nan":
+           self._Spend = _Spend
+        else:
             raise ProgressSpendNotValid(" Progress.setSpend: _Spend " \
                                        "not a float")
-        self._Spend = _Spend
         
     def getTask(self):
         return self._Task
@@ -171,6 +216,9 @@ class Progress:
         
     def getFractionComplete(self):
         return self._FractionComplete
+        
+    def getPlannedFractionComplete(self):
+        return self._PlannedFractionComplete
         
     def getSpend(self):
         return self._Spend
@@ -187,6 +235,9 @@ class ProgressDateNotValid(Exception):
     pass
 
 class ProgressFractionCompleteNotValid(Exception):
+    pass
+
+class ProgressPlannedFractionCompleteNotValid(Exception):
     pass
 
 class ProgressSpendNotValid(Exception):
@@ -211,6 +262,7 @@ Class PlannedValue:
    _Task         = Date as a date-time object
    _Date         = Date as a date-time object
    _PlannedValue = Fractional completion of task at _Date.
+   _Progress     = Optional -- filled if PV relates to a Progress instance.
 
     
   Methods:
@@ -249,11 +301,15 @@ class PlannedValue(Progress):
     instances = []
 
 #--------  "Built-in methods":
-    def __init__(self, _Task=None, _Date=None):
+    def __init__(self, _Task=None, _Date=None, _Prg=None):
 
         self.setTask(_Task)
         self.setDate(_Date)
+        self.setProgress(_Prg)
         self.setPlannedValue(None)
+
+        if isinstance(self._Progress, Progress):
+            self.setPlannedValue(self._Progress._PlannedFractionComplete)
                 
         PlannedValue.instances.append(self)
         
@@ -262,8 +318,9 @@ class PlannedValue(Progress):
 
     def __str__(self):
         print(" PlannedValue:", self.getTask()._Name)
-        print("     Date            :", self.getDate())
-        print("     Planned value   :", self.getPlannedValue())
+        print("     Date             :", self.getDate())
+        print("     Planned value    :", self.getPlannedValue())
+        print("     Progress instance:", self.getProgress())
         return "  <---- Done."
 
     
@@ -272,14 +329,29 @@ class PlannedValue(Progress):
 
 #--------  Get/set methods:
     def setPlannedValue(self, _PV):
+        PV = None
         if not isinstance(_PV, float) and not (_PV is None):
             raise PlannedValuePVNotValid(\
                             " PlannedValue.setPlannedValue: " \
                                        "not valid.")
-        self._PlannedValue = _PV
+        if isinstance(self._Progress, Progress):
+            TskTotVal = self._Task.getTotalValue()
+            if TskTotVal != None:
+                PV =  TskTotVal * self._Progress._PlannedFractionComplete
+            
+        self._PlannedValue = PV
         
+    def setProgress(self, _Prg):
+        _setPrg = None
+        if isinstance(_Prg, Progress):
+            _setPrg = _Prg
+        self._Progress = _Prg
+
     def getPlannedValue(self):
         return self._PlannedValue
+                
+    def getProgress(self):
+        return self._Progress
                 
 
 #--------  Processing methods:
