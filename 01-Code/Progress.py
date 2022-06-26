@@ -156,7 +156,7 @@ class Progress:
                     if TskInstIter._Name == ProgParams.iloc[i,1]:
                         if cls.__Debug:
                             print("         ----> Identified.")
-                    TskInst = TskInstIter
+                        TskInst = TskInstIter
                 if TskInst == None:
                     if cls.__Debug:
                         print("         ----> Not identified!")
@@ -241,6 +241,14 @@ class Progress:
         
     def getSpend(self):
         return self._Spend
+        
+    def getEarnedValue(self, _Date):
+        EV = None
+        for iEV in EarnedValue.instances:
+            if iEV._Date == _Date:
+                EV = iEV._EarnedValue
+            
+        return EV
         
 
 #--------  Processing methods:
@@ -330,9 +338,6 @@ class EarnedValue(Progress):
         self.setProgress(_Prg)
         self.setEarnedValue(None)
 
-        if isinstance(self._Progress, Progress):
-            self.setEarnedValue(self._Progress._PlannedFractionComplete)
-                
         EarnedValue.instances.append(self)
         
     def __repr__(self):
@@ -359,7 +364,14 @@ class EarnedValue(Progress):
         if isinstance(self._Progress, Progress):
             TskTotVal = self._Task.getTotalValue()
             if TskTotVal != None:
+                if self.__Debug:
+                    print("  Progress.setEarnedValue:", \
+                          "    ----> Task:", self._Task._Name, \
+                          "          TskTotVal:", TskTotVal, \
+                  "          Fraction complete:", self._Progress._FractionComplete)
                 EV =  TskTotVal * self._Progress._FractionComplete
+        else:
+            EV = _EV
             
         self._EarnedValue = EV
         

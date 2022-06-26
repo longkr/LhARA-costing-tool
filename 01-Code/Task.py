@@ -103,10 +103,12 @@ Created on Wed 19Jun21. Version history:
 
 import numpy  as np
 import pandas as pd
+from operator import attrgetter
 
 import WorkPackage   as wp
 import TaskStaff     as TskStf
 import TaskEquipment as TskEqp
+import Progress      as Prg
 
 class Task:
     __Debug = False
@@ -308,6 +310,22 @@ class Task:
             iTsk.setEquipmentCostByYear(_EquipmentCostByYear)
             iTsk.setTotalEquipmentCost()
 
+    def ProgressReport(self):
+        SortedPrgRprt = sorted(Prg.Progress.instances, \
+                          key=attrgetter('_Task', '_Date'), \
+                                 )
+        Line  = []
+        Lines = []
+        for iPrg in SortedPrgRprt:
+            Line.append(iPrg._Task._Name)
+            Line.append(iPrg._Date)
+            Line.append(iPrg._PlannedValue)
+            Line.append(iPrg.getEarnedValue(iPrg._Date))
+            Line.append(iPrg._Spend)
+            Lines.append(Line)
+            Line = []
+
+        return Lines
     
 #--------  Exceptions:
 class DuplicateTaskClassInstance(Exception):

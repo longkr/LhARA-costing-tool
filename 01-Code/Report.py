@@ -1112,7 +1112,45 @@ class WorkPackageSummary(Report):
         Line.append("Total")
         Line.append(None)
         return Line
-                
+
+    
+"""
+Class Progress:   -------->  "Progress" report; derived class  <--------
+===============
+
+  Progress derived class creates and formats the Progress report.
+
+"""
+class Progress(Report):
+    __Debug   = False
+
+    def __init__(self, _ReportPath, _FileName, _ChunkInst=None):
+
+        """
+           --------> Get started:
+        """
+        if isinstance(_ChunkInst, Tsk.Task):
+            Report.__init__(self, "Progress report", _ReportPath, _FileName)
+            
+            self._Header.append(_ChunkInst._Name)
+            self._Header.append("Date")
+            self._Header.append("Planned value (£k)")
+            self._Header.append("Earned value (£k)")
+            self._Header.append("Spend (£k):")
+            RptDt = date.today()
+            self._Header.append(RptDt.strftime("%d-%b-%Y"))
+
+            self._Lines = []
+            self._Lines = _ChunkInst.ProgressReport()
+
+        #.. Close check of request:
+        else:
+            raise ProgressInstanceInvalid( \
+                  " Report.Progress: no report possible for ChunkInst: " + \
+                                           string(_ChunkInst))
+        
+
+
 
 #--------  Exceptions:
 class NoReportNameProvided:
@@ -1134,4 +1172,7 @@ class WorkPackageInstanceInvalid:
     pass
 
 class ProjectInstanceInvalid:
+    pass
+
+class ProgressInstanceInvalid:
     pass

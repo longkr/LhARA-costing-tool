@@ -24,6 +24,7 @@ import WorkPackage      as wp
 import Task             as Tsk
 import Progress         as Prg
 import LhARACostingTool as LCT
+import Report           as Rprt
 
 ##! Start:
 print("========  Progress: tests start  ========")
@@ -298,7 +299,7 @@ print("    <---- Progress data loaded.")
 ##! Earned value:
 ProgressTest += 1
 print()
-print("Progress:", ProgressTest, " Earned value test.")
+print("Progress test:", ProgressTest, " Earned value test.")
 
 #.. For each progress report, calculate earned value:
 for iPrg in Prg.Progress.instances:
@@ -308,6 +309,35 @@ for iPrg in Prg.Progress.instances:
     if Debug:
         print("      ----> Earned value:", EV1._EarnedValue)
 print("    <---- Earned value loaded.")
+
+
+##! Check reports:
+ProgressTest += 1
+print()
+print("Progress test:", ProgressTest, \
+      " check reports.")
+
+try:
+    filepath  = os.path.join(LhARAPATH, '99-Scratch')
+    PrgRpt1 = Rprt.Progress(filepath, "TestProgressReport.csv", None)
+except:
+    print("     ----> Successfully trapped bad report request!")
+
+for iTsk in Tsk.Task.instances:
+    if iTsk._Name == "Project office support":
+        Tsk1 = iTsk
+        break
+PrgRpt1 = Rprt.Progress(filepath, "TestProgressReport.csv", Tsk1)
+print("    ----> Progress report instance created.")
+if Debug:
+    print(PrgRpt1)
+DataFrame = PrgRpt1.createPandasDataFrame()
+PrgRpt1.createCSV(DataFrame)
+
+print("    <---- Progress report test done.")
+print()
+
+
 
 ##! Complete:
 print()
