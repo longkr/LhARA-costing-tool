@@ -97,7 +97,7 @@ print("Progress: check built-in methods.")
 print("  __init__:")
 print("    ----> Attempt to create instance with correct call:")
 try:
-    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, 0.15, 23.0)
+    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, 24.0, 0.15, 23.0)
 except:
     print('      !!!!> Failed to create instance.')
     raise Exception
@@ -113,35 +113,42 @@ print("    <---- __str__ done.")
 print("    ----> Check wrong-argument traps:")
 Dummy = "String"
 try:
-    Prg1 = Prg.Progress(Dummy, DateToday, 0.15, 0.15, 23.0)
+    Prg1 = Prg.Progress(Dummy, DateToday, 0.15, 24, 0.15, 23.0)
 except:
     print('      ----> Correctly trapped Task instance.')
 else:
     print('      !!!!> Failed to trap _Task not instance of Task.')
     raise Exception
 try:
-    Prg1 = Prg.Progress(Tsk1, Dummy, 0.15, 0.15, 23.0)
+    Prg1 = Prg.Progress(Tsk1, Dummy, 0.15, 24., 0.15, 23.0)
 except:
     print('      ----> Correctly trapped Date instance.')
 else:
     print('      !!!!> Failed to trap _Date not instance of datetime.')
     raise Exception
 try:
-    Prg1 = Prg.Progress(Tsk1, DateToday, Dummy, 0.15, 23.0)
+    Prg1 = Prg.Progress(Tsk1, DateToday, Dummy, 24., 0.15, 23.0)
 except:
     print('      ----> Correctly trapped PlannedCompletionFraction error.')
 else:
     print('      !!!!> Failed to trap PlannedFractionComplete not float.')
     raise Exception
 try:
-    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, Dummy, 23.0)
+    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, Dummy, 0.15, 23.0)
+except:
+    print('      ----> Correctly trapped PlannedValue error.')
+else:
+    print('      !!!!> Failed to trap PlannedValue not float.')
+    raise Exception
+try:
+    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, 24., Dummy, 23.0)
 except:
     print('      ----> Correctly trapped CompletionFraction error.')
 else:
     print('      !!!!> Failed to trap FractionComplete not float.')
     raise Exception
 try:
-    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, 0.15, Dummy)
+    Prg1 = Prg.Progress(Tsk1, DateToday, 0.15, 24., 0.15, Dummy)
 except:
     print('      ----> Correctly trapped Spend error.')
 else:
@@ -154,44 +161,44 @@ Prg.Progress.instances = []
 
 """
 
-   PlannedValue Tests
+   EarnedValue Tests
 
 """
-##! PlannedValue tests:
+##! EarnedValue tests:
 #.. Check built-in methods:
 ProgressTest += 1
 print()
 print("Progress:", ProgressTest, \
-      " PlannedValue: check built-in methods.")
+      " EarnedValue: check built-in methods.")
 
 #.. __init__
 print("  __init__:")
 print("    ----> Attempt to create instance with correct call:")
 try:
-    PV1 = Prg.PlannedValue(Tsk1, DateToday)
+    EV1 = Prg.EarnedValue(Tsk1, DateToday)
 except:
     print('      !!!!> Failed to create instance.')
     raise Exception
-print('    <---- instance PV1 created.')
+print('    <---- instance EV1 created.')
 #.. __repr__
 print("  __repr__:")
-print("    ---->", repr(PV1))
+print("    ---->", repr(EV1))
 print("    <---- __repr__ done.")
 #.. __str__
 print("  __str__:")
-print(str(PV1))
+print(str(EV1))
 print("    <---- __str__ done.")
 print("    ----> Check wrong-argument traps:")
 Dummy = None
 try:
-    PV1 = Prg.PlannedValue(Dummy, DateToday)
+    EV1 = Prg.EarnedValue(Dummy, DateToday)
 except:
     print('      ----> Correctly trapped Task instance.')
 else:
     print('      !!!!> Failed to trap _Task not instance of Task.')
     raise Exception
 try:
-    PV1 = Prg.PlannedValue(Tsk1, Dummy)
+    EV1 = Prg.EarnedValue(Tsk1, Dummy)
 except:
     print('      ----> Correctly trapped Date instance.')
 else:
@@ -208,8 +215,8 @@ print("Progress:", ProgressTest, \
 print("  Clear present set of instances:")
 print("    ----> Clear data structure:")
 iLCT.ClearDataStructure()
-del PV1
-Prg.PlannedValue.instances = []
+del EV1
+Prg.EarnedValue.instances = []
 print('    <---- Costing data structure cleared.')
 
 
@@ -288,19 +295,19 @@ if Debug:
         print(iPrg)
 print("    <---- Progress data loaded.")
 
-##! Planned value:
+##! Earned value:
 ProgressTest += 1
 print()
-print("Progress:", ProgressTest, " Planned value test.")
+print("Progress:", ProgressTest, " Earned value test.")
 
-#.. For each progress report, calculate planned value:
+#.. For each progress report, calculate earned value:
 for iPrg in Prg.Progress.instances:
     if Debug:
-        print("    ----> Get planned value for:", iPrg._Task._Name)
-    PV1 = Prg.PlannedValue(iPrg._Task, iPrg._Date, iPrg)
+        print("    ----> Get earned value for:", iPrg._Task._Name)
+    EV1 = Prg.EarnedValue(iPrg._Task, iPrg._Date, iPrg)
     if Debug:
-        print("      ----> Planned value:", PV1._PlannedValue)
-print("    <---- Planned value loaded.")
+        print("      ----> Earned value:", EV1._EarnedValue)
+print("    <---- Earned value loaded.")
 
 ##! Complete:
 print()

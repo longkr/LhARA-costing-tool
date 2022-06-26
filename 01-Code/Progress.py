@@ -27,12 +27,14 @@ Class Progress:
       
   Instance attributes:
   --------------------
-   _Task                = Instance of Task class for which progress is
-                          being recorded
-   _Date                = Date as a date-time object
-   _FractionComplete    = Fractional completion of task at _Date.
-                          E.g. if 10% complete _FractionComplete = 0.1
-   _Spend               = Spend (£k) to _Date
+   _Task                    = Instance of Task class for which progress is
+                              being recorded
+   _Date                    = Date as a date-time object
+   _PlannedFractionComplete = Fractional completion of task at _Date
+                              E.g. if 10% complete _FractionComplete = 0.1
+   _PlannedValue            = Fractional completion of task at _Date
+   _FractionComplete        = Fractional completion of task at _Date
+   _Spend                   = Spend (£k) to _Date
 
     
   Methods:
@@ -84,11 +86,13 @@ class Progress:
 #--------  "Built-in methods":
     def __init__(self, _Task=None, _Date=None, \
                        _PlannedFractionComplete=None, \
+                       _PlannedValue=None, \
                        _FractionComplete=None, _Spend=None):
 
         self.setTask(_Task)
         self.setDate(_Date)
         self.setPlannedFractionComplete(_PlannedFractionComplete)
+        self.setPlannedValue(_PlannedValue)
         self.setFractionComplete(_FractionComplete)
         self.setSpend(_Spend)
                 
@@ -103,6 +107,7 @@ class Progress:
         print("     Date                   :", self.getDate())
         print("     PlannedFractionComplete:", \
               self.getPlannedFractionComplete())
+        print("     PlannedValue           :", self.getPlannedValue())
         print("     FractionComplete       :", self.getFractionComplete())
         print("     Spend                  :", self.getSpend())
         return "  <---- Done."
@@ -162,12 +167,14 @@ class Progress:
                       DT.datetime.strptime(ProgParams.iloc[i,3],'%d %B %Y'),\
                       ProgParams.iloc[i,4], \
                       ProgParams.iloc[i,5], \
-                      ProgParams.iloc[i,6])
+                      ProgParams.iloc[i,6], \
+                      ProgParams.iloc[i,7])
                 PrgInst = Progress(TskInst, \
                     DT.datetime.strptime(ProgParams.iloc[i,3],'%d %B %Y'), \
                                    float(ProgParams.iloc[i,4]), \
                                    float(ProgParams.iloc[i,5]), \
-                                   float(ProgParams.iloc[i,5]) )
+                                   float(ProgParams.iloc[i,6]), \
+                                   float(ProgParams.iloc[i,7]) )
 
 #--------  Get/set methods:
     def setTask(self, _Task):
@@ -182,6 +189,24 @@ class Progress:
                                        "not an instance of datetime class")
         self._Date = _Date
         
+    def setPlannedFractionComplete(self, _PlannedFractionComplete):
+        if isinstance(_PlannedFractionComplete, float) or \
+            mt.isnan(float(_PlannedFractionComplete)):
+            self._PlannedFractionComplete = _PlannedFractionComplete
+        else:
+            raise ProgressPlannedFractionCompleteNotValid( \
+                               " Progress.setPlannedFractionComplete: " \
+                               "_PlannedFractionComplete not a float")
+        
+    def setPlannedValue(self, _PlannedValue):
+        if isinstance(_PlannedValue, float) or \
+            mt.isnan(float(_PlannedValue)):
+            self._PlannedValue = _PlannedValue
+        else:
+            raise ProgressPlannedValueNotValid( \
+                               " Progress.setPlannedValue: " \
+                               "_PlannedValue not a float")
+        
     def setFractionComplete(self, _FractionComplete):
         if _FractionComplete == "nan" or \
            isinstance(_FractionComplete, float):
@@ -190,15 +215,6 @@ class Progress:
             raise ProgressFractionCompleteNotValid( \
                                        " Progress.setFractionComplete: " \
                                        "_FractionComplete not a float")
-        
-    def setPlannedFractionComplete(self, _PlannedFractionComplete):
-        if isinstance(_PlannedFractionComplete, float) or \
-            mt.isnan(float(_PlannedFractionComplete)):
-            self._PlannedFractionComplete = _PlannedFractionComplete
-        else:
-            raise ProgressPlannedFractionCompleteNotValid( \
-                               " Progress.setPlannedFractionComplete: " \
-                               "_FractionComplete not a float")
         
     def setSpend(self, _Spend):
         if isinstance(_Spend, float) or \
@@ -214,11 +230,14 @@ class Progress:
     def getDate(self):
         return self._Date
         
-    def getFractionComplete(self):
-        return self._FractionComplete
-        
     def getPlannedFractionComplete(self):
         return self._PlannedFractionComplete
+        
+    def getPlannedValue(self):
+        return self._PlannedValue
+                
+    def getFractionComplete(self):
+        return self._FractionComplete
         
     def getSpend(self):
         return self._Spend
@@ -240,14 +259,17 @@ class ProgressFractionCompleteNotValid(Exception):
 class ProgressPlannedFractionCompleteNotValid(Exception):
     pass
 
+class ProgressPlannedValueNotValid(Exception):
+    pass
+
 class ProgressSpendNotValid(Exception):
     pass
 
 """
-Class PlannedValue:
+Class EarnedValue:
 ===================
 
-  Creates an instance of the PlannedValue class and provides access methods
+  Creates an instance of the EarnedValue class and provides access methods
   to complete the attributes.
 
 
@@ -261,7 +283,7 @@ Class PlannedValue:
   --------------------
    _Task         = Date as a date-time object
    _Date         = Date as a date-time object
-   _PlannedValue = Fractional completion of task at _Date.
+   _EarnedValue = Fractional completion of task at _Date.
    _Progress     = Optional -- filled if PV relates to a Progress instance.
 
     
@@ -296,7 +318,7 @@ Created on Wed 17Jun22. Version history:
 @author: kennethlong
 """
 
-class PlannedValue(Progress):
+class EarnedValue(Progress):
     __Debug = False
     instances = []
 
@@ -306,20 +328,20 @@ class PlannedValue(Progress):
         self.setTask(_Task)
         self.setDate(_Date)
         self.setProgress(_Prg)
-        self.setPlannedValue(None)
+        self.setEarnedValue(None)
 
         if isinstance(self._Progress, Progress):
-            self.setPlannedValue(self._Progress._PlannedFractionComplete)
+            self.setEarnedValue(self._Progress._PlannedFractionComplete)
                 
-        PlannedValue.instances.append(self)
+        EarnedValue.instances.append(self)
         
     def __repr__(self):
-        return "PlannedValue(Task, Date)"
+        return "EarnedValue(Task, Date)"
 
     def __str__(self):
-        print(" PlannedValue:", self.getTask()._Name)
+        print(" EarnedValue:", self.getTask()._Name)
         print("     Date             :", self.getDate())
-        print("     Planned value    :", self.getPlannedValue())
+        print("     Planned value    :", self.getEarnedValue())
         print("     Progress instance:", self.getProgress())
         return "  <---- Done."
 
@@ -328,18 +350,18 @@ class PlannedValue(Progress):
 
 
 #--------  Get/set methods:
-    def setPlannedValue(self, _PV):
-        PV = None
-        if not isinstance(_PV, float) and not (_PV is None):
-            raise PlannedValuePVNotValid(\
-                            " PlannedValue.setPlannedValue: " \
+    def setEarnedValue(self, _EV):
+        EV = None
+        if not isinstance(_EV, float) and not (_EV is None):
+            raise EarnedValueEVNotValid(\
+                            " EarnedValue.setEarnedValue: " \
                                        "not valid.")
         if isinstance(self._Progress, Progress):
             TskTotVal = self._Task.getTotalValue()
             if TskTotVal != None:
-                PV =  TskTotVal * self._Progress._PlannedFractionComplete
+                EV =  TskTotVal * self._Progress._FractionComplete
             
-        self._PlannedValue = PV
+        self._EarnedValue = EV
         
     def setProgress(self, _Prg):
         _setPrg = None
@@ -347,18 +369,18 @@ class PlannedValue(Progress):
             _setPrg = _Prg
         self._Progress = _Prg
 
-    def getPlannedValue(self):
-        return self._PlannedValue
-                
     def getProgress(self):
         return self._Progress
+                
+    def getEarnedValue(self):
+        return self._EarnedValue
                 
 
 #--------  Processing methods:
 
     
 #--------  Exceptions:
-class PlannedValuePVNotValid(Exception):
+class EarnedValueEVNotValid(Exception):
     pass
 
 class NoFilenameProvided(Exception):
