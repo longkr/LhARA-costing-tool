@@ -317,11 +317,25 @@ class Task:
         Line  = []
         Lines = []
         for iPrg in SortedPrgRprt:
+            PV   = iPrg._PlannedValue
+            EV   = iPrg.getEarnedValue(iPrg._Date)
+            Spnd = iPrg._Spend
+            SV   = EV - PV
+            CV   = EV - Spnd
+            BV   = Spnd - PV
+            SPI  = PV/EV
+            CPI  = EV/Spnd
             Line.append(iPrg._Task._Name)
             Line.append(iPrg._Date)
-            Line.append(iPrg._PlannedValue)
-            Line.append(iPrg.getEarnedValue(iPrg._Date))
-            Line.append(iPrg._Spend)
+            Line.append(PV)
+            Line.append(EV)
+            Line.append(Spnd)
+            Line.append(SV)
+            Line.append(CV)
+            Line.append(BV)
+            Line.append(SPI)
+            Line.append(CPI)
+            
             Lines.append(Line)
             Line = []
 

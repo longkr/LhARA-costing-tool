@@ -1136,7 +1136,12 @@ class Progress(Report):
             self._Header.append("Date")
             self._Header.append("Planned value (£k)")
             self._Header.append("Earned value (£k)")
-            self._Header.append("Spend (£k):")
+            self._Header.append("Spend (£k)")
+            self._Header.append("Schedule variance (£k)")
+            self._Header.append("Cost variance (£k)")
+            self._Header.append("Budget variance variance (£k)")
+            self._Header.append("Schedule performance index")
+            self._Header.append("Cost performance index")
             RptDt = date.today()
             self._Header.append(RptDt.strftime("%d-%b-%Y"))
 
