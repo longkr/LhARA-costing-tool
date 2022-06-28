@@ -326,7 +326,7 @@ class Task:
             SPI  = PV/EV
             CPI  = EV/Spnd
             Line.append(iPrg._Task._Name)
-            Line.append(iPrg._Date)
+            Line.append(str(iPrg._Date)[:10])
             Line.append(PV)
             Line.append(EV)
             Line.append(Spnd)

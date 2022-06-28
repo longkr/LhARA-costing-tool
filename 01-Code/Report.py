@@ -142,10 +142,15 @@ class Report:
 #--------  Processing methods
     def createPandasDataFrame(self):
         Data = []
-        Data.append(self._Header)
+        #Data.append(self._Header)
         for i in range(len(self._Lines)):
+            Line = self._Lines[i]
+            if len(Line) < len(self._Header):
+                for iPad in range(len(self._Header)-len(Line)):
+                    Line.append("")
             Data.append(self._Lines[i])
-        Dataframe = pnds.DataFrame(Data)
+        Dataframe = pnds.DataFrame(Data, \
+                                   columns=self._Header)
         if self.__Debug:
             print(" Report; createPandasDataframe: \n", Dataframe)
         return Dataframe
@@ -1154,8 +1159,6 @@ class Progress(Report):
                   " Report.Progress: no report possible for ChunkInst: " + \
                                            string(_ChunkInst))
         
-
-
 
 #--------  Exceptions:
 class NoReportNameProvided:

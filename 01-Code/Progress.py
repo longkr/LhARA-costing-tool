@@ -75,6 +75,7 @@ import os
 import datetime as DT
 import pandas   as pnds
 import math     as mt
+import matplotlib.pyplot as plt
 
 import Task  as Tsk
 import WorkPackage as wp
@@ -252,6 +253,12 @@ class Progress:
         
 
 #--------  Processing methods:
+    @classmethod
+    def Plot(cls, DataFrame):
+        print(DataFrame)
+        DataFrame.plot.scatter(x='Date', y="Planned value (£k)", \
+                       marker='o')
+        plt.savefig('foo.png')
 
     
 #--------  Exceptions:
@@ -390,7 +397,7 @@ class EarnedValue(Progress):
 
 #--------  Processing methods:
 
-    
+
 #--------  Exceptions:
 class EarnedValueEVNotValid(Exception):
     pass

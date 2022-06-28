@@ -333,6 +333,7 @@ if Debug:
     print(PrgRpt1)
 DataFrame = PrgRpt1.createPandasDataFrame()
 PrgRpt1.createCSV(DataFrame)
+Prg.Progress.Plot(DataFrame)
 
 print("    <---- Progress report test done.")
 print()
