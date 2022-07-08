@@ -255,93 +255,121 @@ class Progress:
 #--------  Processing methods:
 
     @classmethod
-    def Plot(cls, DataFrame):
+    def Plot(cls, DataFrame, landscape = False):
+        """
+        Generates a figure of the Progress Plots
+        
+        Arguments:
+        ==========
+            DataFrame: Pandas DataFrame
+            
+            landscape: Boolean
+                       Default = False
+                       If False: Generates a portrait figure
+                       If True: Generates landscape figure
+        
+        Returns:
+        ========
+            A PNG image of the Progress Plots saved as foo.png 
+
+        """
         print(DataFrame)
-        #Create figure and subplot axes
-        fig, (ax1, ax2, ax3) = plt.subplots(3,1, figsize = (10,14), 
-                 gridspec_kw={'height_ratios':[2,5,2]})
+        #Create figure and remove unneeded x-axis ticks
+        if landscape is False:
+            fig, (ax1, ax2, ax3) = plt.subplots(3,1, figsize = (10,14),  
+                    gridspec_kw={'height_ratios':[2,5,2]})
+            ax1.set_xticks([],[])
+            ax2.set_xticks([],[])
+        else:
+            fig = plt.figure(figsize = (14, 10))
+            ax1 = plt.subplot2grid(shape=(2, 2), loc=(0,1), rowspan=1)
+            ax2 = plt.subplot2grid(shape=(2, 2), loc=(0,0), rowspan=2)
+            ax3 = plt.subplot2grid(shape=(2, 2), loc=(1,1), rowspan=1)
+            ax1.set_xticks([],[])
+        #Remove extra space around figure
         fig.tight_layout()
         fig.subplots_adjust(top=0.95)
-        #Plot title
-        fig.suptitle('Progress Plots', fontsize='xx-large')
+        #Add Title
+        fig.suptitle('Progress Plots', fontsize='xx-large', fontweight='bold')
         #Remove vertical white space between subplots
         fig.subplots_adjust(hspace=0)
-        #Create a single shared x-axis by removing ticks for ax1 and ax2
-        ax1.set_xticks([],[])
-        ax2.set_xticks([],[])
         #Scatter Plot all Data
-        #Ax1
-        DataFrame.plot.scatter(x='Date',y='Schedule performance index', \
-                               ax=ax1, marker = 'o', c = "C{}".format(0), \
-                               label='Schedule performace index')
+        #Ax1 - Performance Index
+        DataFrame.plot.scatter(x='Date',y='Schedule performance index', ax=ax1,
+                marker = 'o', c = "C{}".format(0), label='Schedule performace index')
         DataFrame.plot(x='Date',y='Schedule performance index', ax=ax1,
                 c = "C{}".format(0), linestyle = '--', label='_nolegend_')
-        DataFrame.plot.scatter(x='Date', y='Cost performance index', ax=ax1, \
-                               marker = 'o', c="C{}".format(1), \
-                               label='Cost performance index')
-        DataFrame.plot(x='Date',y='Cost performance index', ax=ax1, \
-                       c = "C{}".format(1), linestyle = '--', \
-                       label='_nolegend_')
-        #Ax2
-        DataFrame.plot.scatter(x='Date', y="Planned value (£k)",ax=ax2, \
-                               marker='o', c="C{}".format(0), \
-                               label='Planned value (£k)')
-        DataFrame.plot(x='Date',y='Planned value (£k)', ax=ax2, \
-                c = "C{}".format(0), linestyle = '--', label = '_nolegend_')
-        DataFrame.plot.scatter(x='Date', y='Earned value (£k)',ax=ax2, \
-                        marker='o', c = "C{}".format(1), \
-                               label='Earned value (£k)')
-        DataFrame.plot(x='Date',y='Earned value (£k)', ax=ax2, \
+        DataFrame.plot.scatter(x='Date', y='Cost performance index', ax=ax1,
+                    marker = 'o', c="C{}".format(1), label='Cost performance index')
+        DataFrame.plot(x='Date',y='Cost performance index', ax=ax1,
                 c = "C{}".format(1), linestyle = '--', label='_nolegend_')
-        DataFrame.plot.scatter(x='Date', y='Spend (£k)', ax=ax2, \
+        #Ax2 - Value
+        DataFrame.plot.scatter(x='Date', y="Planned value (£k)",ax=ax2,
+                       marker='o', c="C{}".format(0), label='Planned value (£k)')
+        DataFrame.plot(x='Date',y='Planned value (£k)', ax=ax2,
+                c = "C{}".format(0), linestyle = '--', label = '_nolegend_')
+        DataFrame.plot.scatter(x='Date', y='Earned value (£k)',ax=ax2,
+                        marker='o', c = "C{}".format(1), label='Earned value (£k)')
+        DataFrame.plot(x='Date',y='Earned value (£k)', ax=ax2,
+                c = "C{}".format(1), linestyle = '--', label='_nolegend_')
+        ###########Spend needs to be changed to Actual value#############
+        DataFrame.plot.scatter(x='Date', y= 'Spend (£k)', ax=ax2, 
                 marker='o', c="C{}".format(2), label='Spend (£k)')
-        DataFrame.plot(x='Date', y='Spend (£k)', ax=ax2, \
-                c = "C{}".format(2), linestyle='--', label='_nolegend_')
-        #Missing Actual value
-        #Ax3
-        DataFrame.plot.scatter(x='Date', y='Schedule variance (£k)', \
-                               ax=ax3, marker='o', c="C{}".format(0), \
-                               label='Schedule variance (£k)')
+        DataFrame.plot(x='Date', y='Spend (£k)', ax=ax2, 
+                c = "C{}".format(2), linestyle='--', label='_nolegend_')  
+        #Ax3 - Variance
+        DataFrame.plot.scatter(x='Date', y='Schedule variance (£k)', ax=ax3,
+                    marker='o', c="C{}".format(0), label='Schedule variance (£k)')
         DataFrame.plot(x='Date',y='Schedule variance (£k)', ax=ax3,
                 c = "C{}".format(0), linestyle = '--', label='_nolegend_')
-        DataFrame.plot.scatter(x='Date', y='Cost variance (£k)', ax=ax3, \
-                               marker='o',c = "C{}".format(1), \
-                               label='Cost variance (£k)')
+        DataFrame.plot.scatter(x='Date', y='Cost variance (£k)', ax=ax3,
+                    marker='o',c = "C{}".format(1), label='Cost variance (£k)')
         DataFrame.plot(x='Date',y='Cost variance (£k)', ax=ax3,
                 c = "C{}".format(1), linestyle = '--', label = '_nolegend_')
-        DataFrame.plot.scatter(x='Date', y='Budget variance variance (£k)', \
-                               ax=ax3, marker='o', c = "C{}".format(2), \
-                               label='Budget variance (£k)')
-        DataFrame.plot(x='Date',y='Budget variance variance (£k)', \
-                       ax=ax3, c = "C{}".format(3), linestyle = '--', \
-                       label='_nolegend_')
-        #Label y-axes and rotate
-        ax1.set_ylabel(ylabel = r'Performance' '\n' 'Index', \
-                       fontsize = 'large',
-                rotation = 'horizontal')
-        ax2.set_ylabel(ylabel = 'Value', fontsize = 'large', \
-                       rotation = 'horizontal')
-        ax3.set_ylabel(ylabel = 'Variance', fontsize ='large', \
-                       rotation = 'horizontal')
-        ax1.yaxis.set_label_coords(-0.1, 0.5)
-        ax2.yaxis.set_label_coords(-0.1, 0.5)
-        ax3.yaxis.set_label_coords(-0.1, 0.5)
-        #xlabels=pd.to_datetime(DataFrame['Data'])
+        DataFrame.plot.scatter(x='Date', y='Budget variance variance (£k)', ax=ax3,
+                    marker='o', c = "C{}".format(2), label='Budget variance (£k)')
+        DataFrame.plot(x='Date',y='Budget variance variance (£k)', ax=ax3,
+                c = "C{}".format(2), linestyle = '--', label='_nolegend_')
+        #Label y-axes and rotate to be horizontal
+        ax1.set_ylabel(ylabel = r'Performance' '\n' 'Index', fontsize = 'large', 
+                fontweight='bold' , rotation = 'horizontal')
+        ax2.set_ylabel(ylabel = 'Value', fontsize = 'large', 
+                fontweight='bold', rotation = 'horizontal')
+        ax3.set_ylabel(ylabel = 'Variance', fontsize ='large', 
+                fontweight = 'bold', rotation = 'horizontal')
+        if landscape is False:
+            ax1.yaxis.set_label_coords(-0.1, 0.5)
+            ax2.yaxis.set_label_coords(-0.1, 0.5)
+            ax3.yaxis.set_label_coords(-0.1, 0.5)
+        else:
+            ax1.yaxis.set_label_coords(1.25, 0.56)
+            ax2.yaxis.set_label_coords(-0.2, 0.49)
+            ax3.yaxis.set_label_coords(1.25, 0.56)
+        #Adjust x-ticks so they can be read better - rotates and skips every other date
         for tick in ax3.get_xticklabels():
             tick.set_rotation(45)
         for tick in ax3.get_xticklabels()[::2]:
             tick.set_visible(False)
-        ax3.set_xlabel(xlabel='Date', fontsize='large')
-        #Add legends
-        ax1.legend(
-                loc = 'center left', bbox_to_anchor=(1.04, 0.5), \
-            fontsize ='large')
-        ax2.legend(
-                loc = 'center left', bbox_to_anchor=(1.04, 0.5), \
-            fontsize='large')
-        ax3.legend(
-                loc = 'center left', bbox_to_anchor=(1.04, 0.5), \
-            fontsize='large')
+        ax3.set_xlabel(xlabel='Date', fontsize='large', fontweight='bold')
+        if landscape is True:
+            for tick in ax2.get_xticklabels():
+                tick.set_rotation(45)
+            for tick in ax2.get_xticklabels()[::2]:
+                tick.set_visible(False)
+            ax2.set_xlabel(xlabel='Date', fontsize='large', fontweight='bold')
+        #Add legends labels and locations
+        if landscape is False:
+            legend_locations = ['center left', 'center left', 'center left']
+            bbox_anchor = [(1.0, 0.5), (1.0, 0.5),(1.0, 0.5)]
+        else:
+            legend_locations = ['center left', 'center right', 'center left']
+            bbox_anchor = [(1.0, 0.42), (-0.04, 0.39), (1.0, 0.42)]
+        ax1.legend(loc = legend_locations[0], bbox_to_anchor= bbox_anchor[0], 
+                    fontsize ='large', frameon=False)
+        ax2.legend(loc = legend_locations[1], bbox_to_anchor=bbox_anchor[1], 
+                fontsize='large', frameon=False)
+        ax3.legend(loc = legend_locations[2], bbox_to_anchor=bbox_anchor[2], 
+                fontsize='large', frameon=False)
         plt.savefig('foo.png', bbox_inches='tight')
 
     
