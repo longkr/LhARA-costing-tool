@@ -333,7 +333,8 @@ if Debug:
     print(PrgRpt1)
 DataFrame = PrgRpt1.createPandasDataFrame()
 PrgRpt1.createCSV(DataFrame)
-Prg.Progress.Plot(DataFrame)
+Prg.Progress.Plot(DataFrame, filepath, "Progress-portrait.pdf", False)
+Prg.Progress.Plot(DataFrame, filepath, "Progress-landscape.pdf", True)
 
 print("    <---- Progress report test done.")
 print()

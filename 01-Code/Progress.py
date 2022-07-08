@@ -255,7 +255,7 @@ class Progress:
 #--------  Processing methods:
 
     @classmethod
-    def Plot(cls, DataFrame, landscape = False):
+    def Plot(cls, DataFrame, _PlotPath=None, _FileName=None, landscape = False):
         """
         Generates a figure of the Progress Plots
         
@@ -345,7 +345,8 @@ class Progress:
             ax1.yaxis.set_label_coords(1.25, 0.56)
             ax2.yaxis.set_label_coords(-0.2, 0.49)
             ax3.yaxis.set_label_coords(1.25, 0.56)
-        #Adjust x-ticks so they can be read better - rotates and skips every other date
+        #Adjust x-ticks so they can be read better -
+        #rotates and skips every other date
         for tick in ax3.get_xticklabels():
             tick.set_rotation(45)
         for tick in ax3.get_xticklabels()[::2]:
@@ -370,7 +371,20 @@ class Progress:
                 fontsize='large', frameon=False)
         ax3.legend(loc = legend_locations[2], bbox_to_anchor=bbox_anchor[2], 
                 fontsize='large', frameon=False)
-        plt.savefig('foo.png', bbox_inches='tight')
+
+        # Save plot:
+        if not os.path.isdir(_PlotPath):
+            raise OutputPathInvalid('Output path:', _PlotPath, ' invalid')
+
+        if not os.access(_PlotPath, os.W_OK):
+            raise NoWriteAccessToOutputPath( \
+                     'No write access to output path:', _PlotPath)
+
+        if _FileName == None:
+            _FileName = "NoFileNameGiven"
+        filename = os.path.join(_PlotPath, _FileName)
+        
+        plt.savefig(filename, bbox_inches='tight')
 
     
 #--------  Exceptions:
@@ -391,6 +405,13 @@ class ProgressPlannedValueNotValid(Exception):
 
 class ProgressSpendNotValid(Exception):
     pass
+
+class OutputPathInvalid(Exception):
+    pass
+
+class NoWriteAccessToOutputPath(Exception):
+    pass
+
 
 """
 Class EarnedValue:
