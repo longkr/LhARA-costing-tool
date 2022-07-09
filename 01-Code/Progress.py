@@ -255,14 +255,33 @@ class Progress:
 #--------  Processing methods:
 
     @classmethod
-    def Plot(cls, DataFrame, _PlotPath=None, _FileName=None, landscape = False):
+    def Plot(cls, DataFrame, \
+             _PlotPath=None, \
+             _FileName=None, \
+             landscape = False):
         """
         Generates a figure of the Progress Plots
         
         Arguments:
         ==========
-            DataFrame: Pandas DataFrame
-            
+            DataFrame: Pandas DataFrame containing the progress data.
+                       Columns:
+                          Project office support
+                          Date
+                          Planned value (£k)
+                          Earned value (£k)
+                          Spend (£k)
+                          Schedule variance (£k)
+                          Cost variance (£k)
+                          Budget variance variance (£k)
+                          Schedule performance index
+                          Cost performance index
+                          Issue date
+        
+            _PlotPath: Path to where plots to be written
+
+            _FileName: File name (appended to _PlotPath)
+
             landscape: Boolean
                        Default = False
                        If False: Generates a portrait figure
@@ -270,11 +289,17 @@ class Progress:
         
         Returns:
         ========
-            A PNG image of the Progress Plots saved as foo.png 
+            An image of the Progress Plots saved as _FileName
 
         """
-        print(DataFrame)
-        #Create figure and remove unneeded x-axis ticks
+
+        nEntries = DataFrame.count()
+        if Progress.__Debug == True:
+            print(" Progress.Plot called to plot DataFrame: \n",   \
+                  "     ----> Number of entries:", nEntries, "\n", \
+                  DataFrame)
+            
+        #.. Create figure and remove unneeded x-axis ticks
         if landscape is False:
             fig, (ax1, ax2, ax3) = plt.subplots(3,1, figsize = (10,14),  
                     gridspec_kw={'height_ratios':[2,5,2]})
@@ -286,50 +311,62 @@ class Progress:
             ax2 = plt.subplot2grid(shape=(2, 2), loc=(0,0), rowspan=2)
             ax3 = plt.subplot2grid(shape=(2, 2), loc=(1,1), rowspan=1)
             ax1.set_xticks([],[])
-        #Remove extra space around figure
+            
+        #.. Remove extra space around figure
         fig.tight_layout()
         fig.subplots_adjust(top=0.95)
-        #Add Title
-        fig.suptitle('Progress Plots', fontsize='xx-large', fontweight='bold')
-        #Remove vertical white space between subplots
+        
+        #.. Add Title
+        fig.suptitle('Progress Plots', \
+                     fontsize='xx-large', \
+                     fontweight='bold')
+        
+        #.. Remove vertical white space between subplots
         fig.subplots_adjust(hspace=0)
-        #Scatter Plot all Data
-        #Ax1 - Performance Index
-        DataFrame.plot.scatter(x='Date',y='Schedule performance index', ax=ax1,
-                marker = 'o', c = "C{}".format(0), label='Schedule performace index')
+        
+        #.. Scatter Plot all Data
+        
+        #.. Ax1 - Performance Index
+        DataFrame.plot.scatter(x='Date',y='Schedule performance index', \
+                               ax=ax1, marker = 'o', c = "C{}".format(0), \
+                               label='Schedule performace index')
         DataFrame.plot(x='Date',y='Schedule performance index', ax=ax1,
-                c = "C{}".format(0), linestyle = '--', label='_nolegend_')
-        DataFrame.plot.scatter(x='Date', y='Cost performance index', ax=ax1,
-                    marker = 'o', c="C{}".format(1), label='Cost performance index')
+                c = "C{}".format(0), linestyle = ' ', label='')
+        DataFrame.plot.scatter(x='Date', y='Cost performance index', ax=ax1,\
+                    marker = 'o', c="C{}".format(1), \
+                    label='Cost performance index')
         DataFrame.plot(x='Date',y='Cost performance index', ax=ax1,
-                c = "C{}".format(1), linestyle = '--', label='_nolegend_')
-        #Ax2 - Value
+                c = "C{}".format(1), linestyle = ' ', label='')
+        
+        #.. Ax2 - Value
         DataFrame.plot.scatter(x='Date', y="Planned value (£k)",ax=ax2,
-                       marker='o', c="C{}".format(0), label='Planned value (£k)')
+                       marker='o', c="C{}".format(0), \
+                       label='Planned value (£k)')
         DataFrame.plot(x='Date',y='Planned value (£k)', ax=ax2,
-                c = "C{}".format(0), linestyle = '--', label = '_nolegend_')
+                c = "C{}".format(0), linestyle = ' ', label = '')
         DataFrame.plot.scatter(x='Date', y='Earned value (£k)',ax=ax2,
                         marker='o', c = "C{}".format(1), label='Earned value (£k)')
         DataFrame.plot(x='Date',y='Earned value (£k)', ax=ax2,
-                c = "C{}".format(1), linestyle = '--', label='_nolegend_')
+                c = "C{}".format(1), linestyle = ' ', label='')
+        
         ###########Spend needs to be changed to Actual value#############
         DataFrame.plot.scatter(x='Date', y= 'Spend (£k)', ax=ax2, 
                 marker='o', c="C{}".format(2), label='Spend (£k)')
         DataFrame.plot(x='Date', y='Spend (£k)', ax=ax2, 
-                c = "C{}".format(2), linestyle='--', label='_nolegend_')  
+                c = "C{}".format(2), linestyle=' ', label='')  
         #Ax3 - Variance
         DataFrame.plot.scatter(x='Date', y='Schedule variance (£k)', ax=ax3,
                     marker='o', c="C{}".format(0), label='Schedule variance (£k)')
         DataFrame.plot(x='Date',y='Schedule variance (£k)', ax=ax3,
-                c = "C{}".format(0), linestyle = '--', label='_nolegend_')
+                c = "C{}".format(0), linestyle = ' ', label='')
         DataFrame.plot.scatter(x='Date', y='Cost variance (£k)', ax=ax3,
                     marker='o',c = "C{}".format(1), label='Cost variance (£k)')
         DataFrame.plot(x='Date',y='Cost variance (£k)', ax=ax3,
-                c = "C{}".format(1), linestyle = '--', label = '_nolegend_')
+                c = "C{}".format(1), linestyle = ' ', label = '')
         DataFrame.plot.scatter(x='Date', y='Budget variance variance (£k)', ax=ax3,
                     marker='o', c = "C{}".format(2), label='Budget variance (£k)')
         DataFrame.plot(x='Date',y='Budget variance variance (£k)', ax=ax3,
-                c = "C{}".format(2), linestyle = '--', label='_nolegend_')
+                c = "C{}".format(2), linestyle = ' ', label='')
         #Label y-axes and rotate to be horizontal
         ax1.set_ylabel(ylabel = r'Performance' '\n' 'Index', fontsize = 'large', 
                 fontweight='bold' , rotation = 'horizontal')
@@ -508,7 +545,8 @@ class EarnedValue(Progress):
                     print("  Progress.setEarnedValue:", \
                           "    ----> Task:", self._Task._Name, \
                           "          TskTotVal:", TskTotVal, \
-                  "          Fraction complete:", self._Progress._FractionComplete)
+                  "          Fraction complete:", \
+                          self._Progress._FractionComplete)
                 EV =  TskTotVal * self._Progress._FractionComplete
         else:
             EV = _EV

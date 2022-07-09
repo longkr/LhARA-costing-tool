@@ -1136,7 +1136,7 @@ class Progress(Report):
         """
         if isinstance(_ChunkInst, Tsk.Task):
             Report.__init__(self, "Progress report", _ReportPath, _FileName)
-            
+
             self._Header.append(_ChunkInst._Name)
             self._Header.append("Date")
             self._Header.append("Planned value (£k)")

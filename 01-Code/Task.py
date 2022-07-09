@@ -320,11 +320,18 @@ class Task:
             PV   = iPrg._PlannedValue
             EV   = iPrg.getEarnedValue(iPrg._Date)
             Spnd = iPrg._Spend
-            SV   = EV - PV
-            CV   = EV - Spnd
-            BV   = Spnd - PV
-            SPI  = PV/EV
-            CPI  = EV/Spnd
+            SV  = 0.
+            CV  = 0.
+            BV  = 0.
+            SPI = 1.
+            CPI = 1.
+            if np.isnan(EV) == False:
+                SV   = EV - PV
+                CV   = EV - Spnd
+                BV   = Spnd - PV
+                SPI  = PV/EV
+                CPI  = EV/Spnd
+
             Line.append(iPrg._Task._Name)
             Line.append(str(iPrg._Date)[:10])
             Line.append(PV)
