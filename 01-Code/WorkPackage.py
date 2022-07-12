@@ -731,9 +731,10 @@ class WorkPackage:
                     print("      ----> fill staff fractions:")
                 StfFracByYrNQtr = np.empty(shape=(1,4))
                 FracByQtr       = np.array([[0., 0., 0., 0.]])
+                iOff = 1 + nYrs + 3
                 for iYr in range(nYrs):
                     for iQtr in range(4):
-                        Frac = float(self._wpParams.iat[i, 9+4*iYr+iQtr])
+                        Frac = float(self._wpParams.iat[i, iOff+4*iYr+iQtr])
                         if np.isnan(Frac):
                             Frac = 0.
                         FracByQtr[0,iQtr] = Frac
