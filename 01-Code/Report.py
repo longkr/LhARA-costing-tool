@@ -284,7 +284,8 @@ class Overview(Report):
                             print("                 Cost by year    :", \
                                   iTskStf._StaffCostByYear)
                         Frc    += iTskStf._StaffFracByYear
-                        if iTskStf._StaffCostByYear != None:
+                        if isinstance(iTskStf._StaffCostByYear, \
+                                      np.ndarray):
                             if iTskStf._StaffCostByYear.all() != None:
                                 Cst    += iTskStf._StaffCostByYear
 
