@@ -13,6 +13,9 @@ Test script for "OtherNonStaff" class
 import os
 import numpy as np
 
+import Control as Cntrl
+iCntrl = Cntrl.Control()
+
 import OtherNonStaff as ONS
 import WorkPackage   as wp
 

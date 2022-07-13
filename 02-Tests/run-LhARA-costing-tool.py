@@ -10,6 +10,9 @@ Script to execute LhARA costing tool
 
 import sys
 
+import Control as Cntrl
+iCntrl = Cntrl.Control()
+
 import LhARACostingTool as LCT
 
 ##! --------  Initialisation

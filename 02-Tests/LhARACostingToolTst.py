@@ -8,6 +8,9 @@ Test script for "LhARACostingTool" class ... initialisation and get methods
 
 """
 
+import Control as Cntrl
+iCntrl = Cntrl.Control()
+
 import LhARACostingTool as LCT
 
 

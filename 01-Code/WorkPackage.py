@@ -221,6 +221,9 @@ import OtherNonStaff as ONS
 import TaskStaff     as TskStff
 import TaskEquipment as TskEqp
 
+if Cntrl.Control._Control__instance == None:
+    raise Exception(" WorkPackage: no control instance; abort")
+
 iCntrl = Cntrl.Control()
 
 class WorkPackage:

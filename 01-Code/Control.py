@@ -87,6 +87,7 @@ class Control(object):
 
 #--------  "Built-in methods":
     def __new__(cls, _filename=None):
+
         if cls.__instance is None:
             cls.__instance = super(Control, cls).__new__(cls)
         

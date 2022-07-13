@@ -13,6 +13,9 @@ Test script for "TaskEquip" class
 import os
 import numpy as np
 
+import Control as Cntrl
+iCntrl = Cntrl.Control()
+
 import WorkPackage as wp
 import Task as Tsk
 import Equipment as Eqp

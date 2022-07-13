@@ -13,6 +13,9 @@ Test script for "Project" class
 
 import numpy as np
 
+import Control as Cntrl
+iCntrl = Cntrl.Control()
+
 import Project     as Prj
 import WorkPackage as wp
 import Task        as Tsk

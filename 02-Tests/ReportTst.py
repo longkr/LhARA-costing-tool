@@ -14,17 +14,16 @@ Test script for "Reports" class
 import os
 import numpy as np
 
-import Control     as Cntrl
-import Staff       as Stf
-import WorkPackage as wp
-import Project     as Prj
-import Report      as Rprt
-
-##! Start:
+import Control as Cntrl
 print("========  Report tests: initialise controls  ========")
 iCntrl = Cntrl.Control()
 print(iCntrl)
 print("========                Initialisation complete  ========")
+
+import Staff       as Stf
+import WorkPackage as wp
+import Project     as Prj
+import Report      as Rprt
 
 ##! Start:
 print(" ")
@@ -149,8 +148,8 @@ print("ReportsTest:", ReportsTest, \
       " check creation of staff effort summary report.")
 print(Prj.Project.instances)
 iPrj = Prj.Project.instances[0]
-ByYr = np.array([1, 2, 3, 4, 5])
-Yrs  = ['2022/23', '2023/24', '2024/25', '2025/26', '2026/27']
+ByYr = np.array([1, 2])
+Yrs  = ['2022/23', '2023/24']
 iPrj.setStaffCostByYear(ByYr)
 iPrj.setFinancialYears(Yrs)
 print(iPrj)

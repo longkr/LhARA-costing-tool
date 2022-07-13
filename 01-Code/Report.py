@@ -191,7 +191,7 @@ Class Overview:   -------->  "Overview" report; derived class  <--------
 
 """
 class Overview(Report):
-    __Debug   = False
+    __Debug   = True
 
     def __init__(self, _ReportPath, _FileName, _PrjInst):
 
@@ -284,8 +284,9 @@ class Overview(Report):
                             print("                 Cost by year    :", \
                                   iTskStf._StaffCostByYear)
                         Frc    += iTskStf._StaffFracByYear
-                        if iTskStf._StaffCostByYear.all() != None:
-                            Cst    += iTskStf._StaffCostByYear
+                        if iTskStf._StaffCostByYear != None:
+                            if iTskStf._StaffCostByYear.all() != None:
+                                Cst    += iTskStf._StaffCostByYear
 
                 if Overview.__Debug and Frc.size != 0:
                     print("                 WP/institute totals:")

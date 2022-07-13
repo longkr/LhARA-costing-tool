@@ -1,0 +1,25 @@
+13Jul22:
+
+Loads of mods to get 2-year programme working properly.  Believed to
+be OK.
+
+Tried tests, made 'em work.  But, not sure if everything is perfect!
+
+-------- record of tests:
+Tests:
+ - ControlTst.py                        - OK
+ - EquipmentTst.py                      - OK
+ - LhARACostingToolTst.py               - OK
+ - OtherNonStaffTst.py                  - OK
+ - ProgressTst1.py                      - OK
+ - ProgressTst2.py                      - OK
+ - ProjectTst.py                        - OK
+ - ReportTst.py                         - OK
+ - StaffTst.py                          - OK
+ - TaskEquipmentTst.py                  - OK
+ - TaskStaffTst.py                      - OK
+ - TaskTst.py                           - OK
+ - WorkPackageTst.py                    - OK
+ - run-LhARA-costing-tool.py Debug=true - OK
+
+All good.
