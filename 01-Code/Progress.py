@@ -27,8 +27,8 @@ Class Progress:
       
   Instance attributes:
   --------------------
-   _Task                    = Instance of Task class for which progress is
-                              being recorded
+   _Task                    = Instance of Task or workpackage class for
+                              which progress is being recorded
    _Date                    = Date as a date-time object
    _PlannedFractionComplete = Fractional completion of task at _Date
                               E.g. if 10% complete _FractionComplete = 0.1
@@ -76,9 +76,11 @@ import datetime as DT
 import pandas   as pnds
 import math     as mt
 import matplotlib.pyplot as plt
+from operator import attrgetter
 
-import Task  as Tsk
+import Task        as Tsk
 import WorkPackage as wp
+import Progress    as Prg
 
 class Progress:
     __Debug = False
@@ -179,7 +181,8 @@ class Progress:
 
 #--------  Get/set methods:
     def setTask(self, _Task):
-        if not isinstance(_Task, Tsk.Task):
+        if not isinstance(_Task, Tsk.Task) and \
+           not isinstance(_Task, wp.WorkPackage):
             raise ProgressTaskNotValid(" Progress.setTask: _Task " \
                                        "not an instance of Task class")
         self._Task = _Task
@@ -255,6 +258,104 @@ class Progress:
 #--------  Processing methods:
 
     @classmethod
+    def workpackageProgress(cls, _wpInst):
+
+        Progress.__Debug = True
+        if not isinstance(_wpInst, wp.WorkPackage):
+            raise WorkPackageInstInvalid()
+        
+        if Progress.__Debug == True:
+            print(" Progress.workpackageProgress: wpName:", \
+                  _wpInst.getName())
+
+        SortedPrgRprt = sorted(Prg.Progress.instances, \
+                          key=attrgetter('_Date', '_Task'), \
+                                 )
+
+        DtRef  = None
+
+        nTsks   = None
+        wpPFC   = None
+        wpFC    = None
+        wpPV    = None
+        wpSpend = None
+
+        #.. Loop over progress instances in date order:
+        for iPrg in SortedPrgRprt:
+            iTsk = iPrg.getTask()
+
+            #.. Take entries for requested work package only:
+            if iTsk._WorkPackage == _wpInst:
+
+                if Progress.__Debug == True:
+                    print("     ----> Task name:", iTsk.getName())
+                    
+                Dt   = iPrg.getDate()
+                if Progress.__Debug == True:
+                    print("         ----> Date:", Dt)
+                    
+                #.. Handle new date; create wp progress instance and
+                #   zero counters:
+                if Dt != DtRef:
+                    if Progress.__Debug == True:
+                        print("         ----> New date:", Dt)
+                    if nTsks != None:
+                        #.. Create work-package progress instance
+                        wpPFC = wpPFC / nTsks
+                        wpFC  = wpFC  / nTsks
+                        if Progress.__Debug == True:
+                            print( \
+               "               Creating WP progress instance:")
+                            print( \
+               "                   ----> nTsks, PFC, FC, PV, FC, Spend:",\
+                                        nTsks, wpPFC, wpFC, wpPV, wpSpend)
+                        wpPrg = Prg.Progress( \
+                                _wpInst, Dt, wpPFC, wpPV, wpFC, wpSpend)
+                        wpEV  = Prg.EarnedValue( \
+                                _wpInst, Dt, wpPrg)
+                        if Progress.__Debug == True:
+                            print( \
+      "             ----> Progress and EarnedValue instances created:",
+                                   wpPrg, wpEV)
+                            
+                    #----> Prg.Progress(<arguments>)
+                    #.. Set date reference, zero task count
+                    DtRef   = Dt
+                    nTsks   = 0.
+                    wpPFC   = 0.
+                    wpFC    = 0.
+                    wpPV    = 0.
+                    wpSpend = 0.
+                    if Progress.__Debug == True:
+                        print("             ----> Reset done.")
+
+                #.. Handle accumulators:
+                PFC  = iPrg.getPlannedFractionComplete()
+                FC   = iPrg.getFractionComplete()
+                PV   = iPrg.getPlannedValue()
+                FC   = iPrg.getFractionComplete()
+                Spnd = iPrg.getSpend()
+                if Progress.__Debug == True:
+                    print("             ----> PFC, FC, PV, Spnd:", \
+                          PFC, FC, PV, Spnd)
+
+                #.. Increment spend, progress etc.
+                nTsks   += 1.
+                wpPFC   += PFC
+                wpFC    += FC
+                wpPV    += PV
+                wpSpend += Spnd
+                        
+            #.. End of work-package-check if block
+        #.. End of loop over progress entries
+
+        #.. End of processing
+
+        
+
+
+        
+    @classmethod
     def Plot(cls, DataFrame, \
              _PlotPath=None, \
              _FileName=None, \
@@ -266,7 +367,7 @@ class Progress:
         ==========
             DataFrame: Pandas DataFrame containing the progress data.
                        Columns:
-                          Project office support
+                          Task/Work package name
                           Date
                           Planned value (£k)
                           Earned value (£k)
@@ -449,6 +550,9 @@ class OutputPathInvalid(Exception):
 class NoWriteAccessToOutputPath(Exception):
     pass
 
+class WorkPackageInstInvalid(Exception):
+    pass
+                  
 
 """
 Class EarnedValue:

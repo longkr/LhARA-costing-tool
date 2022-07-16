@@ -188,6 +188,16 @@ PrgRpt1.createCSV(DataFrame)
 Prg.Progress.Plot(DataFrame, filepath, "Progress-portrait.pdf", False)
 Prg.Progress.Plot(DataFrame, filepath, "Progress-landscape.pdf", True)
 
+##! Check workpackage progress report
+ProgressTest += 1
+print()
+print("Progress test:", ProgressTest, \
+      " workpackage report.")
+
+Prg.Progress.workpackageProgress(wp.WorkPackage.instances[0])
+
+#ba.com/lostluggage
+
 print("    <---- Progress report test done.")
 print()
 

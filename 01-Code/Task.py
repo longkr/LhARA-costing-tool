@@ -156,6 +156,9 @@ class Task:
 
 
 #--------  Get/set methods:
+    def getName(self):
+        return self._Name
+        
     @classmethod
     def getInstance(cls, _Name, _WPInst):
         InstList = []
@@ -311,40 +314,49 @@ class Task:
             iTsk.setTotalEquipmentCost()
 
     def ProgressReport(self):
+        """
+        ProgressReport:
+        ===============
+
+        Produce CSV file with progress report for this task.
+        
+        """
         SortedPrgRprt = sorted(Prg.Progress.instances, \
                           key=attrgetter('_Task', '_Date'), \
                                  )
         Line  = []
         Lines = []
         for iPrg in SortedPrgRprt:
-            PV   = iPrg._PlannedValue
-            EV   = iPrg.getEarnedValue(iPrg._Date)
-            Spnd = iPrg._Spend
-            SV  = 0.
-            CV  = 0.
-            BV  = 0.
-            SPI = 1.
-            CPI = 1.
-            if np.isnan(EV) == False:
-                SV   = EV - PV
-                CV   = EV - Spnd
-                BV   = Spnd - PV
-                SPI  = PV/EV
-                CPI  = EV/Spnd
+            if iPrg._Task._WorkPackage == self._WorkPackage:
+                PV   = iPrg._PlannedValue
+                EV   = iPrg.getEarnedValue(iPrg._Date)
+                Spnd = iPrg._Spend
+                SV  = 0.
+                CV  = 0.
+                BV  = 0.
+                SPI = 1.
+                CPI = 1.
+                if np.isnan(EV) == False:
+                    SV   = EV - PV
+                    CV   = EV - Spnd
+                    BV   = Spnd - PV
+                    SPI  = PV/EV
+                    CPI  = EV/Spnd
 
-            Line.append(iPrg._Task._Name)
-            Line.append(str(iPrg._Date)[:10])
-            Line.append(PV)
-            Line.append(EV)
-            Line.append(Spnd)
-            Line.append(SV)
-            Line.append(CV)
-            Line.append(BV)
-            Line.append(SPI)
-            Line.append(CPI)
+                Line.append(iPrg._Task._Name)
+                Line.append(str(iPrg._Date)[:10])
+                Line.append(PV)
+                Line.append(EV)
+                Line.append(Spnd)
+                Line.append(SV)
+                Line.append(CV)
+                Line.append(BV)
+                Line.append(SPI)
+                Line.append(CPI)
             
-            Lines.append(Line)
-            Line = []
+                Lines.append(Line)
+                Line = []
+            #.. end of work package if check
 
         return Lines
     

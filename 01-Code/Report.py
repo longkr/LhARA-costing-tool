@@ -191,7 +191,7 @@ Class Overview:   -------->  "Overview" report; derived class  <--------
 
 """
 class Overview(Report):
-    __Debug   = True
+    __Debug   = False
 
     def __init__(self, _ReportPath, _FileName, _PrjInst):
 
