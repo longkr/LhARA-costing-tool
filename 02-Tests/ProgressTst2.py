@@ -159,8 +159,8 @@ print("Progress test:", ProgressTest, " Earned value test.")
 #.. For each progress report, calculate earned value:
 for iPrg in Prg.Progress.instances:
     if Debug:
-        print("    ----> Get earned value for:", iPrg._Task._Name)
-    EV1 = Prg.EarnedValue(iPrg._Task, iPrg._Date, iPrg)
+        print("    ----> Get earned value for:", iPrg._WPorTsk._Name)
+    EV1 = Prg.EarnedValue(iPrg._WPorTsk, iPrg._Date, iPrg)
     if Debug:
         print("      ----> Earned value:", EV1._EarnedValue)
 print("    <---- Earned value loaded.")
@@ -177,7 +177,7 @@ for iTsk in Tsk.Task.instances:
         Tsk1 = iTsk
         break
 filepath  = os.path.join(LhARAPATH, '99-Scratch')
-PrgRpt1 = Rprt.Progress(filepath, "TestProgressReport.csv", Tsk1)
+PrgRpt1 = Rprt.Progress(filepath, "TestTaskProgressReport.csv", Tsk1)
 
 print("    ----> Progress report instance created.")
 if Debug:
@@ -185,8 +185,8 @@ if Debug:
 
 DataFrame = PrgRpt1.createPandasDataFrame()
 PrgRpt1.createCSV(DataFrame)
-Prg.Progress.Plot(DataFrame, filepath, "Progress-portrait.pdf", False)
-Prg.Progress.Plot(DataFrame, filepath, "Progress-landscape.pdf", True)
+Prg.Progress.Plot(DataFrame, filepath, "Task-Progress-portrait.pdf", False)
+Prg.Progress.Plot(DataFrame, filepath, "Task-Progress-landscape.pdf", True)
 
 ##! Check workpackage progress report
 ProgressTest += 1
@@ -195,6 +195,12 @@ print("Progress test:", ProgressTest, \
       " workpackage report.")
 
 Prg.Progress.workpackageProgress(wp.WorkPackage.instances[0])
+PrgRpt2 = Rprt.Progress(filepath, "TestWPProgressReport.csv", \
+                        wp.WorkPackage.instances[0])
+DataFrame = PrgRpt2.createPandasDataFrame()
+PrgRpt2.createCSV(DataFrame)
+Prg.Progress.Plot(DataFrame, filepath, "Progress-WP-portrait.pdf", False)
+Prg.Progress.Plot(DataFrame, filepath, "Progress-WP-landscape.pdf", True)
 
 #ba.com/lostluggage
 

@@ -87,12 +87,12 @@ class Progress:
     instances = []
 
 #--------  "Built-in methods":
-    def __init__(self, _Task=None, _Date=None, \
+    def __init__(self, _WPorTsk=None, _Date=None, \
                        _PlannedFractionComplete=None, \
                        _PlannedValue=None, \
                        _FractionComplete=None, _Spend=None):
 
-        self.setTask(_Task)
+        self.setTask(_WPorTsk)
         self.setDate(_Date)
         self.setPlannedFractionComplete(_PlannedFractionComplete)
         self.setPlannedValue(_PlannedValue)
@@ -180,12 +180,12 @@ class Progress:
                                    float(ProgParams.iloc[i,7]) )
 
 #--------  Get/set methods:
-    def setTask(self, _Task):
-        if not isinstance(_Task, Tsk.Task) and \
-           not isinstance(_Task, wp.WorkPackage):
-            raise ProgressTaskNotValid(" Progress.setTask: _Task " \
+    def setTask(self, _WPorTsk):
+        if not isinstance(_WPorTsk, Tsk.Task) and \
+           not isinstance(_WPorTsk, wp.WorkPackage):
+            raise ProgressTaskNotValid(" Progress.setTask: _WPorTsk " \
                                        "not an instance of Task class")
-        self._Task = _Task
+        self._WPorTsk = _WPorTsk
         
     def setDate(self, _Date):
         if not isinstance(_Date, DT.datetime):
@@ -229,7 +229,7 @@ class Progress:
                                        "not a float")
         
     def getTask(self):
-        return self._Task
+        return self._WPorTsk
         
     def getDate(self):
         return self._Date
@@ -269,7 +269,7 @@ class Progress:
                   _wpInst.getName())
 
         SortedPrgRprt = sorted(Prg.Progress.instances, \
-                          key=attrgetter('_Date', '_Task'), \
+                          key=attrgetter('_Date', '_WPorTsk'), \
                                  )
 
         DtRef  = None
@@ -395,6 +395,8 @@ class Progress:
         """
 
         nEntries = DataFrame.count()
+        pTitle   = DataFrame.columns.values.tolist()[0]
+        
         if Progress.__Debug == True:
             print(" Progress.Plot called to plot DataFrame: \n",   \
                   "     ----> Number of entries:", nEntries, "\n", \
@@ -418,7 +420,7 @@ class Progress:
         fig.subplots_adjust(top=0.95)
         
         #.. Add Title
-        fig.suptitle('Progress Plots', \
+        fig.suptitle(pTitle, \
                      fontsize='xx-large', \
                      fontweight='bold')
         
@@ -570,7 +572,7 @@ Class EarnedValue:
       
   Instance attributes:
   --------------------
-   _Task         = Date as a date-time object
+   _WPorTsk         = Date as a date-time object
    _Date         = Date as a date-time object
    _EarnedValue = Fractional completion of task at _Date.
    _Progress     = Optional -- filled if PV relates to a Progress instance.
@@ -612,9 +614,9 @@ class EarnedValue(Progress):
     instances = []
 
 #--------  "Built-in methods":
-    def __init__(self, _Task=None, _Date=None, _Prg=None):
+    def __init__(self, _WPorTsk=None, _Date=None, _Prg=None):
 
-        self.setTask(_Task)
+        self.setTask(_WPorTsk)
         self.setDate(_Date)
         self.setProgress(_Prg)
         self.setEarnedValue(None)
@@ -643,11 +645,11 @@ class EarnedValue(Progress):
                             " EarnedValue.setEarnedValue: " \
                                        "not valid.")
         if isinstance(self._Progress, Progress):
-            TskTotVal = self._Task.getTotalValue()
+            TskTotVal = self._WPorTsk.getTotalValue()
             if TskTotVal != None:
                 if self.__Debug:
                     print("  Progress.setEarnedValue:", \
-                          "    ----> Task:", self._Task._Name, \
+                          "    ----> Task:", self._WPorTsk._Name, \
                           "          TskTotVal:", TskTotVal, \
                   "          Fraction complete:", \
                           self._Progress._FractionComplete)

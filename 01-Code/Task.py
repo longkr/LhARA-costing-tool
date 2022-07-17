@@ -322,12 +322,12 @@ class Task:
         
         """
         SortedPrgRprt = sorted(Prg.Progress.instances, \
-                          key=attrgetter('_Task', '_Date'), \
+                          key=attrgetter('_WPorTsk', '_Date'), \
                                  )
         Line  = []
         Lines = []
         for iPrg in SortedPrgRprt:
-            if iPrg._Task._WorkPackage == self._WorkPackage:
+            if iPrg._WPorTsk._WorkPackage == self._WorkPackage:
                 PV   = iPrg._PlannedValue
                 EV   = iPrg.getEarnedValue(iPrg._Date)
                 Spnd = iPrg._Spend
@@ -343,7 +343,7 @@ class Task:
                     SPI  = PV/EV
                     CPI  = EV/Spnd
 
-                Line.append(iPrg._Task._Name)
+                Line.append(iPrg._WPorTsk._Name)
                 Line.append(str(iPrg._Date)[:10])
                 Line.append(PV)
                 Line.append(EV)

@@ -1136,10 +1136,20 @@ class Progress(Report):
         """
            --------> Get started:
         """
-        if isinstance(_ChunkInst, Tsk.Task):
+        if isinstance(_ChunkInst, Tsk.Task) or \
+           isinstance(_ChunkInst, wp.WorkPackage):
+
+            Name4Report = ""
+
+            if isinstance(_ChunkInst, wp.WorkPackage):
+                Name4Report = "Work package: " + _ChunkInst._Name
+            elif isinstance(_ChunkInst, Tsk.Task):
+                Name4Report  = "Work package: " + _ChunkInst._WorkPackage._Name
+                Name4Report += "; Task: " + _ChunkInst._Name
+                
             Report.__init__(self, "Progress report", _ReportPath, _FileName)
 
-            self._Header.append(_ChunkInst._Name)
+            self._Header.append(Name4Report)
             self._Header.append("Date")
             self._Header.append("Planned value (£k)")
             self._Header.append("Earned value (£k)")
