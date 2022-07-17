@@ -540,6 +540,12 @@ class WorkPackage:
     def setGrandTotal(self):
         self._GrandTotal = np.sum(self._TotalCostByYear)
         
+    def getGrandTotal(self):
+        return self._GrandTotal
+        
+    def getTotalValue(self):
+        return self.getGrandTotal()
+        
     @classmethod
     def getHeader(cls):
         HeaderList = ["Code", "Name", "Project", "filename", \
