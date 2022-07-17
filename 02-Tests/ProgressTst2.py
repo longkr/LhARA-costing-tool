@@ -185,8 +185,8 @@ if Debug:
 
 DataFrame = PrgRpt1.createPandasDataFrame()
 PrgRpt1.createCSV(DataFrame)
-Prg.Progress.Plot(DataFrame, filepath, "Task-Progress-portrait.pdf", False)
-Prg.Progress.Plot(DataFrame, filepath, "Task-Progress-landscape.pdf", True)
+Prg.Progress.Plot(DataFrame, filepath, "Progress-Task-portrait.pdf", False)
+Prg.Progress.Plot(DataFrame, filepath, "Progress-Task-landscape.pdf", True)
 
 ##! Check workpackage progress report
 ProgressTest += 1
@@ -201,8 +201,6 @@ DataFrame = PrgRpt2.createPandasDataFrame()
 PrgRpt2.createCSV(DataFrame)
 Prg.Progress.Plot(DataFrame, filepath, "Progress-WP-portrait.pdf", False)
 Prg.Progress.Plot(DataFrame, filepath, "Progress-WP-landscape.pdf", True)
-
-#ba.com/lostluggage
 
 print("    <---- Progress report test done.")
 print()

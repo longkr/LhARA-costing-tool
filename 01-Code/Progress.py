@@ -106,7 +106,7 @@ class Progress:
                "FractionComplete, Spend)"
 
     def __str__(self):
-        print(" Progress:", self.getTask()._Name)
+        print(" Progress:", self.getWPorTsk()._Name)
         print("     Date                   :", self.getDate())
         print("     PlannedFractionComplete:", \
               self.getPlannedFractionComplete())
@@ -228,7 +228,7 @@ class Progress:
             raise ProgressSpendNotValid(" Progress.setSpend: _Spend " \
                                        "not a float")
         
-    def getTask(self):
+    def getWPorTsk(self):
         return self._WPorTsk
         
     def getDate(self):
@@ -260,7 +260,6 @@ class Progress:
     @classmethod
     def workpackageProgress(cls, _wpInst):
 
-        Progress.__Debug = True
         if not isinstance(_wpInst, wp.WorkPackage):
             raise WorkPackageInstInvalid()
         
@@ -269,7 +268,7 @@ class Progress:
                   _wpInst.getName())
 
         SortedPrgRprt = sorted(Prg.Progress.instances, \
-                          key=attrgetter('_Date', '_WPorTsk'), \
+                          key=attrgetter('_WPorTsk._Name', '_Date'), \
                                  )
 
         DtRef  = None
@@ -282,13 +281,13 @@ class Progress:
 
         #.. Loop over progress instances in date order:
         for iPrg in SortedPrgRprt:
-            iTsk = iPrg.getTask()
+            iWPorTsk = iPrg.getWPorTsk()
 
             #.. Take entries for requested work package only:
-            if iTsk._WorkPackage == _wpInst:
+            if iWPorTsk._WorkPackage == _wpInst:
 
                 if Progress.__Debug == True:
-                    print("     ----> Task name:", iTsk.getName())
+                    print("     ----> WP or Tsk name:", iWPorTsk.getName())
                     
                 Dt   = iPrg.getDate()
                 if Progress.__Debug == True:
@@ -307,7 +306,7 @@ class Progress:
                             print( \
                "               Creating WP progress instance:")
                             print( \
-               "                   ----> nTsks, PFC, FC, PV, FC, Spend:",\
+               "                   ----> nTsks, PFC, FC, PV, Spend:",\
                                         nTsks, wpPFC, wpFC, wpPV, wpSpend)
                         wpPrg = Prg.Progress( \
                                 _wpInst, Dt, wpPFC, wpPV, wpFC, wpSpend)
@@ -333,7 +332,6 @@ class Progress:
                 PFC  = iPrg.getPlannedFractionComplete()
                 FC   = iPrg.getFractionComplete()
                 PV   = iPrg.getPlannedValue()
-                FC   = iPrg.getFractionComplete()
                 Spnd = iPrg.getSpend()
                 if Progress.__Debug == True:
                     print("             ----> PFC, FC, PV, Spnd:", \
@@ -406,14 +404,17 @@ class Progress:
         if landscape is False:
             fig, (ax1, ax2, ax3) = plt.subplots(3,1, figsize = (10,14),  
                     gridspec_kw={'height_ratios':[2,5,2]})
-            ax1.set_xticks([],[])
-            ax2.set_xticks([],[])
+            ax1.set_xticks([])
+            ax1.set_xticklabels([])
+            ax2.set_xticks([])
+            ax2.set_xticklabels([])
         else:
             fig = plt.figure(figsize = (14, 10))
             ax1 = plt.subplot2grid(shape=(2, 2), loc=(0,1), rowspan=1)
             ax2 = plt.subplot2grid(shape=(2, 2), loc=(0,0), rowspan=2)
             ax3 = plt.subplot2grid(shape=(2, 2), loc=(1,1), rowspan=1)
-            ax1.set_xticks([],[])
+            ax1.set_xticks([])
+            ax1.set_xticklabels([])
             
         #.. Remove extra space around figure
         fig.tight_layout()
@@ -627,7 +628,7 @@ class EarnedValue(Progress):
         return "EarnedValue(Task, Date)"
 
     def __str__(self):
-        print(" EarnedValue:", self.getTask()._Name)
+        print(" EarnedValue:", self.getWPorTsk()._Name)
         print("     Date             :", self.getDate())
         print("     Planned value    :", self.getEarnedValue())
         print("     Progress instance:", self.getProgress())
@@ -640,6 +641,7 @@ class EarnedValue(Progress):
 #--------  Get/set methods:
     def setEarnedValue(self, _EV):
         EV = None
+
         if not isinstance(_EV, float) and not (_EV is None):
             raise EarnedValueEVNotValid(\
                             " EarnedValue.setEarnedValue: " \
@@ -656,7 +658,7 @@ class EarnedValue(Progress):
                 EV =  TskTotVal * self._Progress._FractionComplete
         else:
             EV = _EV
-            
+
         self._EarnedValue = EV
         
     def setProgress(self, _Prg):

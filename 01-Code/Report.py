@@ -81,6 +81,7 @@ import WorkPackage   as wp
 import Project       as Prj
 import Staff         as Stf
 import OtherNonStaff as ONS
+import Progress      as Prg
 
 iCntrl = Cntrl.Control()
 
@@ -1163,7 +1164,7 @@ class Progress(Report):
             self._Header.append(RptDt.strftime("%d-%b-%Y"))
 
             self._Lines = []
-            self._Lines = _ChunkInst.ProgressReport()
+            self._Lines = self.Report(_ChunkInst)
 
         #.. Close check of request:
         else:
@@ -1171,6 +1172,62 @@ class Progress(Report):
                   " Report.Progress: no report possible for ChunkInst: " + \
                                            string(_ChunkInst))
         
+    def Report(self, _ChunkInst):
+        """
+        ProgressReport:
+        ===============
+
+        Produce CSV file with progress report for this task.
+        
+        """
+        SortedPrgRprt = sorted(Prg.Progress.instances, \
+                          key=attrgetter('_WPorTsk._Name', '_Date'), \
+                                 )
+        Line  = []
+        Lines = []
+        for iPrg in SortedPrgRprt:
+            AddLine = False
+            if   isinstance(iPrg._WPorTsk, wp.WorkPackage):
+                if iPrg._WPorTsk == _ChunkInst:
+                    AddLine = True
+            elif isinstance(iPrg._WPorTsk, Tsk.Task):
+                if iPrg._WPorTsk == _ChunkInst and \
+                   iPrg._WPorTsk._WorkPackage == _ChunkInst._WorkPackage:
+                    AddLine = True
+                
+            if AddLine:
+                PV   = iPrg._PlannedValue
+                EV   = iPrg.getEarnedValue(iPrg._Date)
+                Spnd = iPrg._Spend
+                SV  = 0.
+                CV  = 0.
+                BV  = 0.
+                SPI = 1.
+                CPI = 1.
+                if np.isnan(EV) == False:
+                    SV   = EV - PV
+                    CV   = EV - Spnd
+                    BV   = Spnd - PV
+                    SPI  = PV/EV
+                    CPI  = EV/Spnd
+
+                Line.append(iPrg._WPorTsk._Name)
+                Line.append(str(iPrg._Date)[:10])
+                Line.append(PV)
+                Line.append(EV)
+                Line.append(Spnd)
+                Line.append(SV)
+                Line.append(CV)
+                Line.append(BV)
+                Line.append(SPI)
+                Line.append(CPI)
+            
+                Lines.append(Line)
+                Line = []
+            #.. end of work package if check
+
+        return Lines
+    
 
 #--------  Exceptions:
 class NoReportNameProvided:

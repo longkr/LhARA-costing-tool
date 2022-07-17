@@ -542,9 +542,15 @@ class WorkPackage:
         
     def getGrandTotal(self):
         return self._GrandTotal
-        
+
+    def getTotalStaff(self):
+        return self._TotalStaffCost
+
+    def getTotalEquipmentCost(self):
+        return self._TotalEquipmentCost
+    
     def getTotalValue(self):
-        return self.getGrandTotal()
+        return self.getTotalStaff() + self.getTotalEquipmentCost()
         
     @classmethod
     def getHeader(cls):
