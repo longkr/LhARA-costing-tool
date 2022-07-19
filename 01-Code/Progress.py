@@ -80,6 +80,7 @@ from operator import attrgetter
 
 import Task        as Tsk
 import WorkPackage as wp
+import Project     as Prj
 import Progress    as Prg
 
 class Progress:
@@ -258,6 +259,23 @@ class Progress:
 #--------  Processing methods:
 
     @classmethod
+    def takeTask(cls, _iTsk, _PrjOrWPInst):
+        
+        tkTsk  = False
+
+        iWP  = _iTsk._WorkPackage
+        iPrj = iWP._Project
+        
+        if isinstance(_PrjOrWPInst, wp.WorkPackage) and \
+           iWP == _PrjOrWPInst:
+            tkTsk = True
+        elif isinstance(_iWPorTsk, Prj.Project) and \
+             iPrj == PrjOrWPInst:
+            tkTsk = True
+            
+        return tkTsk
+        
+    @classmethod
     def workpackageProgress(cls, _wpInst):
 
         if not isinstance(_wpInst, wp.WorkPackage):
@@ -285,7 +303,8 @@ class Progress:
 
             #.. Take Task entries for requested work package only:
             if isinstance(iWPorTsk, Tsk.Task):
-                if iWPorTsk._WorkPackage == _wpInst:
+                iTsk = iWPorTsk
+                if cls.takeTask(iTsk,_wpInst):
                     if Progress.__Debug == True:
                         print("     ----> WP or Tsk name:", iWPorTsk.getName())
                     
