@@ -284,6 +284,19 @@ class Project:
 
         return Total
 
+    def getTotalValue(self):
+        TotByYr = np.array([])
+        for iYr in range(len(self._FinancialYears)):
+            TotByYr = np.append(TotByYr, 0.)
+        if isinstance(self._StaffCostByYear, np.ndarray):
+            TotByYr += self._StaffCostByYear
+        if isinstance(self._EquipmentCostByYear, np.ndarray):
+            TotByYr += self._EquipmentCostByYear
+
+        TotVal = np.sum(TotByYr)
+
+        return  TotVal
+    
     @classmethod
     def getInstance(cls, _Name):
         InstList = []
