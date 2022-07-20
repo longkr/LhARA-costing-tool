@@ -1143,7 +1143,9 @@ class Progress(Report):
 
             Name4Report = ""
 
-            if isinstance(_ChunkInst, wp.WorkPackage):
+            if isinstance(_ChunkInst, Prj.Project):
+                Name4Report = "Project: " + _ChunkInst._Name
+            elif isinstance(_ChunkInst, wp.WorkPackage):
                 Name4Report = "Work package: " + _ChunkInst._Name
             elif isinstance(_ChunkInst, Tsk.Task):
                 Name4Report  = "Work package: " + _ChunkInst._WorkPackage._Name
@@ -1188,17 +1190,21 @@ class Progress(Report):
         Lines = []
         for iPrg in SortedPrgRprt:
             AddLine = False
-            if   isinstance(iPrg._WPorTsk, wp.WorkPackage):
-                if iPrg._WPorTsk == _ChunkInst:
+            print(" Progress(Report).Report start", iPrg)
+            if isinstance(iPrg._WPorTsk, Tsk.Task):
+                print(" Progress(Report).Report, request:", _ChunkInst._Name)
+                if isinstance(_ChunkInst, Prj.Project):
+                    if iPrg._WPorTsk._WorkPackage._Project == _ChunkInst:
+                        AddLine = True
+                elif isinstance(_ChunkInst, wp.WorkPackage):
+                    if iPrg._WPorTsk._WorkPackage == _ChunkInst:
+                        AddLine = True
+                elif iPrg._WPorTsk == _ChunkInst:
                     AddLine = True
-            elif isinstance(iPrg._WPorTsk, Tsk.Task):
-                if iPrg._WPorTsk == _ChunkInst and \
-                   iPrg._WPorTsk._WorkPackage == _ChunkInst._WorkPackage:
-                    AddLine = True
-                
+
             if AddLine:
                 PV   = iPrg._PlannedValue
-                EV   = iPrg.getEarnedValue(iPrg._Date)
+                EV   = iPrg.getEarnedValue()
                 Spnd = iPrg._Spend
                 SV  = 0.
                 CV  = 0.

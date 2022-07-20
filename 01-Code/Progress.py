@@ -81,7 +81,7 @@ from operator import attrgetter
 import Task        as Tsk
 import WorkPackage as wp
 import Project     as Prj
-import Progress    as Prg
+#import Progress    as Prg
 
 class Progress:
     __Debug = False
@@ -248,12 +248,12 @@ class Progress:
     def getSpend(self):
         return self._Spend
         
-    def getEarnedValue(self, _Date):
+    def getEarnedValue(self):
         EV = None
         for iEV in EarnedValue.instances:
-            if iEV._Date == _Date:
+            if iEV._Date == self._Date:
                 EV = iEV._EarnedValue
-            
+        print(" Earned value:", EV)
         return EV
         
 
@@ -279,15 +279,17 @@ class Progress:
     @classmethod
     def WPorPrjProgress(cls, _WPorPrjInst):
 
+        Progress.__Debug = True
+        
         if not isinstance(_WPorPrjInst, wp.WorkPackage) and \
            not isinstance(_WPorPrjInst, Prj.Project):
             raise WorkPackageInstInvalid()
         
         if Progress.__Debug == True:
             print(" Progress.WPorPrjProgress: wpName:", \
-                  _WPorPrjInst.getName())
+                  _WPorPrjInst._Name)
 
-        SortedPrgRprt = sorted(Prg.Progress.instances, \
+        SortedPrgRprt = sorted(Progress.instances, \
                           key=attrgetter('_WPorTsk._Name', '_Date'), \
                                  )
 
@@ -297,6 +299,8 @@ class Progress:
         wpPFC   = None
         wpFC    = None
         wpPV    = None
+        wpEV    = None
+        print(" Line 202, wpEV=", wpEV)
         wpSpend = None
 
         #.. Loop over progress instances in date order:
@@ -323,27 +327,31 @@ class Progress:
                             #.. Create work-package progress instance
                             wpPFC = wpPFC / nTsks
                             wpFC  = wpFC  / nTsks
+                            print(" Line 330, wpEV=", wpEV)
                             if Progress.__Debug == True:
                                 print( \
                "               Creating WP progress instance:")
                                 print( \
-               "                   ----> nTsks, PFC, FC, PV, Spend:",\
-                                        nTsks, wpPFC, wpFC, wpPV, wpSpend)
-                            wpPrg = Prg.Progress(_WPorPrjInst, Dt, wpPFC, \
-                                                 wpPV, wpFC, wpSpend)
-                            wpEV  = Prg.EarnedValue(_WPorPrjInst, Dt, wpPrg)
+               "                   ----> nTsks, PFC, FC, PV, EV, Spend:",\
+                                        nTsks, wpPFC, wpFC, wpPV, wpEV, wpSpend)
+                            iwpPrg = Progress(_WPorPrjInst, DtRef, wpPFC, \
+                                                  wpPV, wpFC, wpSpend)
+                            iwpEV  = EarnedValue(_WPorPrjInst, DtRef, \
+                                                     iwpPrg, wpEV)
                             if Progress.__Debug == True:
                                 print( \
       "             ----> Progress and EarnedValue instances created:",
-                                   wpPrg, wpEV)
+                                   iwpPrg, iwpEV)
                             
-                        #----> Prg.Progress(<arguments>)
+                        #----> Progress(<arguments>)
                         #.. Set date reference, zero task count
                         DtRef   = Dt
                         nTsks   = 0.
                         wpPFC   = 0.
                         wpFC    = 0.
                         wpPV    = 0.
+                        wpEV    = 0.
+                        print(" Line 354, wpEV=", wpEV)
                         wpSpend = 0.
                         if Progress.__Debug == True:
                             print("             ----> Reset done.")
@@ -352,16 +360,19 @@ class Progress:
                     PFC  = iPrg.getPlannedFractionComplete()
                     FC   = iPrg.getFractionComplete()
                     PV   = iPrg.getPlannedValue()
+                    EV   = iPrg.getEarnedValue()
                     Spnd = iPrg.getSpend()
                     if Progress.__Debug == True:
-                        print("             ----> PFC, FC, PV, Spnd:", \
-                              PFC, FC, PV, Spnd)
+                        print("             ----> PFC, FC, PV, EV, Spnd:", \
+                              PFC, FC, PV, EV, Spnd)
 
                     #.. Increment spend, progress etc.
                     nTsks   += 1.
                     wpPFC   += PFC
                     wpFC    += FC
                     wpPV    += PV
+                    wpEV    += EV
+                    print(" Line 375, wpEV=", wpEV)
                     wpSpend += Spnd
 
                 
@@ -370,9 +381,6 @@ class Progress:
         #.. End of loop over progress entries
 
         #.. End of processing
-
-        
-
 
         
     @classmethod
@@ -637,12 +645,12 @@ class EarnedValue(Progress):
     instances = []
 
 #--------  "Built-in methods":
-    def __init__(self, _WPorTsk=None, _Date=None, _Prg=None):
+    def __init__(self, _WPorTsk=None, _Date=None, _Prg=None, _EV=None):
 
         self.setTask(_WPorTsk)
         self.setDate(_Date)
         self.setProgress(_Prg)
-        self.setEarnedValue(None)
+        self.setEarnedValue(_EV)
 
         EarnedValue.instances.append(self)
         
@@ -662,13 +670,15 @@ class EarnedValue(Progress):
 
 #--------  Get/set methods:
     def setEarnedValue(self, _EV):
-        EV = None
-
         if not isinstance(_EV, float) and not (_EV is None):
             raise EarnedValueEVNotValid(\
                             " EarnedValue.setEarnedValue: " \
                                        "not valid.")
-        if isinstance(self._Progress, Progress):
+
+        print(" setEarnedValue:", _EV)
+        EV = None
+
+        if _EV is None:
             TskTotVal = self._WPorTsk.getTotalValue()
             if TskTotVal != None:
                 if self.__Debug:
