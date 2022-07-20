@@ -73,6 +73,7 @@ import Task             as Tsk
 import Progress         as Prg
 import LhARACostingTool as LCT
 import Report           as Rprt
+import Project          as Prj
 
 
 ##! Load costing data structure:
@@ -194,13 +195,21 @@ print()
 print("Progress test:", ProgressTest, \
       " workpackage report.")
 
-Prg.Progress.workpackageProgress(wp.WorkPackage.instances[0])
+Prg.Progress.WPorPrjProgress(wp.WorkPackage.instances[0])
 PrgRpt2 = Rprt.Progress(filepath, "TestWPProgressReport.csv", \
                         wp.WorkPackage.instances[0])
 DataFrame = PrgRpt2.createPandasDataFrame()
 PrgRpt2.createCSV(DataFrame)
 Prg.Progress.Plot(DataFrame, filepath, "Progress-WP-portrait.pdf", False)
 Prg.Progress.Plot(DataFrame, filepath, "Progress-WP-landscape.pdf", True)
+
+Prg.Progress.WPorPrjProgress(Prj.Project.instances[0])
+PrgRpt3 = Rprt.Progress(filepath, "TestPrjProgressReport.csv", \
+                        Prj.Project.instances[0])
+DataFrame = PrgRpt3.createPandasDataFrame()
+PrgRpt3.createCSV(DataFrame)
+Prg.Progress.Plot(DataFrame, filepath, "Progress-Prj-portrait.pdf", False)
+Prg.Progress.Plot(DataFrame, filepath, "Progress-Prj-landscape.pdf", True)
 
 print("    <---- Progress report test done.")
 print()

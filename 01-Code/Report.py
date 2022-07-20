@@ -1138,7 +1138,8 @@ class Progress(Report):
            --------> Get started:
         """
         if isinstance(_ChunkInst, Tsk.Task) or \
-           isinstance(_ChunkInst, wp.WorkPackage):
+           isinstance(_ChunkInst, wp.WorkPackage) or \
+           isinstance(_ChunkInst, Prj.Project):
 
             Name4Report = ""
 
@@ -1169,8 +1170,8 @@ class Progress(Report):
         #.. Close check of request:
         else:
             raise ProgressInstanceInvalid( \
-                  " Report.Progress: no report possible for ChunkInst: " + \
-                                           string(_ChunkInst))
+                  ' Report.Progress: no report possible for ChunkInst: ' \
+                  + _ChunkInst._Name)
         
     def Report(self, _ChunkInst):
         """
@@ -1230,26 +1231,26 @@ class Progress(Report):
     
 
 #--------  Exceptions:
-class NoReportNameProvided:
+class NoReportNameProvided(Exception):
     pass
 
-class NoOutputPathProvided:
+class NoOutputPathProvided(Exception):
     pass
 
-class NoFilenameProvided:
+class NoFilenameProvided(Exception):
     pass
 
-class OutputPathInvalid:
+class OutputPathInvalid(Exception):
     pass
 
-class NoWriteAccessToOutputPath:
+class NoWriteAccessToOutputPath(Exception):
     pass
 
-class WorkPackageInstanceInvalid:
+class WorkPackageInstanceInvalid(Exception):
     pass
 
-class ProjectInstanceInvalid:
+class ProjectInstanceInvalid(Exception):
     pass
 
-class ProgressInstanceInvalid:
+class ProgressInstanceInvalid(Exception):
     pass

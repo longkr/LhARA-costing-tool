@@ -183,7 +183,8 @@ class Progress:
 #--------  Get/set methods:
     def setTask(self, _WPorTsk):
         if not isinstance(_WPorTsk, Tsk.Task) and \
-           not isinstance(_WPorTsk, wp.WorkPackage):
+           not isinstance(_WPorTsk, wp.WorkPackage) and \
+           not isinstance(_WPorTsk, Prj.Project):
             raise ProgressTaskNotValid(" Progress.setTask: _WPorTsk " \
                                        "not an instance of Task class")
         self._WPorTsk = _WPorTsk
@@ -269,21 +270,22 @@ class Progress:
         if isinstance(_PrjOrWPInst, wp.WorkPackage) and \
            iWP == _PrjOrWPInst:
             tkTsk = True
-        elif isinstance(_iWPorTsk, Prj.Project) and \
-             iPrj == PrjOrWPInst:
+        elif isinstance(_PrjOrWPInst, Prj.Project) and \
+             iPrj == _PrjOrWPInst:
             tkTsk = True
             
         return tkTsk
         
     @classmethod
-    def workpackageProgress(cls, _wpInst):
+    def WPorPrjProgress(cls, _WPorPrjInst):
 
-        if not isinstance(_wpInst, wp.WorkPackage):
+        if not isinstance(_WPorPrjInst, wp.WorkPackage) and \
+           not isinstance(_WPorPrjInst, Prj.Project):
             raise WorkPackageInstInvalid()
         
         if Progress.__Debug == True:
-            print(" Progress.workpackageProgress: wpName:", \
-                  _wpInst.getName())
+            print(" Progress.WPorPrjProgress: wpName:", \
+                  _WPorPrjInst.getName())
 
         SortedPrgRprt = sorted(Prg.Progress.instances, \
                           key=attrgetter('_WPorTsk._Name', '_Date'), \
@@ -304,7 +306,7 @@ class Progress:
             #.. Take Task entries for requested work package only:
             if isinstance(iWPorTsk, Tsk.Task):
                 iTsk = iWPorTsk
-                if cls.takeTask(iTsk,_wpInst):
+                if cls.takeTask(iTsk,_WPorPrjInst):
                     if Progress.__Debug == True:
                         print("     ----> WP or Tsk name:", iWPorTsk.getName())
                     
@@ -327,9 +329,9 @@ class Progress:
                                 print( \
                "                   ----> nTsks, PFC, FC, PV, Spend:",\
                                         nTsks, wpPFC, wpFC, wpPV, wpSpend)
-                            wpPrg = Prg.Progress(_wpInst, Dt, wpPFC, \
+                            wpPrg = Prg.Progress(_WPorPrjInst, Dt, wpPFC, \
                                                  wpPV, wpFC, wpSpend)
-                            wpEV  = Prg.EarnedValue(_wpInst, Dt, wpPrg)
+                            wpEV  = Prg.EarnedValue(_WPorPrjInst, Dt, wpPrg)
                             if Progress.__Debug == True:
                                 print( \
       "             ----> Progress and EarnedValue instances created:",
