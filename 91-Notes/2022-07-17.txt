@@ -1,0 +1,23 @@
+17Jul22:
+
+Completed Tsk and WP progress reports and plots.  Need to complete
+project progress now.
+
+Tried tests, all OK.
+
+-------- record of tests:
+Tests:
+ - ControlTst.py                        - OK
+ - EquipmentTst.py                      - OK
+ - LhARACostingToolTst.py               - OK
+ - OtherNonStaffTst.py                  - OK
+ - ProgressTst1.py                      - OK
+ - ProgressTst2.py                      - OK
+ - ProjectTst.py                        - OK
+ - ReportTst.py                         - OK
+ - StaffTst.py                          - OK
+ - TaskEquipmentTst.py                  - OK
+ - TaskStaffTst.py                      - OK
+ - TaskTst.py                           - OK
+ - WorkPackageTst.py                    - OK
+ - run-LhARA-costing-tool.py Debug=true - OK
