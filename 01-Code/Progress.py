@@ -80,6 +80,7 @@ from operator import attrgetter
 
 import Task        as Tsk
 import WorkPackage as wp
+import Project     as Prj
 import Progress    as Prg
 
 class Progress:
@@ -258,6 +259,23 @@ class Progress:
 #--------  Processing methods:
 
     @classmethod
+    def takeTask(cls, _iTsk, _PrjOrWPInst):
+        
+        tkTsk  = False
+
+        iWP  = _iTsk._WorkPackage
+        iPrj = iWP._Project
+        
+        if isinstance(_PrjOrWPInst, wp.WorkPackage) and \
+           iWP == _PrjOrWPInst:
+            tkTsk = True
+        elif isinstance(_iWPorTsk, Prj.Project) and \
+             iPrj == PrjOrWPInst:
+            tkTsk = True
+            
+        return tkTsk
+        
+    @classmethod
     def workpackageProgress(cls, _wpInst):
 
         if not isinstance(_wpInst, wp.WorkPackage):
@@ -283,68 +301,70 @@ class Progress:
         for iPrg in SortedPrgRprt:
             iWPorTsk = iPrg.getWPorTsk()
 
-            #.. Take entries for requested work package only:
-            if iWPorTsk._WorkPackage == _wpInst:
-
-                if Progress.__Debug == True:
-                    print("     ----> WP or Tsk name:", iWPorTsk.getName())
-                    
-                Dt   = iPrg.getDate()
-                if Progress.__Debug == True:
-                    print("         ----> Date:", Dt)
-                    
-                #.. Handle new date; create wp progress instance and
-                #   zero counters:
-                if Dt != DtRef:
+            #.. Take Task entries for requested work package only:
+            if isinstance(iWPorTsk, Tsk.Task):
+                iTsk = iWPorTsk
+                if cls.takeTask(iTsk,_wpInst):
                     if Progress.__Debug == True:
-                        print("         ----> New date:", Dt)
-                    if nTsks != None:
-                        #.. Create work-package progress instance
-                        wpPFC = wpPFC / nTsks
-                        wpFC  = wpFC  / nTsks
+                        print("     ----> WP or Tsk name:", iWPorTsk.getName())
+                    
+                    Dt   = iPrg.getDate()
+                    if Progress.__Debug == True:
+                        print("         ----> Date:", Dt)
+                    
+                    #.. Handle new date; create wp progress instance and
+                    #   zero counters:
+                    if Dt != DtRef:
                         if Progress.__Debug == True:
-                            print( \
+                            print("         ----> New date:", Dt)
+                        if nTsks != None:
+                            #.. Create work-package progress instance
+                            wpPFC = wpPFC / nTsks
+                            wpFC  = wpFC  / nTsks
+                            if Progress.__Debug == True:
+                                print( \
                "               Creating WP progress instance:")
-                            print( \
+                                print( \
                "                   ----> nTsks, PFC, FC, PV, Spend:",\
                                         nTsks, wpPFC, wpFC, wpPV, wpSpend)
-                        wpPrg = Prg.Progress( \
-                                _wpInst, Dt, wpPFC, wpPV, wpFC, wpSpend)
-                        wpEV  = Prg.EarnedValue( \
-                                _wpInst, Dt, wpPrg)
-                        if Progress.__Debug == True:
-                            print( \
+                            wpPrg = Prg.Progress(_wpInst, Dt, wpPFC, \
+                                                 wpPV, wpFC, wpSpend)
+                            wpEV  = Prg.EarnedValue(_wpInst, Dt, wpPrg)
+                            if Progress.__Debug == True:
+                                print( \
       "             ----> Progress and EarnedValue instances created:",
                                    wpPrg, wpEV)
                             
-                    #----> Prg.Progress(<arguments>)
-                    #.. Set date reference, zero task count
-                    DtRef   = Dt
-                    nTsks   = 0.
-                    wpPFC   = 0.
-                    wpFC    = 0.
-                    wpPV    = 0.
-                    wpSpend = 0.
+                        #----> Prg.Progress(<arguments>)
+                        #.. Set date reference, zero task count
+                        DtRef   = Dt
+                        nTsks   = 0.
+                        wpPFC   = 0.
+                        wpFC    = 0.
+                        wpPV    = 0.
+                        wpSpend = 0.
+                        if Progress.__Debug == True:
+                            print("             ----> Reset done.")
+
+                    #.. Get incremental data
+                    PFC  = iPrg.getPlannedFractionComplete()
+                    FC   = iPrg.getFractionComplete()
+                    PV   = iPrg.getPlannedValue()
+                    Spnd = iPrg.getSpend()
                     if Progress.__Debug == True:
-                        print("             ----> Reset done.")
+                        print("             ----> PFC, FC, PV, Spnd:", \
+                              PFC, FC, PV, Spnd)
 
-                #.. Handle accumulators:
-                PFC  = iPrg.getPlannedFractionComplete()
-                FC   = iPrg.getFractionComplete()
-                PV   = iPrg.getPlannedValue()
-                Spnd = iPrg.getSpend()
-                if Progress.__Debug == True:
-                    print("             ----> PFC, FC, PV, Spnd:", \
-                          PFC, FC, PV, Spnd)
+                    #.. Increment spend, progress etc.
+                    nTsks   += 1.
+                    wpPFC   += PFC
+                    wpFC    += FC
+                    wpPV    += PV
+                    wpSpend += Spnd
 
-                #.. Increment spend, progress etc.
-                nTsks   += 1.
-                wpPFC   += PFC
-                wpFC    += FC
-                wpPV    += PV
-                wpSpend += Spnd
-                        
-            #.. End of work-package-check if block
+                
+                #.. End of work-package-check if block
+            #.. End of is a Task check if block
         #.. End of loop over progress entries
 
         #.. End of processing
