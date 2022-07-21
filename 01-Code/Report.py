@@ -1184,22 +1184,25 @@ class Progress(Report):
         
         """
         SortedPrgRprt = sorted(Prg.Progress.instances, \
-                          key=attrgetter('_WPorTsk._Name', '_Date'), \
+                          key=attrgetter('_PrjWPorTsk._Name', '_Date'), \
                                  )
         Line  = []
         Lines = []
         for iPrg in SortedPrgRprt:
             AddLine = False
-            print(" Progress(Report).Report start", iPrg)
-            if isinstance(iPrg._WPorTsk, Tsk.Task):
-                print(" Progress(Report).Report, request:", _ChunkInst._Name)
+            if Progress.__Debug:
+                print(" Progress(Report).Report start", iPrg)
+            if isinstance(iPrg._PrjWPorTsk, Tsk.Task):
+                if Progress.__Debug:
+                    print(" Progress(Report).Report, request:", \
+                          _ChunkInst._Name)
                 if isinstance(_ChunkInst, Prj.Project):
-                    if iPrg._WPorTsk._WorkPackage._Project == _ChunkInst:
+                    if iPrg._PrjWPorTsk._WorkPackage._Project == _ChunkInst:
                         AddLine = True
                 elif isinstance(_ChunkInst, wp.WorkPackage):
-                    if iPrg._WPorTsk._WorkPackage == _ChunkInst:
+                    if iPrg._PrjWPorTsk._WorkPackage == _ChunkInst:
                         AddLine = True
-                elif iPrg._WPorTsk == _ChunkInst:
+                elif iPrg._PrjWPorTsk == _ChunkInst:
                     AddLine = True
 
             if AddLine:
@@ -1218,7 +1221,7 @@ class Progress(Report):
                     SPI  = PV/EV
                     CPI  = EV/Spnd
 
-                Line.append(iPrg._WPorTsk._Name)
+                Line.append(iPrg._PrjWPorTsk._Name)
                 Line.append(str(iPrg._Date)[:10])
                 Line.append(PV)
                 Line.append(EV)

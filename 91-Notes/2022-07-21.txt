@@ -1,0 +1,23 @@
+21Jul22:
+
+Completed Project progress reporting.  Found a few bugs that affected
+the work package progress reporting.  Hope its now OK.
+
+Tried tests, all OK.
+
+-------- record of tests:
+Tests:
+ - ControlTst.py                        - OK
+ - EquipmentTst.py                      - OK
+ - LhARACostingToolTst.py               - OK
+ - ProgressTst1.py                      - OK
+ - ProgressTst2.py                      - OK
+ - ProjectTst.py                        - OK
+ - ReportTst.py                         - OK
+ - StaffTst.py                          - OK
+ - OtherNonStaffTst.py (needs dummy)    - OK
+ - TaskEquipmentTst.py (needs dummy)    - OK
+ - TaskStaffTst.py (needs dummy)        - OK
+ - TaskTst.py (needs dummy)             - OK
+ - WorkPackageTst.py (needs dummy)      - OK
+ - run-LhARA-costing-tool.py Debug=true - OK
