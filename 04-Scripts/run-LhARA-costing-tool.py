@@ -39,13 +39,15 @@ if Debug:
     print("    Control file: \n", \
           "            ----> ", ControlFile)
 StaffPath1 = os.path.join(HOMEPATH, '12-Staff')
-StaffPath2 = os.path.join(HOMEPATH, 'Staff')
+print("StaffPath1", StaffPath1)
+StaffPath2 = os.path.join(HOMEPATH, 'StaffDatabase')
+print("StaffPath2", StaffPath2)
 if os.path.isdir(StaffPath1):
     StaffDatabaseFile = os.path.join(HOMEPATH, \
                             '12-Staff/StaffDatabase.csv')
 elif os.path.isdir(StaffPath2):
     StaffDatabaseFile = os.path.join(HOMEPATH, \
-                            'Staff/StaffDatabase.csv')
+                            'StaffDatabase/StaffDatabase.csv')
 else:
     raise NameError('Cant find staff database')
 if Debug:
