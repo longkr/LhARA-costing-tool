@@ -24,8 +24,17 @@ if Debug:
     
 ##! --------  Identify necessary files:
 HOMEPATH     = os.getenv('HOMEPATH')
-ControlFile  = os.path.join(HOMEPATH, \
+
+ControlPath1 = os.path.join(HOMEPATH, '10-Control')
+ControlPath2 = os.path.join(HOMEPATH, 'Control')
+if os.path.isdir(ControlPath1):
+    ControlFile  = os.path.join(HOMEPATH, \
                             '10-Control/LhARA-costing-tool-control.csv')
+elif os.path.isdir(ControlPath2):
+    ControlFile  = os.path.join(HOMEPATH, \
+                            'Control/LhARA-costing-tool-control.csv')
+elif:
+    raise NameError('Cant find control file')
 if Debug:
     print("    Control file: \n", \
           "            ----> ", ControlFile)
