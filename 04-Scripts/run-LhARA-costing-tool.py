@@ -51,8 +51,16 @@ else:
 if Debug:
     print("    Staff database file: \n", \
           "            ----> ", StaffDatabaseFile)
-wpDirectory = os.path.join(HOMEPATH, \
-                           '11-WorkPackages')
+wpPath1 = os.path.join(HOMEPATH, '11-WorkPackages')
+wpPath2 = os.path.join(HOMEPATH, 'WorkPackages')
+if os.path.isdir(wpPath1):
+    wpDirectory = os.path.join(HOMEPATH, \
+                            '11-WorkPackages')
+elif os.path.isdir(wpPath2):
+    wpDirectory = os.path.join(HOMEPATH, \
+                            'WorkPackages')
+else:
+    raise NameError('Cant find work packages')
 if Debug:
     print("    Directory containing work package definitions: \n", \
           "            ----> ", wpDirectory)
