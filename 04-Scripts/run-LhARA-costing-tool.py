@@ -38,8 +38,16 @@ elif:
 if Debug:
     print("    Control file: \n", \
           "            ----> ", ControlFile)
-StaffDatabaseFile = os.path.join(HOMEPATH, \
-                                 '12-Staff/StaffDatabase.csv')
+StaffPath1 = os.path.join(HOMEPATH, '12-Staff')
+StaffPath2 = os.path.join(HOMEPATH, 'Staff')
+if os.path.isdir(StaffPath1):
+    StaffDatabaseFile = os.path.join(HOMEPATH, \
+                            '12-Staff/StaffDatabase.csv')
+elif os.path.isdir(StaffPath2):
+    StaffDatabaseFile = os.path.join(HOMEPATH, \
+                            'Staff/StaffDatabase.csv')
+else:
+    raise NameError('Cant find staff database')
 if Debug:
     print("    Staff database file: \n", \
           "            ----> ", StaffDatabaseFile)
