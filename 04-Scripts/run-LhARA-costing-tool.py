@@ -33,7 +33,7 @@ if os.path.isdir(ControlPath1):
 elif os.path.isdir(ControlPath2):
     ControlFile  = os.path.join(HOMEPATH, \
                             'Control/LhARA-costing-tool-control.csv')
-elif:
+else:
     raise NameError('Cant find control file')
 if Debug:
     print("    Control file: \n", \
