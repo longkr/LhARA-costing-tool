@@ -49,19 +49,87 @@ Class Progress:
   I/o methods:
     loadProgress: Reads progress CSV file and creates Progress, PV, 
                   instances as appropriate.
+        Input: file name, full path to file containing progress data
         Class method
 
 
   Get/set methods:
-    set: set 
-      Input: numpy array
+    setPrjWPorTsk: Set class (Project, WorkPackage or Task) for which
+                   Progress is being reported.
+              Input: PrjWPorTsk: Instance of Project, WorkPackage, or Task
+
+          setDate: sets Date.
+              Input: Date as  datetime instance
+
+setPlannedFractionComplete: sets planned fraction complete.
+              Input: Planned fraction complete as float
+
+  setPlannedValue: Set planned value
+              Input: Planned value, £k
+
+setFractionCompelte: sets fraction complete.
+              Input: Fraction complete as float
+
+         setSpend: Set spend to date
+              Input: Spend, £k
+
+    getPrjWPorTsk: get instance: Project, WorkPackage or Task
         
-    get: get 
-      Input: numpy array
+        getDate: get date as datetime object
         
+getPlannedFractionComplete: get planned fraction complete as float
+        
+getPlannedValue: get planned value in £k
+                
+getFractionComplete: get fraction complete as float
+        
+         getSpend: get spend £k
+        
+   getEarnedValue: get earmned value, £k
 
 
   Processing methods:
+   takePrjWPorTsk: True if input is valid instance of Project,
+                   WorkPackage or Task
+              Input: Instance of Project, WorkPackage or Task to be
+                   checked
+              Class method
+
+  WPorPrjProgress: Compute progress values for WorkPackage or Project
+                   instance.
+              Input: Instance of Project or WorkPackage
+
+             Plot: Make progress plots (PV, EV, etc.); landscape and
+                   portrait formats
+              Input:
+               - DataFrame: Pandas data frame with progress report
+               -  PlotPath: Path to directory where plots to be written
+               -  FileName: Stem of plot file name.  Landscape or portrait
+                            will be appended as appropriate
+               - Landscate: If True, you get a plot in landscape format
+
+
+       Exceptions:
+             ProgressPrjWPorTskNotValid: Requested instance neither Project
+                                         WorkPackage or Task
+
+                   ProgressDateNotValid: Date not datetime object
+
+       ProgressFractionCompleteNotValid: fraction neither float nor null
+
+ProgressPlannedFractionCompleteNotValid: fraction neither float nor null
+
+           ProgressPlannedValueNotValid: value not float
+
+                  ProgressSpendNotValid: value not float
+
+                      OutputPathInvalid: invalid path for plot
+
+              NoWriteAccessToOutputPath: cant write to plot path
+
+                 PrjOrWpInstanceInvalid: Cant process progress data for
+                                         Project or WorkPackage instance
+
 
   
 Created on Wed 17Jun22. Version history:
@@ -88,12 +156,12 @@ class Progress:
     instances = []
 
 #--------  "Built-in methods":
-    def __init__(self, _WPorTsk=None, _Date=None, \
+    def __init__(self, _PrjWPorTsk=None, _Date=None, \
                        _PlannedFractionComplete=None, \
                        _PlannedValue=None, \
                        _FractionComplete=None, _Spend=None):
 
-        self.setTask(_WPorTsk)
+        self.setPrjWPorTsk(_PrjWPorTsk)
         self.setDate(_Date)
         self.setPlannedFractionComplete(_PlannedFractionComplete)
         self.setPlannedValue(_PlannedValue)
@@ -103,11 +171,11 @@ class Progress:
         Progress.instances.append(self)
         
     def __repr__(self):
-        return "Progress(Task, Date, PlannedFractionComplete " \
-               "FractionComplete, Spend)"
+        return "Progress(PrjWPorTsk, Date, PlannedFractionComplete, " \
+               "PlannedValue, FractionComplete, Spend)"
 
     def __str__(self):
-        print(" Progress:", self.getWPorTsk()._Name)
+        print(" Progress:", self.getPrjWPorTsk()._Name)
         print("     Date                   :", self.getDate())
         print("     PlannedFractionComplete:", \
               self.getPlannedFractionComplete())
@@ -181,13 +249,14 @@ class Progress:
                                    float(ProgParams.iloc[i,7]) )
 
 #--------  Get/set methods:
-    def setTask(self, _WPorTsk):
-        if not isinstance(_WPorTsk, Tsk.Task) and \
-           not isinstance(_WPorTsk, wp.WorkPackage) and \
-           not isinstance(_WPorTsk, Prj.Project):
-            raise ProgressTaskNotValid(" Progress.setTask: _WPorTsk " \
-                                       "not an instance of Task class")
-        self._WPorTsk = _WPorTsk
+    def setPrjWPorTsk(self, _PrjWPorTsk):
+        if not isinstance(_PrjWPorTsk, Tsk.Task) and \
+           not isinstance(_PrjWPorTsk, wp.WorkPackage) and \
+           not isinstance(_PrjWPorTsk, Prj.Project):
+            raise ProgressPrjWPorTskNotValid( \
+                                " Progress.setPrjWPorTsk: _PrjWPorTsk " \
+                                "not an instance of Task class")
+        self._PrjWPorTsk = _PrjWPorTsk
         
     def setDate(self, _Date):
         if not isinstance(_Date, DT.datetime):
@@ -230,8 +299,8 @@ class Progress:
             raise ProgressSpendNotValid(" Progress.setSpend: _Spend " \
                                        "not a float")
         
-    def getWPorTsk(self):
-        return self._WPorTsk
+    def getPrjWPorTsk(self):
+        return self._PrjWPorTsk
         
     def getDate(self):
         return self._Date
@@ -253,14 +322,13 @@ class Progress:
         for iEV in EarnedValue.instances:
             if iEV._Date == self._Date:
                 EV = iEV._EarnedValue
-        print(" Earned value:", EV)
         return EV
         
 
 #--------  Processing methods:
 
     @classmethod
-    def takeTask(cls, _iTsk, _PrjOrWPInst):
+    def takePrjWPorTsk(cls, _iTsk, _PrjOrWPInst):
         
         tkTsk  = False
 
@@ -279,18 +347,16 @@ class Progress:
     @classmethod
     def WPorPrjProgress(cls, _WPorPrjInst):
 
-        Progress.__Debug = True
-        
         if not isinstance(_WPorPrjInst, wp.WorkPackage) and \
            not isinstance(_WPorPrjInst, Prj.Project):
-            raise WorkPackageInstInvalid()
+            raise PrjOrWpInstanceInvalid()
         
         if Progress.__Debug == True:
             print(" Progress.WPorPrjProgress: wpName:", \
                   _WPorPrjInst._Name)
 
         SortedPrgRprt = sorted(Progress.instances, \
-                          key=attrgetter('_WPorTsk._Name', '_Date'), \
+                          key=attrgetter('_PrjWPorTsk._Name', '_Date'), \
                                  )
 
         DtRef  = None
@@ -300,19 +366,19 @@ class Progress:
         wpFC    = None
         wpPV    = None
         wpEV    = None
-        print(" Line 202, wpEV=", wpEV)
         wpSpend = None
 
         #.. Loop over progress instances in date order:
         for iPrg in SortedPrgRprt:
-            iWPorTsk = iPrg.getWPorTsk()
+            iWPorTsk = iPrg.getPrjWPorTsk()
 
             #.. Take Task entries for requested work package only:
             if isinstance(iWPorTsk, Tsk.Task):
                 iTsk = iWPorTsk
-                if cls.takeTask(iTsk,_WPorPrjInst):
+                if cls.takePrjWPorTsk(iTsk,_WPorPrjInst):
                     if Progress.__Debug == True:
-                        print("     ----> WP or Tsk name:", iWPorTsk.getName())
+                        print("     ----> WP or Tsk name:", \
+                              iWPorTsk.getName())
                     
                     Dt   = iPrg.getDate()
                     if Progress.__Debug == True:
@@ -327,7 +393,6 @@ class Progress:
                             #.. Create work-package progress instance
                             wpPFC = wpPFC / nTsks
                             wpFC  = wpFC  / nTsks
-                            print(" Line 330, wpEV=", wpEV)
                             if Progress.__Debug == True:
                                 print( \
                "               Creating WP progress instance:")
@@ -351,7 +416,6 @@ class Progress:
                         wpFC    = 0.
                         wpPV    = 0.
                         wpEV    = 0.
-                        print(" Line 354, wpEV=", wpEV)
                         wpSpend = 0.
                         if Progress.__Debug == True:
                             print("             ----> Reset done.")
@@ -372,7 +436,6 @@ class Progress:
                     wpFC    += FC
                     wpPV    += PV
                     wpEV    += EV
-                    print(" Line 375, wpEV=", wpEV)
                     wpSpend += Spnd
 
                 
@@ -559,7 +622,7 @@ class Progress:
 
     
 #--------  Exceptions:
-class ProgressTaskNotValid(Exception):
+class ProgressPrjWPorTskNotValid(Exception):
     pass
 
 class ProgressDateNotValid(Exception):
@@ -583,7 +646,7 @@ class OutputPathInvalid(Exception):
 class NoWriteAccessToOutputPath(Exception):
     pass
 
-class WorkPackageInstInvalid(Exception):
+class PrjOrWpInstanceInvalid(Exception):
     pass
                   
 
@@ -603,10 +666,13 @@ Class EarnedValue:
       
   Instance attributes:
   --------------------
-   _WPorTsk         = Date as a date-time object
-   _Date         = Date as a date-time object
-   _EarnedValue = Fractional completion of task at _Date.
-   _Progress     = Optional -- filled if PV relates to a Progress instance.
+   _PrjWPorTsk  = Instance of Project, WorkPackage or Task
+   _Date        = Date as a date-time object
+   _Progress    = Progress instance to which this EarnedValue instance
+                  relates
+   _EarnedValue = FLoat or None.  If None earned value (£k) will be
+                  calculated from FractionComplete and total value of
+                  Project, WorkPackage, or Task instance
 
     
   Methods:
@@ -618,19 +684,29 @@ Class EarnedValue:
       __str__ : Dump of constants.
 
 
-  I/o methods:
+  I/o methods: None
 
 
   Get/set methods:
-    set: set 
-      Input: numpy array
-        
-    get: get 
-      Input: numpy array
+    setEarnedValue: set earned value, input is earned value in £k or None.
+                    If None, then earned value (£k) will be calculated
+                    from FractionComplete and total value of Project,
+                    WorkPackage, or Task instance
+      Input: Float, earned value, £k
+
+       setProgress: set self._Progress with Progress instance associated
+                    with this EarnedValue instance
+      Input: instance of Progress
+
+       getProgress: return Progress instance
+
+    getEarnedValue: return earned value, float, £k
         
 
+  Processing methods: None
 
-  Processing methods:
+          Exceptions:
+EarnedValueEVNotValid: Earned value neither float nor None
 
   
 Created on Wed 17Jun22. Version history:
@@ -645,9 +721,9 @@ class EarnedValue(Progress):
     instances = []
 
 #--------  "Built-in methods":
-    def __init__(self, _WPorTsk=None, _Date=None, _Prg=None, _EV=None):
+    def __init__(self, _PrjWPorTsk=None, _Date=None, _Prg=None, _EV=None):
 
-        self.setTask(_WPorTsk)
+        self.setPrjWPorTsk(_PrjWPorTsk)
         self.setDate(_Date)
         self.setProgress(_Prg)
         self.setEarnedValue(_EV)
@@ -658,7 +734,7 @@ class EarnedValue(Progress):
         return "EarnedValue(Task, Date)"
 
     def __str__(self):
-        print(" EarnedValue:", self.getWPorTsk()._Name)
+        print(" EarnedValue:", self.getPrjWPorTsk()._Name)
         print("     Date             :", self.getDate())
         print("     Planned value    :", self.getEarnedValue())
         print("     Progress instance:", self.getProgress())
@@ -674,20 +750,19 @@ class EarnedValue(Progress):
             raise EarnedValueEVNotValid(\
                             " EarnedValue.setEarnedValue: " \
                                        "not valid.")
-
-        print(" setEarnedValue:", _EV)
+        
         EV = None
 
         if _EV is None:
-            TskTotVal = self._WPorTsk.getTotalValue()
-            if TskTotVal != None:
+            PrjWPorTskTotVal = self._PrjWPorTsk.getTotalValue()
+            if PrjWPorTskTotVal != None:
                 if self.__Debug:
                     print("  Progress.setEarnedValue:", \
-                          "    ----> Task:", self._WPorTsk._Name, \
-                          "          TskTotVal:", TskTotVal, \
+                          "    ----> Task:", self._PrjWPorTsk._Name, \
+                          "          PrjWPorTskTotVal:", PrjWPorTskTotVal, \
                   "          Fraction complete:", \
                           self._Progress._FractionComplete)
-                EV =  TskTotVal * self._Progress._FractionComplete
+                EV =  PrjWPorTskTotVal * self._Progress._FractionComplete
         else:
             EV = _EV
 
@@ -711,10 +786,4 @@ class EarnedValue(Progress):
 
 #--------  Exceptions:
 class EarnedValueEVNotValid(Exception):
-    pass
-
-class NoFilenameProvided(Exception):
-    pass
-
-class NonExistantFile(Exception):
     pass

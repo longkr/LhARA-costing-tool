@@ -160,8 +160,8 @@ print("Progress test:", ProgressTest, " Earned value test.")
 #.. For each progress report, calculate earned value:
 for iPrg in Prg.Progress.instances:
     if Debug:
-        print("    ----> Get earned value for:", iPrg._WPorTsk._Name)
-    EV1 = Prg.EarnedValue(iPrg._WPorTsk, iPrg._Date, iPrg)
+        print("    ----> Get earned value for:", iPrg._PrjWPorTsk._Name)
+    EV1 = Prg.EarnedValue(iPrg._PrjWPorTsk, iPrg._Date, iPrg)
     if Debug:
         print("      ----> Earned value:", EV1._EarnedValue)
 print("    <---- Earned value loaded.")

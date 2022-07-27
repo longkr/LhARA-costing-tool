@@ -24,18 +24,45 @@ if Debug:
     
 ##! --------  Identify necessary files:
 HOMEPATH     = os.getenv('HOMEPATH')
-ControlFile  = os.path.join(HOMEPATH, \
+
+ControlPath1 = os.path.join(HOMEPATH, '10-Control')
+ControlPath2 = os.path.join(HOMEPATH, 'Control')
+if os.path.isdir(ControlPath1):
+    ControlFile  = os.path.join(HOMEPATH, \
                             '10-Control/LhARA-costing-tool-control.csv')
+elif os.path.isdir(ControlPath2):
+    ControlFile  = os.path.join(HOMEPATH, \
+                            'Control/LhARA-costing-tool-control.csv')
+else:
+    raise NameError('Cant find control file')
 if Debug:
     print("    Control file: \n", \
           "            ----> ", ControlFile)
-StaffDatabaseFile = os.path.join(HOMEPATH, \
-                                 '12-Staff/StaffDatabase.csv')
+StaffPath1 = os.path.join(HOMEPATH, '12-Staff')
+print("StaffPath1", StaffPath1)
+StaffPath2 = os.path.join(HOMEPATH, 'StaffDatabase')
+print("StaffPath2", StaffPath2)
+if os.path.isdir(StaffPath1):
+    StaffDatabaseFile = os.path.join(HOMEPATH, \
+                            '12-Staff/StaffDatabase.csv')
+elif os.path.isdir(StaffPath2):
+    StaffDatabaseFile = os.path.join(HOMEPATH, \
+                            'StaffDatabase/StaffDatabase.csv')
+else:
+    raise NameError('Cant find staff database')
 if Debug:
     print("    Staff database file: \n", \
           "            ----> ", StaffDatabaseFile)
-wpDirectory = os.path.join(HOMEPATH, \
-                           '11-WorkPackages')
+wpPath1 = os.path.join(HOMEPATH, '11-WorkPackages')
+wpPath2 = os.path.join(HOMEPATH, 'WorkPackages')
+if os.path.isdir(wpPath1):
+    wpDirectory = os.path.join(HOMEPATH, \
+                            '11-WorkPackages')
+elif os.path.isdir(wpPath2):
+    wpDirectory = os.path.join(HOMEPATH, \
+                            'WorkPackages')
+else:
+    raise NameError('Cant find work packages')
 if Debug:
     print("    Directory containing work package definitions: \n", \
           "            ----> ", wpDirectory)
