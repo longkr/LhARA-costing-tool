@@ -1,0 +1,20 @@
+27Jul22:
+
+Updated git repository, now checking back through tests.
+
+-------- record of tests:
+Tests:
+ - ControlTst.py                        - OK
+ - EquipmentTst.py                      - OK
+ - LhARACostingToolTst.py               - OK
+ - ProgressTst1.py                      - OK
+ - ProgressTst2.py                      - OK
+ - ProjectTst.py                        - OK
+ - ReportTst.py                         - OK
+ - StaffTst.py                          - OK
+ - OtherNonStaffTst.py (needs dummy)    - OK
+ - TaskEquipmentTst.py (needs dummy)    - OK
+ - TaskStaffTst.py (needs dummy)        - OK
+ - TaskTst.py (needs dummy)             - OK
+ - WorkPackageTst.py (needs dummy)      - OK
+ - run-LhARA-costing-tool.py Debug=true - OK
