@@ -137,7 +137,7 @@ class LhARACostingTool(object):
             print("     ----> REPORTPATH not set, no reports generated.")
         else:
             REPORTPATH = os.path.join(BaseREPORTPATH, \
-                                      RptDt.strftime("%d-%b-%Y"))
+                                      RptDt.strftime("%Y-%m-%d"))
             if not os.path.isdir(REPORTPATH):
                 os.mkdir(REPORTPATH)
             if cls._Debug:
