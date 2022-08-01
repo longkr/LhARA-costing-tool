@@ -8,11 +8,16 @@ Imperial Physics,Imp PG1,PG,PG,175,Project,Starts in Yr 2: costed to recover £8
 Imperial Physics,IC-Phys-Stff-1,Dover,Staff,147.76,Project,
 Imperial Physics,IC-Phys-PDRA-1,Not named,Staff,95.23,Project,
 Imperial Physics,IC-Phys-Support-1,Kordopati,Staff,73.19,Project,
-Lancaster Physics,Lanc-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
-Liverpool Physics,Liv-Phys-PhD,PG,PG,25,Project,Starts in Yr 3
-Queen's Physics,Qns-Phys-PG-1,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
+Lancaster Physics,Lanc-Phys-Stf-1,Boell,Staff,150,Project,
+Lancaster Physics,Lanc-Phys-PDRA-1,Non name,Staff,120,Project,
+Liverpool Physics,Liv-Phys-PhD,PG,PG,175,Project,Starts in Yr 3
+Manchester Physics,Man-Phys-Stf-1,PI,Staff,207.4848,Project,10%
+Manchester Physics,Man-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
+Queen's Physics,Qns-Phys-Stf-1,Palmer,Staff,150,Project,
 RHUL Physics,RHUL PG1,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
-Swansea Physics,Swns-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
-Swansea Physics,Swns-Phys-PG-2,PG,PG,25,Project,Starts in Yr 3
-UCL Biomedical Engineering,UCL PhD,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
 Strathclyde Physics,Strathclyde-Phys-Stf-1,Whyte,Staff,150,Project,
+Strathclyde Physics,Strathclyde-Phys-Stf-2,Gray,Staff,140,Project,
+Strathclyde Physics,Strathclyde-Phys-PDRA-1,Gray,Staff,120,Project,
+Swansea Physics,Swns-Phys-Stf-1,PI,Staff,188.8989,Project,10%
+Swansea Physics,Swns-Phys-PDRA-1,PDRA,Staff,107.69929,Project,100%
+UCL Biomedical Engineering,UCL PhD,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
