@@ -9,7 +9,7 @@ Task,Task 1,,,,,,,,,,,,
 Institute,"ICR, Radiotherapy and Imaging",,,,,,,,,,,,
 Staff,ICR Staff 1,0.03,0.07,0.1,,0.03,0.03,0.03,0.03,0.07,0.07,0.07,0.07
 Staff,ICR Staff 2,0.03,0.07,0.1,,0.03,0.03,0.03,0.03,0.07,0.07,0.07,0.07
-Staff,ICR PDRA,,1,1,,,,,,1,1,1,1
+Staff,ICR PDRA,,0,0,,,,,,0,0,0,0
 Staff,ICR PhD,,,,,,,,,,,,
 Institute,"UCL, Biomedical Engineering",,,,,,,,,,,,
 Staff,UCL Staff 1,0.03,0.15,0.18,,0.03,0.03,0.03,0.03,0.15,0.15,0.15,0.15
