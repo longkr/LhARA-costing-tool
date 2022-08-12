@@ -1,0 +1,6 @@
+Updates to costing tool files:
+
+ - Remove joint student from WP3; breaks the budget!
+ - Remove two students from WP6; breaks the budget!
+ - Tried removing JPa time, 30k improvement.  Should continue to consider.
+ - Then, we're hot by 100k.  If preserve staff, need hard cuts to 

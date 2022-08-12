@@ -1,14 +1,29 @@
 ﻿Institute Code,Staff code,Name or post,Level,Cost per year (£k),Source,Comments
-Strathclyde Physics,Strathclyde-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
-Imperial Physics,IC-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
-Lancaster Physics,Lanc-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
-Queen's Physics,Qns-Phys-PG-1,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
-UCL Biomedical Engineering,UCL PhD,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
-BHM Physics,BHM-Phys-PhD,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
-IC NHS HC Trust,IC-NHS-HC-Trst-PhD-1,PG,PG,25,Project,Starts in Yr 3
-Imperial Physics,Imp PG1,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
-RHUL Physics,RHUL PG1,PG,PG,175,Project,Starts in Yr 2: costed to recover £70k in half a year
-Swansea Physics,Swns-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
-Swansea Physics,Swns-Phys-PG-2,PG,PG,25,Project,Starts in Yr 3
-"ICR, Radiotherapy and Imaging",ICR PhD,PG,PG,25,Project,Starts in Yr 3
-Liverpool Physics,Liv-Phys-PhD,PG,PG,25,Project,Starts in Yr 3
+BHM Physics,BHM-Phys-NoOH,Price,Staff,44.5,Project,0.2FTE of Tony Price assuming overheads waived on ITRF
+IC NHS HC Trust,IC-NHS-HC-Trst,McLauchlan,Staff,105,Project,0.2FTE of Ruth McC
+"ICR, Radiotherapy and Imaging",ICR Staff 1,Bamber,Staff,160,Project,
+"ICR, Radiotherapy and Imaging",ICR Staff 2,Harris,Staff,140,Project,
+"ICR, Radiotherapy and Imaging",ICR PDRA,Not named,Staff,120,Project,
+"ICR, Radiotherapy and Imaging",ICR PhD,Not named,PG,175,Project,Costed to revover 85k in one year
+Imperial Physics,Imp Staff 1,Pasternak,Staff,169.29,Project,
+Imperial Physics,Imp PDRA1,Kurup,Staff,154.63,Project,
+Imperial Physics,Imp PG1,PG,PG,175,Project,Costed to revover 85k in one year
+Imperial Physics,IC-Phys-Stff-1,Dover,Staff,147.76,Project,
+Imperial Physics,IC-Phys-PDRA-1,Not named,Staff,95.23,Project,
+Imperial Physics,IC-Phys-Support-1,Kordopati,Staff,73.19,Project,
+Lancaster Physics,Lanc-Phys-Stf-1,Boell,Staff,150,Project,
+Lancaster Physics,Lanc-Phys-PDRA-1,Not named,Staff,120,Project,
+Liverpool Physics,Liv-Phys-PDRA,Not named,Staff,123,Project,0.5FTE matched by Liverpool Physics
+Manchester Physics,Man-Phys-Stf-1,PI,Staff,207.4848,Project,10%
+Manchester Physics,Man-Phys-PG-1,PG,PG,25,Project,Starts in Yr 3
+Queen's Physics,Qns-Phys-Stf-1,Palmer,Staff,150,Project,
+RHUL Physics,RHUL PG1,PG,PG,175,Project,Costed to revover 85k in one year
+STFC-PPD,STFC-PPD Staff 1,Matheson,Staff,150,Project,
+STFC-PPD,STFC-PPD PDRA,Not named,Staff,130,Project,
+Strathclyde Physics,Strathclyde-Phys-Stf-1,Whyte,Staff,150,Project,
+Strathclyde Physics,Strathclyde-Phys-Stf-2,Gray,Staff,140,Project,
+Strathclyde Physics,Strathclyde-Phys-PDRA-1,Gray,Staff,120,Project,
+Swansea Physics,Swns-Phys-Stf-1,PI,Staff,188.8989,Project,10%
+Swansea Physics,Swns-Phys-PDRA-1,PDRA,Staff,107.69929,Project,100%
+"UCL, Biomedical Engineering",UCL Staff 1,Cox,Staff,150,Project,
+"UCL, Biomedical Engineering",UCL PDRA(shared ICL),Not named,PG,175,Project,Costed to revover 85k in one year

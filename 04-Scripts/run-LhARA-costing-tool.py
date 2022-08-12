@@ -95,7 +95,6 @@ nDel = Stf.Staff.cleanStaffDatabase()
 if Debug:
     print("    Staff data base cleaned; ", nDel, " instances of Staff deleted.")
     print("        ----> ", Stf.Staff.getNumberOfStaff(), "staff remain.")
-
     
 ##! --------  Create work package instances:
 wpList    = sorted(os.listdir(wpDirectory))
