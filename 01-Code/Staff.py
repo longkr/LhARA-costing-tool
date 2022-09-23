@@ -331,7 +331,7 @@ class Staff:
                 Deletions.append(iStf)
                 if cls.__Debug:
                     print(" cleanStaffDatabase: bad ProjectOrCG for:",
-                          iStf._StaffCode)
+                          iStf._StaffCode, iStf._ProjectOrCG)
         cls.__Debug = False
         if cls.__Debug:
             for i in range(len(Deletions)):
