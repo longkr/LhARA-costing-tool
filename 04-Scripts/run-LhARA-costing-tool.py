@@ -39,9 +39,11 @@ if Debug:
     print("    Control file: \n", \
           "            ----> ", ControlFile)
 StaffPath1 = os.path.join(HOMEPATH, '12-Staff')
-print("StaffPath1", StaffPath1)
+if Debug:
+    print("StaffPath1", StaffPath1)
 StaffPath2 = os.path.join(HOMEPATH, 'StaffDatabase')
-print("StaffPath2", StaffPath2)
+if Debug:
+    print("StaffPath2", StaffPath2)
 if os.path.isdir(StaffPath1):
     StaffDatabaseFile = os.path.join(HOMEPATH, \
                             '12-Staff/StaffDatabase.csv')

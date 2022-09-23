@@ -303,16 +303,34 @@ class Staff:
         for iStf in cls.instances:
             if not isinstance(iStf._StaffCode, str):
                 Deletions.append(iStf)
+                if cls.__Debug:
+                    print(" cleanStaffDatabase: bad staff code for:",
+                          iStf._StaffCode)
             if not isinstance(iStf._NameOrPost, str):
                 Deletions.append(iStf)
+                if cls.__Debug:
+                    print(" cleanStaffDatabase: bad NameOrPost for:",
+                          iStf._StaffCode)
             elif not isinstance(iStf._InstituteCode, str):
                 Deletions.append(iStf)
+                if cls.__Debug:
+                    print(" cleanStaffDatabase: bad InstituteCode for:",
+                          iStf._StaffCode)
             elif not isinstance(iStf._GradeOrLevel, str):
                 Deletions.append(iStf)
+                if cls.__Debug:
+                    print(" cleanStaffDatabase: bad GradeOrLevel for:",
+                          iStf._StaffCode)
             elif mth.isnan(iStf._AnnualCost):
                 Deletions.append(iStf)
+                if cls.__Debug:
+                    print(" cleanStaffDatabase: bad AnnualCost for:",
+                          iStf._StaffCode)
             elif not isinstance(iStf._ProjectOrCG, str):
                 Deletions.append(iStf)
+                if cls.__Debug:
+                    print(" cleanStaffDatabase: bad ProjectOrCG for:",
+                          iStf._StaffCode)
         
         if cls.__Debug:
             for i in range(len(Deletions)):
