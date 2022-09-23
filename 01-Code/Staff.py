@@ -300,6 +300,7 @@ class Staff:
     @classmethod
     def cleanStaffDatabase(cls):
         Deletions =[]
+        cls.__Debug = True
         for iStf in cls.instances:
             if not isinstance(iStf._StaffCode, str):
                 Deletions.append(iStf)
@@ -331,7 +332,7 @@ class Staff:
                 if cls.__Debug:
                     print(" cleanStaffDatabase: bad ProjectOrCG for:",
                           iStf._StaffCode)
-        
+        cls.__Debug = False
         if cls.__Debug:
             for i in range(len(Deletions)):
                 print(" Staff; cleanStaffDatabase: instances marked for ", \
