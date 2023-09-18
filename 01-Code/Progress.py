@@ -197,7 +197,7 @@ class Progress:
 
         ProgParams = pnds.read_csv(_filename)
         iRow       = ProgParams.index
-        if cls.__Debug:
+        if cls.getDebug():
             print(" Progress.loadProgress: parse progress report")
         ProgList = ProgParams.values.tolist()
         iCnt = 0
@@ -205,36 +205,36 @@ class Progress:
             wpInst = None
             TskInst = None
             iCnt += 1
-            if cls.__Debug:
+            if cls.getDebug():
                 print("   ----> Parse row", iCnt, ProgList[iCnt-1])
 
             if ProgParams.iloc[i,0] == "Work package":
-                if cls.__Debug:
+                if cls.getDebug():
                     print("     ----> Work package:", ProgParams.iloc[i,1])
                 for wpInstIter in wp.WorkPackage.instances:
                     if wpInstIter._Name == ProgParams.iloc[i,1]:
-                        if cls.__Debug:
+                        if cls.getDebug():
                             print("       ----> Identified:")
                     wpInst = wpInstIter
                 if wpInst == None:
-                    if cls.__Debug:
+                    if cls.getDebug():
                         print("       ----> Not identified!")
 
             elif ProgParams.iloc[i,0] == "ProgressLine":
-                if cls.__Debug:
+                if cls.getDebug():
                     print("       ----> Progress line for task:", \
                       ProgParams.iloc[i,1])
                 for TskInstIter in Tsk.Task.instances:
                     if TskInstIter._Name == ProgParams.iloc[i,1]:
-                        if cls.__Debug:
+                        if cls.getDebug():
                             print("         ----> Identified.")
                         TskInst = TskInstIter
                 if TskInst == None:
-                    if cls.__Debug:
+                    if cls.getDebug():
                         print("         ----> Not identified!")
                     
             if TskInst != None:
-                if cls.__Debug:
+                if cls.getDebug():
                     print("           ----> Progress line:", \
                       DT.datetime.strptime(ProgParams.iloc[i,3],'%d %B %Y'),\
                       ProgParams.iloc[i,4], \
@@ -244,11 +244,15 @@ class Progress:
                 PrgInst = Progress(TskInst, \
                     DT.datetime.strptime(ProgParams.iloc[i,3],'%d %B %Y'), \
                                    float(ProgParams.iloc[i,4]), \
-                                   float(ProgParams.iloc[i,5]), \
+                                   float(ProgParams.iloc[i,5])/1000., \
                                    float(ProgParams.iloc[i,6]), \
-                                   float(ProgParams.iloc[i,7]) )
+                                   float(ProgParams.iloc[i,7])/1000. )
 
 #--------  Get/set methods:
+    @classmethod
+    def setDebug(cls, Debug):
+        cls.__Debug = Debug
+        
     def setPrjWPorTsk(self, _PrjWPorTsk):
         if not isinstance(_PrjWPorTsk, Tsk.Task) and \
            not isinstance(_PrjWPorTsk, wp.WorkPackage) and \
@@ -298,7 +302,11 @@ class Progress:
         else:
             raise ProgressSpendNotValid(" Progress.setSpend: _Spend " \
                                        "not a float")
-        
+
+    @classmethod
+    def getDebug(cls):
+        return cls.__Debug
+    
     def getPrjWPorTsk(self):
         return self._PrjWPorTsk
         
