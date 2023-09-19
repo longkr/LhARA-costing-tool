@@ -152,7 +152,7 @@ import Project     as Prj
 #import Progress    as Prg
 
 class Progress:
-    __Debug = True
+    __Debug = False
     instances = []
 
 #--------  "Built-in methods":
@@ -257,7 +257,7 @@ class Progress:
 #--------  Get/set methods:
     @classmethod
     def setDebug(cls, Debug):
-        cls.__Debug = True
+        cls.__Debug = False
         
     def setPrjWPorTsk(self, _PrjWPorTsk):
         if not isinstance(_PrjWPorTsk, Tsk.Task) and \
@@ -414,11 +414,10 @@ class Progress:
                     
                     #.. Handle new date; create wp progress instance and
                     #   zero counters:
-                    print(" HereHere: Dt, DtRef:", Dt, DtRef)
                     if Dt != DtRef:
                         if cls.getDebug() == True:
                             print("                 ----> New date:", Dt)
-                        if nTsks != None:
+                        if nTsks != 0:
                             #.. Create work-package progress instance
                             wpPFC = wpPFC / nTsks
                             wpFC  = wpFC  / nTsks
@@ -478,6 +477,28 @@ class Progress:
             #.. End of is a Task check if block
         #.. End of loop over progress entries
 
+        if cls.getDebug() == True:
+            print("     <----> Flush last entry:")
+            if nTsks != 0:
+                #.. Create work-package progress instance
+                wpPFC = wpPFC / nTsks
+                wpFC  = wpFC  / nTsks
+                if cls.getDebug() == True:
+                    print("           Creating WP progress instance:")
+                    print("               ---->", \
+                          " nTsks, PFC, FC, PV, EV, Spend:",\
+                          nTsks, wpPFC, wpFC, wpPV, wpEV, wpSpend)
+                iwpPrg = Progress(_WPorPrjInst, DtRef, wpPFC, \
+                                  wpPV, wpFC, wpSpend)
+                iwpEV  = EarnedValue(_WPorPrjInst, DtRef, \
+                                     iwpPrg, wpEV)
+                if cls.getDebug() == True:
+                    print("               <---- Final Progress", \
+                          " and EarnedValue instances created:", \
+                          iwpPrg.getPrjWPorTsk().getName(), \
+                          iwpEV.getPrjWPorTsk().getName())
+        
+        
         #.. End of processing
 
         return Loaded
@@ -754,7 +775,7 @@ Created on Wed 17Jun22. Version history:
 """
 
 class EarnedValue(Progress):
-    __Debug = True
+    __Debug = False
     instances = []
 
 #--------  "Built-in methods":

@@ -1174,6 +1174,14 @@ class Progress(Report):
             raise ProgressInstanceInvalid( \
                   ' Report.Progress: no report possible for ChunkInst: ' \
                   + _ChunkInst._Name)
+
+    @classmethod
+    def setDebug(cls, Debug):
+        cls.__Debug = True
+
+    @classmethod
+    def getDebug(cls):
+        return cls.__Debug
         
     def Report(self, _ChunkInst):
         """
@@ -1183,7 +1191,10 @@ class Progress(Report):
         Produce CSV file with progress report for this task.
         
         """
-        Progress.__Debug = True
+        if Progress.__Debug:
+            print(" Progress(Report).Report start; for:", \
+                  _ChunkInst.getName(), type(_ChunkInst))
+            
         SortedPrgRprt = sorted(Prg.Progress.instances, \
                           key=attrgetter('_PrjWPorTsk._Name', '_Date'), \
                                  )
@@ -1191,20 +1202,12 @@ class Progress(Report):
         Lines = []
         for iPrg in SortedPrgRprt:
             AddLine = False
-            if Progress.__Debug:
-                print(" Progress(Report).Report start", iPrg)
-            if isinstance(iPrg._PrjWPorTsk, Tsk.Task):
-                if Progress.__Debug:
-                    print(" Progress(Report).Report, request:", \
-                          _ChunkInst._Name)
-                if isinstance(_ChunkInst, Prj.Project):
-                    if iPrg._PrjWPorTsk._WorkPackage._Project == _ChunkInst:
-                        AddLine = True
-                elif isinstance(_ChunkInst, wp.WorkPackage):
-                    if iPrg._PrjWPorTsk._WorkPackage == _ChunkInst:
-                        AddLine = True
-                elif iPrg._PrjWPorTsk == _ChunkInst:
+            if iPrg.getPrjWPorTsk() == _ChunkInst:
                     AddLine = True
+                    if self.getDebug():
+                        print("     ----> Progress instance:", \
+                              iPrg.getPrjWPorTsk().getName(), \
+                              " to be added.")
 
             if AddLine:
                 PV   = iPrg._PlannedValue
