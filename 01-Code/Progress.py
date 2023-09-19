@@ -372,7 +372,7 @@ class Progress:
                   _WPorPrjInst._Name)
 
         SortedPrgRprt = sorted(Progress.instances, \
-                          key=attrgetter('_PrjWPorTsk._Name', '_Date'), \
+                          key=attrgetter('_Date', '_PrjWPorTsk._Name'), \
                                  )
 
         DtRef  = None
@@ -407,7 +407,10 @@ class Progress:
                     
                     Dt   = iPrg.getDate()
                     if cls.getDebug() == True:
-                        print("             ----> Date:", Dt)
+                        print("             ----> Date, reference date:", \
+                              Dt, DtRef)
+                    if DtRef == None:
+                        DrRef = Dt
                     
                     #.. Handle new date; create wp progress instance and
                     #   zero counters:
@@ -445,10 +448,10 @@ class Progress:
                         wpEV    = 0.
                         wpSpend = 0.
                         if cls.getDebug() == True:
-                            print("                 ----> Reset done.")
+                            print("                 <---- Reset done.")
 
                     if cls.getDebug() == True:
-                        print("             <---- Handled new time reset.")
+                        print("             <---- Load and increment.")
                         
                     #.. Get incremental data
                     PFC  = iPrg.getPlannedFractionComplete()
@@ -521,6 +524,7 @@ class Progress:
         pTitle   = DataFrame.columns.values.tolist()[0]
         
         if cls.getDebug() == True:
+            pnds.set_option('display.max_columns', None)
             print(" Progress.Plot called to plot DataFrame: \n",   \
                   "     ----> Number of entries:", nEntries, "\n", \
                   DataFrame)
