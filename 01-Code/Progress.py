@@ -152,7 +152,7 @@ import Project     as Prj
 #import Progress    as Prg
 
 class Progress:
-    __Debug = False
+    __Debug = True
     instances = []
 
 #--------  "Built-in methods":
@@ -206,36 +206,37 @@ class Progress:
             TskInst = None
             iCnt += 1
             if cls.getDebug():
-                print("   ----> Parse row", iCnt, ProgList[iCnt-1])
+                print("     ----> Parse row", iCnt, ProgList[iCnt-1])
 
             if ProgParams.iloc[i,0] == "Work package":
                 if cls.getDebug():
-                    print("     ----> Work package:", ProgParams.iloc[i,1])
+                    print("         ----> Work package:", \
+                          ProgParams.iloc[i,1])
                 for wpInstIter in wp.WorkPackage.instances:
                     if wpInstIter._Name == ProgParams.iloc[i,1]:
                         if cls.getDebug():
-                            print("       ----> Identified:")
+                            print("         ----> Identified:")
                     wpInst = wpInstIter
                 if wpInst == None:
                     if cls.getDebug():
-                        print("       ----> Not identified!")
+                        print("         <---- Not identified!")
 
             elif ProgParams.iloc[i,0] == "ProgressLine":
                 if cls.getDebug():
-                    print("       ----> Progress line for task:", \
+                    print("         ----> Progress line for task:", \
                       ProgParams.iloc[i,1])
                 for TskInstIter in Tsk.Task.instances:
                     if TskInstIter._Name == ProgParams.iloc[i,1]:
                         if cls.getDebug():
-                            print("         ----> Identified.")
+                            print("             ----> Identified.")
                         TskInst = TskInstIter
                 if TskInst == None:
                     if cls.getDebug():
-                        print("         ----> Not identified!")
+                        print("         <---- Not identified!")
                     
             if TskInst != None:
                 if cls.getDebug():
-                    print("           ----> Progress line:", \
+                    print("                 ----> Progress line:", \
                       DT.datetime.strptime(ProgParams.iloc[i,3],'%d %B %Y'),\
                       ProgParams.iloc[i,4], \
                       ProgParams.iloc[i,5], \
@@ -247,11 +248,16 @@ class Progress:
                                    float(ProgParams.iloc[i,5])/1000., \
                                    float(ProgParams.iloc[i,6]), \
                                    float(ProgParams.iloc[i,7])/1000. )
-
+        if cls.getDebug():
+            print("     <---- data frame:")
+            print(PrgInst)
+            print(" <----  Progress.loadProgress done.")
+            
+                
 #--------  Get/set methods:
     @classmethod
     def setDebug(cls, Debug):
-        cls.__Debug = Debug
+        cls.__Debug = True
         
     def setPrjWPorTsk(self, _PrjWPorTsk):
         if not isinstance(_PrjWPorTsk, Tsk.Task) and \
@@ -326,10 +332,12 @@ class Progress:
         return self._Spend
         
     def getEarnedValue(self):
+
         EV = None
         for iEV in EarnedValue.instances:
-            if iEV._Date == self._Date:
+            if iEV.getProgress() == self:
                 EV = iEV._EarnedValue
+        
         return EV
         
 
@@ -342,7 +350,7 @@ class Progress:
 
         iWP  = _iTsk._WorkPackage
         iPrj = iWP._Project
-        
+
         if isinstance(_PrjOrWPInst, wp.WorkPackage) and \
            iWP == _PrjOrWPInst:
             tkTsk = True
@@ -358,8 +366,8 @@ class Progress:
         if not isinstance(_WPorPrjInst, wp.WorkPackage) and \
            not isinstance(_WPorPrjInst, Prj.Project):
             raise PrjOrWpInstanceInvalid()
-        
-        if Progress.__Debug == True:
+
+        if cls.getDebug() == True:
             print(" Progress.WPorPrjProgress: wpName:", \
                   _WPorPrjInst._Name)
 
@@ -376,45 +384,56 @@ class Progress:
         wpEV    = None
         wpSpend = None
 
+        Loaded  = False
+        
         #.. Loop over progress instances in date order:
         for iPrg in SortedPrgRprt:
+            if cls.getDebug():
+                print("     ----> Consider Prj, WP, or Tsk:", \
+                      iPrg.getPrjWPorTsk().getName())
             iWPorTsk = iPrg.getPrjWPorTsk()
 
             #.. Take Task entries for requested work package only:
             if isinstance(iWPorTsk, Tsk.Task):
                 iTsk = iWPorTsk
+                if cls.getDebug():
+                    print("         ----> Process task:", \
+                          iTsk.getName(), iTsk.getWorkPackage().getName())
+
                 if cls.takePrjWPorTsk(iTsk,_WPorPrjInst):
-                    if Progress.__Debug == True:
-                        print("     ----> WP or Tsk name:", \
+                    if cls.getDebug() == True:
+                        print("             ----> WP or Tsk name:", \
                               iWPorTsk.getName())
                     
                     Dt   = iPrg.getDate()
-                    if Progress.__Debug == True:
-                        print("         ----> Date:", Dt)
+                    if cls.getDebug() == True:
+                        print("             ----> Date:", Dt)
                     
                     #.. Handle new date; create wp progress instance and
                     #   zero counters:
                     if Dt != DtRef:
-                        if Progress.__Debug == True:
-                            print("         ----> New date:", Dt)
+                        if cls.getDebug() == True:
+                            print("                 ----> New date:", Dt)
                         if nTsks != None:
                             #.. Create work-package progress instance
                             wpPFC = wpPFC / nTsks
                             wpFC  = wpFC  / nTsks
-                            if Progress.__Debug == True:
+                            if cls.getDebug() == True:
                                 print( \
-               "               Creating WP progress instance:")
-                                print( \
-               "                   ----> nTsks, PFC, FC, PV, EV, Spend:",\
-                                        nTsks, wpPFC, wpFC, wpPV, wpEV, wpSpend)
+               "                       Creating WP progress instance:")
+                                print("                           ---->", \
+                                      " nTsks, PFC, FC, PV, EV, Spend:",\
+                                      nTsks, wpPFC, wpFC, wpPV, wpEV, wpSpend)
                             iwpPrg = Progress(_WPorPrjInst, DtRef, wpPFC, \
                                                   wpPV, wpFC, wpSpend)
                             iwpEV  = EarnedValue(_WPorPrjInst, DtRef, \
                                                      iwpPrg, wpEV)
-                            if Progress.__Debug == True:
+                            if not Loaded: Loaded = True
+                            if cls.getDebug() == True:
                                 print( \
-      "             ----> Progress and EarnedValue instances created:",
-                                   iwpPrg, iwpEV)
+      "                 <---- Progress and EarnedValue instances created:",
+                                       iwpPrg.getPrjWPorTsk().getName(), \
+                                       iwpEV.getPrjWPorTsk().getName())
                             
                         #----> Progress(<arguments>)
                         #.. Set date reference, zero task count
@@ -425,17 +444,21 @@ class Progress:
                         wpPV    = 0.
                         wpEV    = 0.
                         wpSpend = 0.
-                        if Progress.__Debug == True:
-                            print("             ----> Reset done.")
+                        if cls.getDebug() == True:
+                            print("                 ----> Reset done.")
 
+                    if cls.getDebug() == True:
+                        print("             <---- Handled new time reset.")
+                        
                     #.. Get incremental data
                     PFC  = iPrg.getPlannedFractionComplete()
                     FC   = iPrg.getFractionComplete()
                     PV   = iPrg.getPlannedValue()
                     EV   = iPrg.getEarnedValue()
                     Spnd = iPrg.getSpend()
-                    if Progress.__Debug == True:
-                        print("             ----> PFC, FC, PV, EV, Spnd:", \
+                    if cls.getDebug() == True:
+                        print("         <----", \
+                              " PFC, FC, PV, EV, Spnd:", \
                               PFC, FC, PV, EV, Spnd)
 
                     #.. Increment spend, progress etc.
@@ -453,6 +476,7 @@ class Progress:
 
         #.. End of processing
 
+        return Loaded
         
     @classmethod
     def Plot(cls, DataFrame, \
@@ -496,7 +520,7 @@ class Progress:
         nEntries = DataFrame.count()
         pTitle   = DataFrame.columns.values.tolist()[0]
         
-        if Progress.__Debug == True:
+        if cls.getDebug() == True:
             print(" Progress.Plot called to plot DataFrame: \n",   \
                   "     ----> Number of entries:", nEntries, "\n", \
                   DataFrame)
@@ -725,7 +749,7 @@ Created on Wed 17Jun22. Version history:
 """
 
 class EarnedValue(Progress):
-    __Debug = False
+    __Debug = True
     instances = []
 
 #--------  "Built-in methods":
@@ -753,6 +777,10 @@ class EarnedValue(Progress):
 
 
 #--------  Get/set methods:
+    @classmethod
+    def getinstances(cls):
+        return cls.instances
+    
     def setEarnedValue(self, _EV):
         if not isinstance(_EV, float) and not (_EV is None):
             raise EarnedValueEVNotValid(\

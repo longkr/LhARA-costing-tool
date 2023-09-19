@@ -1209,6 +1209,8 @@ class Progress(Report):
                 PV   = iPrg._PlannedValue
                 EV   = iPrg.getEarnedValue()
                 Spnd = iPrg._Spend
+                if Spnd == 0.:
+                    Spnd = 1.E-6
                 SV  = 0.
                 CV  = 0.
                 BV  = 0.

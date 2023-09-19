@@ -201,6 +201,9 @@ class Project:
     def setFinancialYears(self, _Years):
         self._FinancialYears = _Years
 
+    def getName(self):
+        return self._Name
+    
     def getFinancialYears(self):
         return self._FinancialYears
         

@@ -159,6 +159,9 @@ class Task:
     def getName(self):
         return self._Name
         
+    def getWorkPackage(self):
+        return self._WorkPackage
+        
     @classmethod
     def getInstance(cls, _Name, _WPInst):
         InstList = []
