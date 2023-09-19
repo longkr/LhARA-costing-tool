@@ -375,14 +375,14 @@ class Progress:
                           key=attrgetter('_Date', '_PrjWPorTsk._Name'), \
                                  )
 
-        DtRef  = None
+        DtRef   = None
 
-        nTsks   = None
-        wpPFC   = None
-        wpFC    = None
-        wpPV    = None
-        wpEV    = None
-        wpSpend = None
+        nTsks   = 0
+        wpPFC   = 0.
+        wpFC    = 0.
+        wpPV    = 0.
+        wpEV    = 0.
+        wpSpend = 0.
 
         Loaded  = False
         
@@ -410,10 +410,11 @@ class Progress:
                         print("             ----> Date, reference date:", \
                               Dt, DtRef)
                     if DtRef == None:
-                        DrRef = Dt
+                        DtRef = Dt
                     
                     #.. Handle new date; create wp progress instance and
                     #   zero counters:
+                    print(" HereHere: Dt, DtRef:", Dt, DtRef)
                     if Dt != DtRef:
                         if cls.getDebug() == True:
                             print("                 ----> New date:", Dt)

@@ -1183,6 +1183,7 @@ class Progress(Report):
         Produce CSV file with progress report for this task.
         
         """
+        Progress.__Debug = True
         SortedPrgRprt = sorted(Prg.Progress.instances, \
                           key=attrgetter('_PrjWPorTsk._Name', '_Date'), \
                                  )
