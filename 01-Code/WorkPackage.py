@@ -349,12 +349,37 @@ class WorkPackage:
     
 
 #--------  Get/set methods:
+    def getDebug(self):
+        return self.__Debug
+    
+    def getCode(self):
+        return self._Code
+    
     def getFilename(self):
         return self._filename
 
     def getName(self):
         return self._Name
 
+    def getnTasks(self):
+        nTsks = 0
+        if self.getDebug():
+            print(" WP.getnTasks: WP:", self.getName())
+        
+        for iTsk in Tsk.Task.getinstances():
+            if self.getDebug():
+                print("     ----> Task, WP this task:", \
+                      iTsk.getName(), iTsk.getWorkPackage().getName())
+                print("                              ", \
+                      id(self), id(iTsk.getWorkPackage()))
+            if id(iTsk.getWorkPackage()) == id(self):
+                nTsks += 1
+                
+        return nTsks
+
+    def getTotalOtherNonStaffCost(self):
+        return self._TotalOtherNonStaffCost
+        
     def getTotalNonStaffByYear(self):
         TotNSByYr = np.array([])
         for iYr in range(len(self._FinancialYears)):

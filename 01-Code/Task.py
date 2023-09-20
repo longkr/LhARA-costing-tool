@@ -156,6 +156,10 @@ class Task:
 
 
 #--------  Get/set methods:
+    @classmethod
+    def getinstances(cls):
+        return cls.instances
+    
     def getName(self):
         return self._Name
         
@@ -191,11 +195,22 @@ class Task:
         return RtnInst
 
     def getTotalValue(self):
-        TV = None
+        TV       = None
+        ONSshare = 0.
+        iWP   = self.getWorkPackage()
+        print(" Task.getTotalValue: Task, WP:", \
+              self.getName(), iWP.getName())
+
         if self._TotalStaffCost     != None and \
            self._TotalEquipmentCost != None:
             TV = self._TotalStaffCost + self._TotalEquipmentCost
-        return TV
+            #..  Correct for non-equipment portion of non-staff for WP:
+            nTsks = iWP.getnTasks()
+            print(" Task.getTotalValue: nTasks:", nTsks)
+            ONSshare = iWP.getTotalOtherNonStaffCost() / float(nTsks)
+            print("     ----> Share of other non-staff costs:", ONSshare)
+            print(" <---- Return total value:", TV + ONSshare)
+        return TV + ONSshare
 
     def setStaffCostByYear(self, _StaffCostByYear):
         self._StaffCostByYear = _StaffCostByYear
