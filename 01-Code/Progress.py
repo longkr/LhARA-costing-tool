@@ -144,6 +144,7 @@ import datetime as DT
 import pandas   as pnds
 import math     as mt
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from operator import attrgetter
 
 import Task        as Tsk
@@ -544,6 +545,8 @@ class Progress:
 
         nEntries = DataFrame.count()
         pTitle   = DataFrame.columns.values.tolist()[0]
+
+        mpl.rcParams.update({'font.size': 10})
         
         if cls.getDebug() == True:
             pnds.set_option('display.max_columns', None)
@@ -559,6 +562,10 @@ class Progress:
             ax1.set_xticklabels([])
             ax2.set_xticks([])
             ax2.set_xticklabels([])
+            ax3.xaxis.set_tick_params(labelsize=15)
+            ax1.yaxis.set_tick_params(labelsize=15)
+            ax2.yaxis.set_tick_params(labelsize=15)
+            ax3.yaxis.set_tick_params(labelsize=15)
         else:
             fig = plt.figure(figsize = (14, 10))
             ax1 = plt.subplot2grid(shape=(2, 2), loc=(0,1), rowspan=1)
@@ -566,14 +573,14 @@ class Progress:
             ax3 = plt.subplot2grid(shape=(2, 2), loc=(1,1), rowspan=1)
             ax1.set_xticks([])
             ax1.set_xticklabels([])
-            
+
         #.. Remove extra space around figure
         fig.tight_layout()
         fig.subplots_adjust(top=0.95)
         
         #.. Add Title
         fig.suptitle(pTitle, \
-                     fontsize='xx-large', \
+                     fontsize='25', \
                      fontweight='bold')
         
         #.. Remove vertical white space between subplots
@@ -610,25 +617,28 @@ class Progress:
         DataFrame.plot(x='Date', y='Spend (£k)', ax=ax2, 
                 c = "C{}".format(2), linestyle=' ', label='')  
         #Ax3 - Variance
-        DataFrame.plot.scatter(x='Date', y='Schedule variance (£k)', ax=ax3,
-                    marker='o', c="C{}".format(0), label='Schedule variance (£k)')
+        DataFrame.plot.scatter(x='Date', y='Schedule variance (£k)', ax=ax3, \
+                    marker='o', c="C{}".format(0), \
+                            label='Schedule variance (£k)')
         DataFrame.plot(x='Date',y='Schedule variance (£k)', ax=ax3,
                 c = "C{}".format(0), linestyle = ' ', label='')
         DataFrame.plot.scatter(x='Date', y='Cost variance (£k)', ax=ax3,
                     marker='o',c = "C{}".format(1), label='Cost variance (£k)')
         DataFrame.plot(x='Date',y='Cost variance (£k)', ax=ax3,
                 c = "C{}".format(1), linestyle = ' ', label = '')
-        DataFrame.plot.scatter(x='Date', y='Budget variance variance (£k)', ax=ax3,
-                    marker='o', c = "C{}".format(2), label='Budget variance (£k)')
+        DataFrame.plot.scatter(x='Date', y='Budget variance variance (£k)', \
+                               ax=ax3, marker='o', c = "C{}".format(2), \
+                               label='Budget variance (£k)')
         DataFrame.plot(x='Date',y='Budget variance variance (£k)', ax=ax3,
                 c = "C{}".format(2), linestyle = ' ', label='')
         #Label y-axes and rotate to be horizontal
-        ax1.set_ylabel(ylabel = r'Performance' '\n' 'Index', fontsize = 'large', 
-                fontweight='bold' , rotation = 'horizontal')
-        ax2.set_ylabel(ylabel = 'Value', fontsize = 'large', 
-                fontweight='bold', rotation = 'horizontal')
-        ax3.set_ylabel(ylabel = 'Variance', fontsize ='large', 
-                fontweight = 'bold', rotation = 'horizontal')
+        ax1.set_ylabel(ylabel = r'Performance' '\n' 'Index',
+                       fontsize = '15', 
+                fontweight='bold' , rotation = 'vertical')
+        ax2.set_ylabel(ylabel = 'Value', fontsize = '15', 
+                fontweight='bold', rotation = 'vertical')
+        ax3.set_ylabel(ylabel = 'Variance', fontsize ='15', 
+                fontweight = 'bold', rotation = 'vertical')
         if landscape is False:
             ax1.yaxis.set_label_coords(-0.1, 0.5)
             ax2.yaxis.set_label_coords(-0.1, 0.5)
@@ -643,7 +653,8 @@ class Progress:
             tick.set_rotation(45)
         for tick in ax3.get_xticklabels()[::2]:
             tick.set_visible(False)
-        ax3.set_xlabel(xlabel='Date', fontsize='large', fontweight='bold')
+        #ax3.set_xlabel(xlabel='Date', fontsize='large', fontweight='bold')
+        ax3.set_xlabel(xlabel=None)
         if landscape is True:
             for tick in ax2.get_xticklabels():
                 tick.set_rotation(45)
@@ -653,16 +664,16 @@ class Progress:
         #Add legends labels and locations
         if landscape is False:
             legend_locations = ['center left', 'center left', 'center left']
-            bbox_anchor = [(1.0, 0.5), (1.0, 0.5),(1.0, 0.5)]
+            bbox_anchor = [(0.55, 0.70), (0.6, 0.25),(0.6, 0.25)]
         else:
             legend_locations = ['center left', 'center right', 'center left']
             bbox_anchor = [(1.0, 0.42), (-0.04, 0.39), (1.0, 0.42)]
         ax1.legend(loc = legend_locations[0], bbox_to_anchor= bbox_anchor[0], 
-                    fontsize ='large', frameon=False)
+                    fontsize ='15', frameon=False)
         ax2.legend(loc = legend_locations[1], bbox_to_anchor=bbox_anchor[1], 
-                fontsize='large', frameon=False)
+                fontsize='15', frameon=False)
         ax3.legend(loc = legend_locations[2], bbox_to_anchor=bbox_anchor[2], 
-                fontsize='large', frameon=False)
+                fontsize='15', frameon=False)
 
         # Save plot:
         if not os.path.isdir(_PlotPath):
